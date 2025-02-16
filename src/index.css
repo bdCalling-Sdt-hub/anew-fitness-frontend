@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  font-family: 'Josefin Sans', sans-serif;
+} 
+
+  .ant-menu-item{
+    font-size: 18px !important;
+  } 
+
+  .ant-menu .ant-menu-item .ant-menu-item-icon +span{
+    transition: none !important;
+  }
+  
+  .ant-menu .ant-menu-title-content{
+    transition: none !important; 
+  }   
+
