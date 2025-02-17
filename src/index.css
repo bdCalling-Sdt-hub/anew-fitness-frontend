@@ -19,5 +19,113 @@
   
   .ant-menu .ant-menu-title-content{
     transition: none !important; 
-  }   
+  }    
 
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #dfdfdf00;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+  
+    /* background: #6b5ecc34;  */
+    background: #ffffff67;
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b5ecc34;
+  }  
+
+/* calendar event bg  */
+  .fc-event {
+    background-color: #ab0906 !important; 
+    border: none !important;
+    width: 100% !important;
+    height: 100% !important; 
+    padding-left: 10px !important; 
+    padding-top: 10px !important; 
+
+  }
+  
+  .fc-timegrid-event {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #ab0906 !important;
+    border-radius: 4px !important;
+  } 
+
+  /* segment  */
+  .segmented-gap .ant-segmented-item {
+    margin: 0 12px;  
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  } 
+
+
+  .filter-select .ant-select-selector,
+  .filter-select .ant-picker {
+    border-radius: 8px; 
+    border-color: #ab0906 !important; 
+    background-color: #fff;
+    padding: 0 15px;
+  }
+  
+  .filter-select .ant-select-arrow {
+    color: #ab0906; 
+  }
+  
+  .filter-select .ant-select-item-option {
+    padding: 10px 15px;
+  }
+  
+  .filter-select .ant-select-item-option-active {
+    background-color: #f3e1e0; 
+  }
+  
+  .filter-select .ant-select-item-option-selected {
+    background-color: #ab0906; 
+    color: white;
+  }
+  
+  /* Custom Date Picker */
+  .filter-select .ant-picker-input {
+    height: 40px; 
+    width: 100%;  
+    border-color: #ab0906 !important;
+  }
+  
+  .filter-select .ant-picker {
+    border-radius: 8px;  
+    border-color: #FFC1C0 !important;
+  }
+  
+  .filter-select .ant-picker-dropdown {
+    border-radius: 8px; 
+    background-color: #f3e1e0 ; 
+  }
+  
+  .filter-select .ant-picker-cell-inner {
+    font-size: 14px;
+  }
+  
+  .filter-select .ant-picker-cell-selected {
+    background-color: #ab0906; 
+    color: white; 
+  } 
+
+  .filter-select.ant-picker-outlined {  
+    border-color: #ab0906 !important;
+  } 
+
+  .filter-select.ant-picker .ant-picker-suffix {  
+    color: #ab0906;
+  }

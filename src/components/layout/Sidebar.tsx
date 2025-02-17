@@ -1,7 +1,7 @@
 import { ConfigProvider, Menu } from 'antd';
 import  {  useState } from 'react';
 import { MdOutlineCategory } from 'react-icons/md';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiUserGroup } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -9,12 +9,13 @@ import logo from "../../assets/logo.svg";
 import { AiOutlineSafety } from 'react-icons/ai';
 import { BsPatchQuestion } from 'react-icons/bs';
 import { FaHouseChimney } from 'react-icons/fa6';
+import { RxCalendar } from 'react-icons/rx';
 
 
 const Sidebar = () => {
-    const [selectedKey, ] = useState("");
-    const [openKeys] = useState([]);
+    const location = useLocation();
     const navigate = useNavigate();
+    const [selectedKey, setSelectedKey] = useState(location.pathname);
 
 
     const handleLogout=()=>{
@@ -29,9 +30,9 @@ const Sidebar = () => {
             label: <Link to="/" className='' >Home</Link>
         },
         {
-            key: "/earnings",
-            icon: <MdOutlineCategory size={24} />,
-            label: <Link to="/events">Event Managements </Link>
+            key: "/calender",
+            icon: <RxCalendar size={24} />,
+            label: <Link to="/calender">Calendar </Link>
         },
     
         {
@@ -98,7 +99,7 @@ const Sidebar = () => {
             <Menu
                 mode="inline"
                 selectedKeys={[selectedKey]}
-                openKeys={openKeys}
+                onClick={(e) => setSelectedKey(e.key)}
                 style={{ borderRightColor: "transparent", background: "transparent" , color: "white"}} 
                 items={menuItems}
             /> 

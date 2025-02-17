@@ -1,4 +1,4 @@
-import { Button, Table, Tag, Empty, Space, Dropdown, Select, Card } from 'antd';
+import { Button, Table, Tag, Empty, Dropdown, Select, Card } from 'antd';
 import type { MenuProps } from 'antd';
 import {  MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
@@ -14,31 +14,32 @@ interface ClassSchedule {
     status: 'active' | 'inactive';
 }
 
-const data = [
-    {
-        key: '1',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active"
-    }, 
-    {
-        key: '2',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "inactive"
-    },
-    {
-        key: '3',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active"
-    }
-];
-
-const UpcomingClass = () => {
+// const data = [
+//     {
+//         key: '1',
+//         name: "Event Name",
+//         serviceCategory: "Event",
+//         scheduled: "+New Schedule",
+//         status: "active"
+//     }, 
+//     {
+//         key: '2',
+//         name: "Class Name",
+//         serviceCategory: "Event",
+//         scheduled: "+New Schedule",
+//         status: "inactive"
+//     },
+//     {
+//         key: '3',
+//         name: "Event Name",
+//         serviceCategory: "Event",
+//         scheduled: "+New Schedule",
+//         status: "active"
+//     }
+// ];
+ 
+const data: ClassSchedule[] = []
+const UpcomingEvent = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({
         location: 'All Location',
@@ -127,11 +128,11 @@ const UpcomingClass = () => {
     );
 
     return (
-        <div className="p-8 border border-gray-200 rounded-lg bg-gray-50 relative">
+        <div className="p-8 border border-gray-200 rounded-lg bg-gray-50 relative my-5">
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <div className='flex items-center gap-1'>
-                        <h2 className="text-[30px] font-bold">Upcoming Class</h2>
+                        <h2 className="text-[30px] font-bold">Upcoming Event</h2>
                         <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
                     </div>
                     <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
@@ -150,7 +151,7 @@ const UpcomingClass = () => {
                 </button>
                 {isFilterOpen && <FilterCard />}
             </div>
-            <div className="mx-auto bg-white rounded-lg shadow-sm">
+            <div className=" bg-white rounded-lg shadow-sm">
                 {data.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
             <Empty 
                 image={noData}
@@ -172,4 +173,4 @@ const UpcomingClass = () => {
     );
 };
 
-export default UpcomingClass;
+export default UpcomingEvent;

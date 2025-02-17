@@ -8,6 +8,7 @@ import VerifyOtp from '../pages/authentication/VerifyOtp';
 import NewPassword from '../pages/authentication/NewPassword';
 import Auth from '../components/layout/auth/Auth';
 import HomePage from '../pages/dashboard/home/HomePage';
+import CalenderPage from '../pages/dashboard/calender/CalenderPage';
 
 
 const router = createBrowserRouter([
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             { path: '/', element: <HomePage /> },      
+            { path: '/calender', element: <CalenderPage /> },      
             { path: 'notification', element: <Notification /> },
         
         ],

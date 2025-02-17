@@ -1,11 +1,10 @@
-import { Button, Table, Tag, Empty, Space, Dropdown, Select, Card } from 'antd';
+import { Button, Table, Empty, Dropdown, Select, Card } from 'antd';
 import type { MenuProps } from 'antd';
 import {  MoreHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
-import { IoIosArrowDown } from 'react-icons/io'; 
-import noData from "../../../../assets/noData.png";
-
+import { IoIosArrowDown } from 'react-icons/io';
+import noData from "../../../../assets/noData.png"; 
 interface ClassSchedule {
     key: string;
     name: string;
@@ -17,53 +16,50 @@ interface ClassSchedule {
 const data = [
     {
         key: '1',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active"
-    }, 
+        appointmentName: "Consultation",
+        contact: "John Doe",
+        service: "General Checkup",
+        staff: "Dr. Smith",
+        date: "2025-02-20",
+    },
     {
         key: '2',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "inactive"
+        appointmentName: "Dental Cleaning",
+        contact: "Jane Doe",
+        service: "Teeth Cleaning",
+        staff: "Dr. Brown",
+        date: "2025-02-22",
     },
     {
         key: '3',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active"
-    }
+        appointmentName: "Eye Checkup",
+        contact: "Alice Johnson",
+        service: "Vision Test",
+        staff: "Dr. Green",
+        date: "2025-02-25",
+    },
+    {
+        key: '4',
+        appointmentName: "Eye Checkup",
+        contact: "Alice Johnson",
+        service: "Vision Test",
+        staff: "Dr. Green",
+        date: "2025-02-25",
+    },
 ];
 
-const UpcomingClass = () => {
+const UpcomingAppointment = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({
         location: 'All Location',
         dateRange: 'Today'
     });
-
     const columns = [
-        { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Service Category', dataIndex: 'serviceCategory', key: 'serviceCategory' },
-        {
-            title: 'Scheduled',
-            dataIndex: 'scheduled',
-            key: 'scheduled',
-            render: (text: string) => <span className="text-red-600">{text}</span>,
-        },
-        {
-            title: 'Status',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status: string) => (
-                <Tag color={status === 'active' ? 'success' : 'error'}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                </Tag>
-            ),
-        },
+        { title: 'Appointment Name', dataIndex: 'appointmentName', key: 'appointmentName' },
+        { title: 'Contact', dataIndex: 'contact', key: 'contact' },
+        { title: 'Service', dataIndex: 'service', key: 'service' },
+        { title: 'Staff', dataIndex: 'staff', key: 'staff' },
+        { title: 'Date', dataIndex: 'date', key: 'date' },
         {
             title: 'Actions',
             key: 'actions',
@@ -73,7 +69,7 @@ const UpcomingClass = () => {
                 </Dropdown>
             ),
         },
-    ];
+    ]; 
 
     const items: MenuProps['items'] = [
         { key: '1', label: 'Edit' },
@@ -127,11 +123,11 @@ const UpcomingClass = () => {
     );
 
     return (
-        <div className="p-8 border border-gray-200 rounded-lg bg-gray-50 relative">
+        <div className="p-8 border border-gray-200 rounded-lg bg-gray-50 relative my-5">
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <div className='flex items-center gap-1'>
-                        <h2 className="text-[30px] font-bold">Upcoming Class</h2>
+                        <h2 className="text-[30px] font-bold">Upcoming 1-1 Appointment</h2>
                         <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
                     </div>
                     <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
@@ -172,4 +168,4 @@ const UpcomingClass = () => {
     );
 };
 
-export default UpcomingClass;
+export default UpcomingAppointment;

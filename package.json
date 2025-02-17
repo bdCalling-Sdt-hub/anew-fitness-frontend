@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/resource-timegrid": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "antd": "^5.20.6",
     "dayjs": "^1.11.13",
     "init": "^0.1.2",
