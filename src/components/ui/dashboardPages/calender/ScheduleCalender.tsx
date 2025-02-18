@@ -3,12 +3,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
-import { Select, Segmented, ConfigProvider,  DatePicker } from "antd";
+import { Select, Segmented, ConfigProvider, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 import { EventInput } from "@fullcalendar/core";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import AddNewModal from "./AddNewModal";
+import AppointmentModal from "./AppointmentModal";
 
 interface Resource {
     id: string;
@@ -27,6 +28,7 @@ export default function ScheduleCalender() {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [open, setOpen] = useState(false)
 
     const demoEvents: CalendarEvent[] = [
         { id: "1", title: "Yoga Class", start: "2025-02-17T10:00:00", resourceId: "room1", category: "Classes" },
@@ -56,66 +58,66 @@ export default function ScheduleCalender() {
 
     const filteredEvents = selectedFilter === "Full Calendar"
         ? events
-        : events.filter((event) => event.category === selectedFilter); 
+        : events.filter((event) => event.category === selectedFilter);
 
 
-        const FilterCard = () => (
-<div className=" flex items-center justify-center gap-4 py-5" hidden={!isFilterOpen}>                    
-  <Select
-    className="filter-select" 
-    placeholder="Staff"
-    style={{ height: '40px', width: '190px' }}
-    options={[
-      { value: 'All Location', label: 'All Location' },
-      { value: 'Location 1', label: 'Location 1' },
-      { value: 'Location 2', label: 'Location 2' },
-    ]}
-  />
-  
-  <Select
-    className="filter-select" 
-       placeholder="Location"
-    style={{ height: '40px', width: '190px' }}
-    options={[
-      { value: 'All Location', label: 'All Location' },
-      { value: 'Location 1', label: 'Location 1' },
-      { value: 'Location 2', label: 'Location 2' },
-    ]}
-  />
-  
-  <Select
-    className="filter-select" 
-    placeholder="Classes"
-    style={{ height: '40px', width: '190px' }}
-    options={[
-      { value: 'All Location', label: 'All Location' },
-      { value: 'Location 1', label: 'Location 1' },
-      { value: 'Location 2', label: 'Location 2' },
-    ]}
-  />
-  
-  <Select
-    className="filter-select" 
-    placeholder="Services"
-    style={{ height: '40px', width: '190px' }}
-    options={[
-      { value: 'All Location', label: 'All Location' },
-      { value: 'Location 1', label: 'Location 1' },
-      { value: 'Location 2', label: 'Location 2' },
-    ]}
-  /> 
+    const FilterCard = () => (
+        <div className=" flex items-center justify-center gap-4 py-5" hidden={!isFilterOpen}>
+            <Select
+                className="filter-select"
+                placeholder="Staff"
+                style={{ height: '40px', width: '190px' }}
+                options={[
+                    { value: 'All Location', label: 'All Location' },
+                    { value: 'Location 1', label: 'Location 1' },
+                    { value: 'Location 2', label: 'Location 2' },
+                ]}
+            />
 
-<DatePicker
-        className="filter-select"
-        style={{ height: '40px', width: '190px' }}
-        value={selectedDate ? selectedDate : undefined}
-        // onChange={handleDateChange} 
-        placeholder="Select Date"
-        allowClear
-      /> 
+            <Select
+                className="filter-select"
+                placeholder="Location"
+                style={{ height: '40px', width: '190px' }}
+                options={[
+                    { value: 'All Location', label: 'All Location' },
+                    { value: 'Location 1', label: 'Location 1' },
+                    { value: 'Location 2', label: 'Location 2' },
+                ]}
+            />
 
-</div>
-        );
+            <Select
+                className="filter-select"
+                placeholder="Classes"
+                style={{ height: '40px', width: '190px' }}
+                options={[
+                    { value: 'All Location', label: 'All Location' },
+                    { value: 'Location 1', label: 'Location 1' },
+                    { value: 'Location 2', label: 'Location 2' },
+                ]}
+            />
+
+            <Select
+                className="filter-select"
+                placeholder="Services"
+                style={{ height: '40px', width: '190px' }}
+                options={[
+                    { value: 'All Location', label: 'All Location' },
+                    { value: 'Location 1', label: 'Location 1' },
+                    { value: 'Location 2', label: 'Location 2' },
+                ]}
+            />
+
+            <DatePicker
+                className="filter-select"
+                style={{ height: '40px', width: '190px' }}
+                value={selectedDate ? selectedDate : undefined}
+                // onChange={handleDateChange} 
+                placeholder="Select Date"
+                allowClear
+            />
+
+        </div>
+    );
 
     return (
         <div className="p-4">
@@ -168,18 +170,18 @@ export default function ScheduleCalender() {
                     </button>
 
 
-                    <button className='flex items-center justify-between gap-2 p-2 px-5 text-white bg-primary h-[45px] rounded-lg '>
-Add New 
+                    <button className='flex items-center justify-between gap-2 p-2 px-5 text-white bg-primary h-[45px] rounded-lg ' onClick={() => setModalOpen(true)}>
+                        Add New
 
                     </button>
                 </div>
 
             </div>
- 
- <div> 
- {isFilterOpen && <FilterCard />}
- </div>
-           
+
+            <div>
+                {isFilterOpen && <FilterCard />}
+            </div>
+
 
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimeGridPlugin]}
@@ -197,7 +199,8 @@ Add New
                 }}
             />
 
-           <AddNewModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+            <AddNewModal modalOpen={modalOpen} setModalOpen={setModalOpen} setOpen={setOpen} />
+            <AppointmentModal open={open} setOpen={setOpen} setModalOpen={setModalOpen} />
         </div>
     );
 }

@@ -9,6 +9,9 @@ import NewPassword from '../pages/authentication/NewPassword';
 import Auth from '../components/layout/auth/Auth';
 import HomePage from '../pages/dashboard/home/HomePage';
 import CalenderPage from '../pages/dashboard/calender/CalenderPage';
+import CreateClass from '../components/ui/dashboardPages/Classes/CreateClass';
+import CreateEvent from '../components/ui/dashboardPages/Classes/CreateEvent';
+import ClassesTable from '../components/ui/dashboardPages/Classes/ClassesTable';
 
 
 const router = createBrowserRouter([
@@ -19,6 +22,9 @@ const router = createBrowserRouter([
         children: [
             { path: '/', element: <HomePage /> },      
             { path: '/calender', element: <CalenderPage /> },      
+            { path: '/create-class', element: <CreateClass /> },      
+            { path: '/create-event', element: <CreateEvent /> },      
+            { path: '/classes', element: <ClassesTable /> },      
             { path: 'notification', element: <Notification /> },
         
         ],

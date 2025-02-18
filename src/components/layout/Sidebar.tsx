@@ -1,21 +1,21 @@
 import { ConfigProvider, Menu } from 'antd';
-import  {  useState } from 'react';
-import { MdOutlineCategory } from 'react-icons/md';
+import  {  useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { HiUserGroup } from "react-icons/hi2";
 import { IoIosLogOut } from "react-icons/io";
-import { IoSettingsOutline } from "react-icons/io5";
 import logo from "../../assets/logo.svg";
-import { AiOutlineSafety } from 'react-icons/ai';
-import { BsPatchQuestion } from 'react-icons/bs';
+import { BsBoxSeam } from 'react-icons/bs';
 import { FaHouseChimney } from 'react-icons/fa6';
 import { RxCalendar } from 'react-icons/rx';
+import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
+import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 
 
 const Sidebar = () => {
-    const location = useLocation();
+    const location = useLocation(); 
+    const path = location.pathname; 
     const navigate = useNavigate();
-    const [selectedKey, setSelectedKey] = useState(location.pathname);
+    const [selectedKey, setSelectedKey] = useState("");
+    const [openKeys, setOpenKeys] = useState([]);
 
 
     const handleLogout=()=>{
@@ -33,30 +33,27 @@ const Sidebar = () => {
             key: "/calender",
             icon: <RxCalendar size={24} />,
             label: <Link to="/calender">Calendar </Link>
+        }, 
+        {
+            key: "services",
+            icon: <BsBoxSeam size={24} />,
+            label: "Services",
+            children: [
+                { 
+                    key: "/classes",  
+                    icon: <LiaChalkboardTeacherSolid size={24} />,
+                    label: <Link to="/classes">Classes</Link> 
+                },
+                { 
+                    key: "/appointment",  
+                    icon: <HiOutlineClipboardDocumentCheck size={24} />,
+                    label: <Link to="/appointment">1-1 Appointment</Link>
+                },
+            
+            ]
         },
     
-        {
-            key: "/users",
-            icon: <HiUserGroup size={24} />,
-            label: <Link to="/users">Users</Link>
-        },
-        {
-            key: "/faqs",
-            icon: <BsPatchQuestion size={24} />,
-            label: <Link to="/faqs">FAQ</Link>
-        },
-        { 
-            key: "/terms",  
-            icon: <AiOutlineSafety size={24} />,
-            label: <Link to="/terms" className="text-[#1E1E1E] hover:text-[#1E1E1E]">Terms And Condition</Link>
-        },
-   
-        {
-            key: "subMenuSetting",
-            icon: <IoSettingsOutline size={24} />,
-            label:<Link to="/profile" className="text-[#1E1E1E] hover:text-[#1E1E1E]">Settings</Link>,
-          
-        },
+        
         {
             key: "/logout",
             icon: <IoIosLogOut size={24} />,
@@ -65,7 +62,30 @@ const Sidebar = () => {
     ];
 
 
+    useEffect(() => {
+        const selectedItem = menuItems.find(item => 
+            item.key === path || item.children?.some(sub => sub.key === path)
+        );
 
+        if (selectedItem) {
+            setSelectedKey(path);
+
+            if (selectedItem.children) {
+                setOpenKeys([selectedItem.key]);
+            } else {
+                const parentItem = menuItems.find(item => 
+                    item.children?.some(sub => sub.key === path)
+                );
+                if (parentItem) {
+                    setOpenKeys([parentItem.key]);
+                }
+            }
+        }
+    }, [path]); 
+
+    const handleOpenChange = (keys) => {
+        setOpenKeys(keys);
+    }; 
 
 
     return (
@@ -97,10 +117,11 @@ const Sidebar = () => {
             }}
         >
             <Menu
-                mode="inline"
+               mode="inline"
                 selectedKeys={[selectedKey]}
-                onClick={(e) => setSelectedKey(e.key)}
-                style={{ borderRightColor: "transparent", background: "transparent" , color: "white"}} 
+                openKeys={openKeys}
+                onOpenChange={handleOpenChange}
+                style={{ borderRightColor: "transparent", background: "transparent" , color: "white" }}
                 items={menuItems}
             /> 
             </ConfigProvider>

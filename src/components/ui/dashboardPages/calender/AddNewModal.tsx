@@ -2,10 +2,14 @@ import { Card,Modal } from 'antd';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 import { PiCalendarHeartDuotone } from 'react-icons/pi';
 import { TiGroupOutline } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
 
-const AddNewModal = ({modalOpen , setModalOpen}:{modalOpen: boolean, setModalOpen: (modalOpen: boolean) => void }) => {
+const AddNewModal = ({modalOpen , setModalOpen , setOpen}:{modalOpen: boolean, setModalOpen: (modalOpen: boolean) => void  , setOpen: (open: boolean) => void}) => {  
+
+  const navigate = useNavigate();
+  
     return ( 
-        <Modal  open={modalOpen} onCancel={() => setModalOpen(false)} footer={null} width={600}> 
+        <Modal  open={modalOpen} onCancel={() => setModalOpen(false)} footer={null} width={600} centered> 
         
         <div>
               <div className=" ">
@@ -15,7 +19,8 @@ const AddNewModal = ({modalOpen , setModalOpen}:{modalOpen: boolean, setModalOpe
           {/* Group Class Card */}
           <Card 
             hoverable 
-            className="group transition-all duration-300 hover:shadow-xl py-[25px] bg-[#f8fafc]"
+            className="group transition-all duration-300 hover:shadow-xl py-[25px] bg-[#f8fafc]" 
+            onClick={() => navigate("/create-class")}
           >
             <div className="flex flex-col items-center text-center gap-y-4"> 
                 <div className='flex items-center gap-2'> 
@@ -31,7 +36,8 @@ const AddNewModal = ({modalOpen , setModalOpen}:{modalOpen: boolean, setModalOpe
           {/* Special Event Card */}
           <Card 
             hoverable 
-            className="group transition-all duration-300 hover:shadow-xl py-[25px] bg-[#f8fafc]"
+            className="group transition-all duration-300 hover:shadow-xl py-[25px] bg-[#f8fafc]" 
+            onClick={() => navigate("/create-event")}
           >
             <div className="flex flex-col items-center text-center  gap-y-4"> 
 
@@ -53,7 +59,7 @@ const AddNewModal = ({modalOpen , setModalOpen}:{modalOpen: boolean, setModalOpe
           >
             <div className="flex flex-col items-center text-center  gap-y-4"> 
 
-            <div className='flex items-center gap-2'> 
+            <div className='flex items-center gap-2' onClick={() =>{ setOpen(true)}}> 
               <HiOutlineClipboardDocumentCheck  className="w-9 h-9   group-hover:scale-110 transition-transform" />
               <p className='text-[30px] font-bold'> Appointment</p>
                 </div>
@@ -66,7 +72,8 @@ const AddNewModal = ({modalOpen , setModalOpen}:{modalOpen: boolean, setModalOpe
         </div>
       </div>
     </div> 
-        </div>
+        </div>  
+       
         </Modal>
     );
 };
