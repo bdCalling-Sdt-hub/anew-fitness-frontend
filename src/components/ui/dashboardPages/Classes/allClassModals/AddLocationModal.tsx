@@ -19,7 +19,7 @@ const AddLocationModal = ({ isLocationModalOpen, setIsLocationModalOpen }:{isLoc
             <Button
               type="text"
               className="flex items-center justify-center w-8 h-8 p-0"
-              onClick={() => setIsLocationModalOpen(false)}
+              onClick={() => setIsLocationModalOpen(false)} 
               icon={<X size={20} />}
             />
           </div>

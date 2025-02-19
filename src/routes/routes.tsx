@@ -11,7 +11,8 @@ import HomePage from '../pages/dashboard/home/HomePage';
 import CalenderPage from '../pages/dashboard/calender/CalenderPage';
 import CreateClass from '../components/ui/dashboardPages/Classes/CreateClass';
 import CreateEvent from '../components/ui/dashboardPages/Classes/CreateEvent';
-import ClassesTable from '../components/ui/dashboardPages/Classes/ClassesTable';
+import ClassesPage from '../pages/dashboard/classes/ClassesPage';
+import AppointmentPage from '../pages/dashboard/appointment/AppointmentPage';
 
 
 const router = createBrowserRouter([
@@ -24,7 +25,8 @@ const router = createBrowserRouter([
             { path: '/calender', element: <CalenderPage /> },      
             { path: '/create-class', element: <CreateClass /> },      
             { path: '/create-event', element: <CreateEvent /> },      
-            { path: '/classes', element: <ClassesTable /> },      
+            { path: '/classes', element: <ClassesPage /> },      
+            { path: '/appointment', element: <AppointmentPage /> },      
             { path: 'notification', element: <Notification /> },
         
         ],

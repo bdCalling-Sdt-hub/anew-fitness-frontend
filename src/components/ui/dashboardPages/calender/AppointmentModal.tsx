@@ -1,10 +1,10 @@
 import { Button, DatePicker, Form, Modal, Select } from "antd";
 import { useEffect } from "react";
 
-const AppointmentModal = ({open , setOpen , setModalOpen }:{open: boolean, setModalOpen: (modalOpen: boolean) => void, setOpen: (open: boolean) => void}) => { 
+const AppointmentModal = ({open , setOpen , setModalOpen }:{open: boolean, setModalOpen?: (modalOpen: boolean) => void , setOpen: (open: boolean) => void}) => { 
 
     useEffect(() => {
-        if (open) {
+        if (open && setModalOpen) {
           setModalOpen(false);
         }
       }, [open, setModalOpen]); 
