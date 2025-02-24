@@ -21,7 +21,7 @@ const AppointmentTable = () => {
         {
             key: "staff",
             label: <p className=" text-[18px] font-semibold "> Staff Available </p>,
-            children: <StaffAvailablePage />,
+            children: <StaffAvailablePage setOpenStaff={setOpenStaff} />,
         },
     ];
 

@@ -3,11 +3,13 @@ import  {  useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IoIosLogOut } from "react-icons/io";
 import logo from "../../assets/logo.svg";
-import { BsBoxSeam } from 'react-icons/bs';
+import { BsBoxSeam, BsCalendarPlus } from 'react-icons/bs';
 import { FaHouseChimney } from 'react-icons/fa6';
 import { RxCalendar } from 'react-icons/rx';
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
+import { RiUserStarFill } from 'react-icons/ri';
+import { TbReportSearch } from 'react-icons/tb';
 
 
 const Sidebar = () => {
@@ -52,7 +54,29 @@ const Sidebar = () => {
             
             ]
         },
-    
+        {
+            key: "/contact",
+            icon: <RiUserStarFill size={24} />,
+            label: <Link to="/contact">Contact </Link>
+        },  
+        {
+            key: "reports",
+            icon: <TbReportSearch size={24} />,
+            label: "Reports",
+            children: [
+                { 
+                    key: "/class-booking",  
+                    icon: <LiaChalkboardTeacherSolid size={24} />,
+                    label: <Link to="/class-booking">Class Bookings</Link> 
+                },
+                { 
+                    key: "/appointment-booking",  
+                    icon: <BsCalendarPlus size={22} />,
+                    label: <Link to="/appointment-booking">Appointments Bookings</Link>
+                },
+            
+            ]
+        },
         
         {
             key: "/logout",

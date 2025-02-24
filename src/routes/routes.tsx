@@ -13,6 +13,12 @@ import CreateClass from '../components/ui/dashboardPages/Classes/CreateClass';
 import CreateEvent from '../components/ui/dashboardPages/Classes/CreateEvent';
 import ClassesPage from '../pages/dashboard/classes/ClassesPage';
 import AppointmentPage from '../pages/dashboard/appointment/AppointmentPage';
+import AddAvailability from '../components/ui/dashboardPages/appointment/StaffAvailable/AddAvailability';
+import ContactPage from '../pages/dashboard/contact/ContactPage';
+import EmailContact from '../components/ui/dashboardPages/contact/EmailContact';
+import LeadsDetails from '../components/ui/dashboardPages/contact/Leads-details/LeadsDetails';
+import ClassBookings from '../components/ui/dashboardPages/reports/ClassBookings';
+import AppointmentBookings from '../components/ui/dashboardPages/reports/AppointmentBookings';
 
 
 const router = createBrowserRouter([
@@ -27,6 +33,12 @@ const router = createBrowserRouter([
             { path: '/create-event', element: <CreateEvent /> },      
             { path: '/classes', element: <ClassesPage /> },      
             { path: '/appointment', element: <AppointmentPage /> },      
+            { path: '/appointment/add-availability', element: <AddAvailability /> },      
+            { path: '/contact', element: <ContactPage /> },      
+            { path: '/contact/email-contact', element: <EmailContact /> },      
+            { path: '/contact/leads-details', element: <LeadsDetails /> },    
+            {path: "/class-booking", element: <ClassBookings />}  ,
+            {path: "/appointment-booking", element: <AppointmentBookings />}  ,
             { path: 'notification', element: <Notification /> },
         
         ],
