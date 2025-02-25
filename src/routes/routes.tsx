@@ -19,6 +19,9 @@ import EmailContact from '../components/ui/dashboardPages/contact/EmailContact';
 import LeadsDetails from '../components/ui/dashboardPages/contact/Leads-details/LeadsDetails';
 import ClassBookings from '../components/ui/dashboardPages/reports/ClassBookings';
 import AppointmentBookings from '../components/ui/dashboardPages/reports/AppointmentBookings';
+import PayrollReportingPage from '../pages/dashboard/payroll-reporting/PayrollReportingPage';
+import PaymentOverviewPage from '../pages/dashboard/payroll-reporting/PaymentOverviewPage';
+import PaymentReportsPage from '../pages/dashboard/payroll-reporting/PaymentReportsPage';
 
 
 const router = createBrowserRouter([
@@ -39,6 +42,9 @@ const router = createBrowserRouter([
             { path: '/contact/leads-details', element: <LeadsDetails /> },    
             {path: "/class-booking", element: <ClassBookings />}  ,
             {path: "/appointment-booking", element: <AppointmentBookings />}  ,
+            { path: '/payroll-reporting', element: <PayrollReportingPage /> },
+            { path: '/payment-overview', element: <PaymentOverviewPage /> },
+            { path: '/payment-reports', element: <PaymentReportsPage /> },
             { path: 'notification', element: <Notification /> },
         
         ],

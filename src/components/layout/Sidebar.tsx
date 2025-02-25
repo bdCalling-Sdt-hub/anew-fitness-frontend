@@ -6,10 +6,11 @@ import logo from "../../assets/logo.svg";
 import { BsBoxSeam, BsCalendarPlus } from 'react-icons/bs';
 import { FaHouseChimney } from 'react-icons/fa6';
 import { RxCalendar } from 'react-icons/rx';
-import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
+import { LiaChalkboardTeacherSolid, LiaMoneyCheckAltSolid } from 'react-icons/lia';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 import { RiUserStarFill } from 'react-icons/ri';
-import { TbReportSearch } from 'react-icons/tb';
+import { TbReportMoney, TbReportSearch } from 'react-icons/tb';
+import { GrMoney } from 'react-icons/gr';
 
 
 const Sidebar = () => {
@@ -73,6 +74,24 @@ const Sidebar = () => {
                     key: "/appointment-booking",  
                     icon: <BsCalendarPlus size={22} />,
                     label: <Link to="/appointment-booking">Appointments Bookings</Link>
+                },
+            
+            ]
+        },
+        {
+            key: "reporting",
+            icon: <LiaMoneyCheckAltSolid size={24} />,
+            label: <Link to="/payroll-reporting">Payroll Reporting</Link> ,
+            children: [
+                { 
+                    key: "/payment-overview",  
+                    icon: <GrMoney size={24} />,
+                    label: <Link to="/payment-overview">Payment Overview</Link> 
+                },
+                { 
+                    key: "/payment-reports",  
+                    icon: <TbReportMoney size={22} />,
+                    label: <Link to="/payment-reports">Payment Reports</Link>
                 },
             
             ]
