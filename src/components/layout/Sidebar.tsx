@@ -1,16 +1,18 @@
 import { ConfigProvider, Menu } from 'antd';
 import  {  useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoMdSettings } from "react-icons/io";
 import logo from "../../assets/logo.svg";
 import { BsBoxSeam, BsCalendarPlus } from 'react-icons/bs';
-import { FaHouseChimney } from 'react-icons/fa6';
+import {  FaLocationDot, FaUsers } from 'react-icons/fa6';
 import { RxCalendar } from 'react-icons/rx';
 import { LiaChalkboardTeacherSolid, LiaMoneyCheckAltSolid } from 'react-icons/lia';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
 import { RiUserStarFill } from 'react-icons/ri';
-import { TbReportMoney, TbReportSearch } from 'react-icons/tb';
+import { TbReportMoney, TbReportSearch, TbUserShare } from 'react-icons/tb';
 import { GrMoney } from 'react-icons/gr';
+import { MdNotificationsActive } from 'react-icons/md';
+import { IoHomeOutline } from 'react-icons/io5';
 
 
 const Sidebar = () => {
@@ -29,7 +31,7 @@ const Sidebar = () => {
     const menuItems = [
         {
             key: "/",
-            icon: <FaHouseChimney size={24} />,
+            icon: <IoHomeOutline size={24} />,
             label: <Link to="/" className='' >Home</Link>
         },
         {
@@ -57,7 +59,7 @@ const Sidebar = () => {
         },
         {
             key: "/contact",
-            icon: <RiUserStarFill size={24} />,
+            icon: <TbUserShare size={24} />,
             label: <Link to="/contact">Contact </Link>
         },  
         {
@@ -96,11 +98,35 @@ const Sidebar = () => {
             
             ]
         },
+        {
+            key: "Settings",
+            icon: <IoMdSettings size={24} />,
+            label: <Link to="/general-settings">Settings</Link> ,
+            children: [
+                { 
+                    key: "/staff-management",  
+                    icon: <FaUsers size={24} />,
+                    label: <Link to="/staff-management">Staff Management</Link> 
+                },
+                { 
+                    key: "/location-management",  
+                    icon: <FaLocationDot size={24} />,
+                    label: <Link to="/location-management">Location Management</Link> 
+                },
+                { 
+                    key: "/notification",  
+                    icon: <MdNotificationsActive size={24} />,
+                    label: <Link to="/notification">Notification</Link> 
+                },
+            
+            
+            ]
+        },
         
         {
             key: "/logout",
             icon: <IoIosLogOut size={24} />,
-            label: <p onClick={handleLogout}>Logout</p>
+            label: <p onClick={handleLogout}>Log Out</p>
         },
     ];
 
@@ -136,7 +162,7 @@ const Sidebar = () => {
             <div className=' flex items-center justify-center my-[40px] ' onClick={()=>navigate("/")}>
           
 
-            <img src={logo} alt="" className=' h-[116px]    ' />
+            <img src={logo} alt="" className=' h-[100px]    ' />
             </div>  
             <p className=' border-t-[1px] border-primary pb-[25px]'/>
 

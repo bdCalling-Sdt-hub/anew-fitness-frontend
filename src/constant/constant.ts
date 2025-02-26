@@ -1,121 +1,39 @@
-export const dummyData = [
-  {
-    key: "1",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "2",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "3",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "4",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "5",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "6",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "7",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "8",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "9",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "11",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "12",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "13",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "14",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "15",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "16",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "17",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "18",
-
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
+const stateCityOptions = [
+  { value: "alabama", label: "Alabama", children: [{ value: "birmingham", label: "Birmingham" }, 
+     { value: "montgomery", label: "Montgomery" }, { value: "mobile", label: "Mobile" }, { value: "huntsville", label: "Huntsville" }] },
+  { value: "alaska", label: "Alaska", children: [{ value: "anchorage", label: "Anchorage" }, { value: "juneau", label: "Juneau" }, { value: "fairbanks", label: "Fairbanks" }] },
+  { value: "arizona", label: "Arizona", children: [{ value: "phoenix", label: "Phoenix" }, { value: "tucson", label: "Tucson" }, { value: "mesa", label: "Mesa" }, { value: "scottsdale", label: "Scottsdale" }] },
+  { value: "arkansas", label: "Arkansas", children: [{ value: "little-rock", label: "Little Rock" }, { value: "fayetteville", label: "Fayetteville" }] },
+  { value: "california", label: "California", children: [{ value: "los-angeles", label: "Los Angeles" }, { value: "san-francisco", label: "San Francisco" }, { value: "san-diego", label: "San Diego" }, { value: "sacramento", label: "Sacramento" }] },
+  { value: "colorado", label: "Colorado", children: [{ value: "denver", label: "Denver" }, { value: "colorado-springs", label: "Colorado Springs" }] },
+  { value: "connecticut", label: "Connecticut", children: [{ value: "hartford", label: "Hartford" }, { value: "new-haven", label: "New Haven" }] },
+  { value: "delaware", label: "Delaware", children: [{ value: "wilmington", label: "Wilmington" }, { value: "dover", label: "Dover" }] },
+  { value: "florida", label: "Florida", children: [{ value: "miami", label: "Miami" }, { value: "orlando", label: "Orlando" }, { value: "tampa", label: "Tampa" }, { value: "jacksonville", label: "Jacksonville" }] },
+  { value: "georgia", label: "Georgia", children: [{ value: "atlanta", label: "Atlanta" }, { value: "savannah", label: "Savannah" }] },
+  { value: "hawaii", label: "Hawaii", children: [{ value: "honolulu", label: "Honolulu" }, { value: "hilo", label: "Hilo" }] },
+  { value: "idaho", label: "Idaho", children: [{ value: "boise", label: "Boise" }, { value: "meridian", label: "Meridian" }] },
+  { value: "illinois", label: "Illinois", children: [{ value: "chicago", label: "Chicago" }, { value: "springfield", label: "Springfield" }] },
+  { value: "indiana", label: "Indiana", children: [{ value: "indianapolis", label: "Indianapolis" }, { value: "fort-wayne", label: "Fort Wayne" }] },
+  { value: "iowa", label: "Iowa", children: [{ value: "des-moines", label: "Des Moines" }, { value: "cedar-rapids", label: "Cedar Rapids" }] },
+  { value: "kansas", label: "Kansas", children: [{ value: "wichita", label: "Wichita" }, { value: "topeka", label: "Topeka" }] },
+  { value: "kentucky", label: "Kentucky", children: [{ value: "louisville", label: "Louisville" }, { value: "lexington", label: "Lexington" }] },
+  { value: "louisiana", label: "Louisiana", children: [{ value: "new-orleans", label: "New Orleans" }, { value: "baton-rouge", label: "Baton Rouge" }] },
+  { value: "maine", label: "Maine", children: [{ value: "portland", label: "Portland" }, { value: "bangor", label: "Bangor" }] },
+  { value: "maryland", label: "Maryland", children: [{ value: "baltimore", label: "Baltimore" }, { value: "annapolis", label: "Annapolis" }] },
+  { value: "massachusetts", label: "Massachusetts", children: [{ value: "boston", label: "Boston" }, { value: "cambridge", label: "Cambridge" }] },
+  { value: "michigan", label: "Michigan", children: [{ value: "detroit", label: "Detroit" }, { value: "grand-rapids", label: "Grand Rapids" }] },
+  { value: "minnesota", label: "Minnesota", children: [{ value: "minneapolis", label: "Minneapolis" }, { value: "st-paul", label: "St. Paul" }] },
+  { value: "mississippi", label: "Mississippi", children: [{ value: "jackson", label: "Jackson" }] },
+  { value: "missouri", label: "Missouri", children: [{ value: "kansas-city", label: "Kansas City" }, { value: "st-louis", label: "St. Louis" }] },
+  { value: "montana", label: "Montana", children: [{ value: "billings", label: "Billings" }, { value: "missoula", label: "Missoula" }] },
+  { value: "nebraska", label: "Nebraska", children: [{ value: "omaha", label: "Omaha" }, { value: "lincoln", label: "Lincoln" }] },
+  { value: "nevada", label: "Nevada", children: [{ value: "las-vegas", label: "Las Vegas" }, { value: "reno", label: "Reno" }] },
+  { value: "new-hampshire", label: "New Hampshire", children: [{ value: "manchester", label: "Manchester" }, { value: "nashua", label: "Nashua" }] },
+  { value: "new-jersey", label: "New Jersey", children: [{ value: "newark", label: "Newark" }, { value: "jersey-city", label: "Jersey City" }] },
+  { value: "new-mexico", label: "New Mexico", children: [{ value: "albuquerque", label: "Albuquerque" }, { value: "santa-fe", label: "Santa Fe" }] },
+  { value: "new-york", label: "New York", children: [{ value: "new-york-city", label: "New York City" }, { value: "buffalo", label: "Buffalo" }] },
+  { value: "north-carolina", label: "North Carolina", children: [{ value: "charlotte", label: "Charlotte" }, { value: "raleigh", label: "Raleigh" }] },
+  { value: "texas", label: "Texas", children: [{ value: "houston", label: "Houston" }, { value: "dallas", label: "Dallas" }, { value: "austin", label: "Austin" }] },
 ];
+
+export default stateCityOptions;

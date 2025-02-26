@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io';
 import noData from "../../../../assets/noData.png"; 
+import { useNavigate } from 'react-router-dom';
 interface ClassSchedule {
     key: string;
     name: string;
@@ -48,7 +49,8 @@ const data = [
     },
 ];
 
-const UpcomingAppointment = () => {
+const UpcomingAppointment = () => { 
+    const navigate = useNavigate();
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({
         location: 'All Location',
@@ -60,21 +62,7 @@ const UpcomingAppointment = () => {
         { title: 'Service', dataIndex: 'service', key: 'service' },
         { title: 'Staff', dataIndex: 'staff', key: 'staff' },
         { title: 'Date', dataIndex: 'date', key: 'date' },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: () => (
-                <Dropdown menu={{ items }} trigger={['click']}>
-                    <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
-                </Dropdown>
-            ),
-        },
     ]; 
-
-    const items: MenuProps['items'] = [
-        { key: '1', label: 'Edit' },
-        { key: '2', label: 'Delete' },
-    ];
 
     const FilterCard = () => (
         <Card className="absolute top-[100px] right-0 w-[420px] shadow-lg p-4 z-10 bg-gray-50" hidden={!isFilterOpen}>
@@ -156,7 +144,7 @@ const UpcomingAppointment = () => {
                         <p className="text-primaryText font-semibold text-[22px]">
                             You don't have any classes yet
                         </p>
-                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer">
+                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
                             Schedule an Event
                         </p>
                     </div>

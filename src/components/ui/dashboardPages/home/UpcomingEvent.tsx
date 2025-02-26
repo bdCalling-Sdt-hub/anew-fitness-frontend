@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io'; 
 import noData from "../../../../assets/noData.png";
+import { useNavigate } from 'react-router-dom';
 
 interface ClassSchedule {
     key: string;
@@ -40,7 +41,8 @@ interface ClassSchedule {
  
 const data: ClassSchedule[] = []
 const UpcomingEvent = () => {
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false); 
+    const navigate = useNavigate();
     const [filters, setFilters] = useState({
         location: 'All Location',
         dateRange: 'Today'
@@ -65,21 +67,9 @@ const UpcomingEvent = () => {
                 </Tag>
             ),
         },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: () => (
-                <Dropdown menu={{ items }} trigger={['click']}>
-                    <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
-                </Dropdown>
-            ),
-        },
+ 
     ];
 
-    const items: MenuProps['items'] = [
-        { key: '1', label: 'Edit' },
-        { key: '2', label: 'Delete' },
-    ];
 
     const FilterCard = () => (
         <Card className="absolute top-[100px] right-0 w-[420px] shadow-lg p-4 z-10 bg-gray-50" hidden={!isFilterOpen}>
@@ -161,7 +151,7 @@ const UpcomingEvent = () => {
                         <p className="text-primaryText font-semibold text-[22px]">
                             You don't have any classes yet
                         </p>
-                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer">
+                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
                             Schedule an Event
                         </p>
                     </div>

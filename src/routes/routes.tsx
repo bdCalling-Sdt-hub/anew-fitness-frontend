@@ -22,6 +22,10 @@ import AppointmentBookings from '../components/ui/dashboardPages/reports/Appoint
 import PayrollReportingPage from '../pages/dashboard/payroll-reporting/PayrollReportingPage';
 import PaymentOverviewPage from '../pages/dashboard/payroll-reporting/PaymentOverviewPage';
 import PaymentReportsPage from '../pages/dashboard/payroll-reporting/PaymentReportsPage';
+import GeneralSettings from '../pages/dashboard/settings/GeneralSettings';
+import StaffManagementPage from '../pages/dashboard/settings/StaffManagementPage';
+import LocationManagementPage from '../pages/dashboard/settings/LocationManagementPage';
+import RoleManagement from '../components/ui/dashboardPages/settings/RoleManagement';
 
 
 const router = createBrowserRouter([
@@ -45,8 +49,11 @@ const router = createBrowserRouter([
             { path: '/payroll-reporting', element: <PayrollReportingPage /> },
             { path: '/payment-overview', element: <PaymentOverviewPage /> },
             { path: '/payment-reports', element: <PaymentReportsPage /> },
-            { path: 'notification', element: <Notification /> },
-        
+            { path: '/general-settings', element: <GeneralSettings /> },
+            { path: '/staff-management', element: <StaffManagementPage /> },
+            { path: '/location-management', element: <LocationManagementPage /> },
+            { path: '/role-management', element: <RoleManagement /> },
+            { path: '/notification', element: <Notification /> },   
         ],
     }, 
     {

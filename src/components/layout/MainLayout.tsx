@@ -11,7 +11,7 @@ const MainLayout: React.FC = () => {
         <div className='grid grid-cols-12'>
 
         {/* side bar */}
-        <div className='col-span-2 h-screen shadow-lg ' style={{ background: "white" , color: "#1E1E1E"}}>
+        <div className='col-span-2 h-screen shadow-lg overflow-y-auto ' style={{ background: "white" , color: "#1E1E1E"}}>
             <Sidebar/>
         </div>
 

@@ -5,14 +5,7 @@ import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io'; 
 import noData from "../../../../assets/noData.png";
-
-interface ClassSchedule {
-    key: string;
-    name: string;
-    serviceCategory: string;
-    scheduled: string;
-    status: 'active' | 'inactive';
-}
+import { useNavigate } from 'react-router-dom';
 
 const data = [
     {
@@ -39,7 +32,8 @@ const data = [
 ];
 
 const UpcomingClass = () => {
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false); 
+    const navigate = useNavigate();
     const [filters, setFilters] = useState({
         location: 'All Location',
         dateRange: 'Today'
@@ -52,33 +46,21 @@ const UpcomingClass = () => {
             title: 'Scheduled',
             dataIndex: 'scheduled',
             key: 'scheduled',
-            render: (text: string) => <span className="text-red-600">{text}</span>,
+            render: (text: string) => <span className="text-primary cursor-pointer" onClick={() => navigate('/calender')}>{text}</span>,
         },
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => (
-                <Tag color={status === 'active' ? 'success' : 'error'}>
+              
+                <div className={` flex justify-center items-center w-[100px] h-[30px]  ${status === 'active' ? ' border border-[#00721E] rounded-full text-[#00721E]' : 'border border-[#AB0906] rounded-full text-[#AB0906]'}`} >
                     {status.charAt(0).toUpperCase() + status.slice(1)}
-                </Tag>
-            ),
-        },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: () => (
-                <Dropdown menu={{ items }} trigger={['click']}>
-                    <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
-                </Dropdown>
+                </div>
             ),
         },
     ];
 
-    const items: MenuProps['items'] = [
-        { key: '1', label: 'Edit' },
-        { key: '2', label: 'Delete' },
-    ];
 
     const FilterCard = () => (
         <Card className="absolute top-[100px] right-0 w-[420px] shadow-lg p-4 z-10 bg-gray-50" hidden={!isFilterOpen}>
@@ -160,7 +142,7 @@ const UpcomingClass = () => {
                         <p className="text-primaryText font-semibold text-[22px]">
                             You don't have any classes yet
                         </p>
-                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer">
+                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
                             Schedule an Event
                         </p>
                     </div>

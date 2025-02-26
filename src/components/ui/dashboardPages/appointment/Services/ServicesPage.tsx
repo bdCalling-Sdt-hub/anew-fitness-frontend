@@ -2,6 +2,7 @@ import { ConfigProvider, Empty, Table } from "antd";
 import noData from "../../../../../assets/noData.png";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const data = [
     {
@@ -79,7 +80,7 @@ const data = [
 
 
 const ServicesPage = ({setOpenService}:{setOpenService: (openService: boolean) => void}) => { 
-
+const navigate = useNavigate();
 
     const columns = [
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
@@ -92,8 +93,8 @@ const ServicesPage = ({setOpenService}:{setOpenService: (openService: boolean) =
             key: 'actions',
             render: () => (
                 <div className="flex items-center gap-4">
-                    <TbEdit size={22} color="#575555" onClick={() => setOpenService(true)} /> 
-                    <RiDeleteBinLine size={22} color="#AB0906" />
+                    <TbEdit size={22} color="#575555" onClick={() => setOpenService(true)} className="cursor-pointer" /> 
+                    <RiDeleteBinLine size={22} color="#AB0906"  className="cursor-pointer"/>
                 </div>
             ),
         },
@@ -128,7 +129,7 @@ const ServicesPage = ({setOpenService}:{setOpenService: (openService: boolean) =
                                     <p className="text-primaryText font-semibold text-[22px]">
                                         You don't have any classes yet
                                     </p>
-                                    <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer">
+                                    <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
                                         Schedule an Event
                                     </p>
                                 </div>

@@ -78,7 +78,7 @@ const ClassesTable = () => {
             title: 'Scheduled',
             dataIndex: 'scheduled',
             key: 'scheduled',
-            render: (text: string) => <span className="text-red-600">{text}</span>,
+            render: (text: string) => <span className="text-primary cursor-pointer" onClick={() => navigate('/calender')}>{text}</span>,
         },
         {
             title: 'Status',
@@ -129,8 +129,13 @@ const ClassesTable = () => {
 
     return (
         <div className="p-8  relative">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-[30px] font-bold"> Classes</h2>
+            <div className="flex justify-between items-center mb-6"> 
+                <div className='flex items-center gap-1'> 
+
+                <h2 className="text-[30px] font-bold"> Classes</h2>  
+                <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
+                </div>
+
                 <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto p-2 px-5 rounded-lg"
                     onClick={() => navigate('/create-class')} >
                     <span className=""> New </span>
@@ -140,8 +145,6 @@ const ClassesTable = () => {
             </div>
             <div className="mx-auto bg-white rounded-lg shadow-sm">
                 {data.length > 0 ?
-
-
                     <ConfigProvider
                         theme={{
                             components: {
@@ -165,7 +168,7 @@ const ClassesTable = () => {
                                     <p className="text-primaryText font-semibold text-[22px]">
                                         You don't have any classes yet
                                     </p>
-                                    <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer">
+                                    <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
                                         Schedule an Event
                                     </p>
                                 </div>
