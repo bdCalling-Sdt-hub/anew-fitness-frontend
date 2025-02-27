@@ -10,7 +10,7 @@ import LeadsAppointment from "./LeadsAppointment";
 const LeadsDetails = () => {
     const navigate = useNavigate() 
         const [tabOption, setTabOption] = useState("classes") 
-    
+    console.log("tabOption", tabOption);
         const items = [
             {
                 key: "classes",

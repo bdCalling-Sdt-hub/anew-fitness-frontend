@@ -52,7 +52,7 @@ const LocationManagement = () => {
        const [location , setLocation] = useState(false) 
 
        const [tabOption, setTabOption] = useState("services")
-
+console.log(tabOption);
        const tabItems = [
            {
                key: "All",

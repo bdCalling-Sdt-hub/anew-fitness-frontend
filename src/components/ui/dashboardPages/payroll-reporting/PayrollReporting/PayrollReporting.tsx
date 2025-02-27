@@ -2,7 +2,6 @@ import { Select } from "antd";
 import booking from "../../../../../assets/booking.png"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
-const { Option } = Select;
 
 const monthlyData = [
   { name: 'Jan', payroll: 150000, instructors: 150, classes: 150 },

@@ -6,7 +6,7 @@ import { CiEdit } from "react-icons/ci";
 const GeneralManagement = () => { 
     const [imagePreview, setImagePreview] = useState<string>('/user.svg');
     const [file, setFile] = useState<File | null>(null);  
-
+console.log(file);
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile) {

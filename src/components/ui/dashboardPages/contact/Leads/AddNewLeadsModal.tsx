@@ -4,7 +4,7 @@ import { FiUserPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 const AddNewLeadsModal = ({open , setOpen , setAddClient , setMultipleContact }:{open: boolean, setOpen: (open: boolean) => void , setAddClient: (addClient: boolean) => void , setMultipleContact: (multipleContact: boolean) => void}) => { 
-    const navigate = useNavigate(); 
+
   
     return (
                     <Modal  open={open} onCancel={() => setOpen(false)} footer={null} width={600} centered> 

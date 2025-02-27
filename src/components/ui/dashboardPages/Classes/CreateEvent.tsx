@@ -2,8 +2,6 @@
 import { PiCalendarHeartDuotone } from "react-icons/pi";
 import { Select, Button, Radio, InputNumber, TimePicker } from 'antd';
 import { Trash } from 'lucide-react';
-import { PiCalendarPlusBold } from 'react-icons/pi';
-import AddNameModal from './allClassModals/AddNameModal';
 import AddLocationModal from './allClassModals/AddLocationModal';
 import { FaMinus } from 'react-icons/fa6';
 import { FiPlus } from 'react-icons/fi';

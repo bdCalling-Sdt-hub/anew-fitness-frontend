@@ -1,6 +1,4 @@
-import { Button, Table, Tag, Empty, Space, Dropdown, Select, Card } from 'antd';
-import type { MenuProps } from 'antd';
-import {  MoreHorizontal } from 'lucide-react';
+import { Button, Table, Empty,  Select, Card } from 'antd';
 import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io'; 

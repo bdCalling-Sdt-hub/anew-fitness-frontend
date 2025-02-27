@@ -1,9 +1,7 @@
 import { ConfigProvider, Tabs } from "antd";
 import { LuPlus } from "react-icons/lu";
-import ServicesPage from "./Services/ServicesPage";
 import StaffAvailablePage from "./StaffAvailable/StaffAvailablePage";
 import { useState } from "react";
-import AppointmentModal from "../calender/AppointmentModal";
 import AddStaffModal from "./StaffAvailable/AddStaffModal";
 
 
@@ -11,7 +9,7 @@ const AppointmentTable = () => {
    
     const [openStaff , setOpenStaff] = useState(false)
     const [tabOption, setTabOption] = useState("services") 
-
+console.log("tabOption", tabOption);
     const items = [
         {
             key: "staff",

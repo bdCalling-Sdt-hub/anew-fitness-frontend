@@ -1,18 +1,11 @@
-import { Button, Table, Empty, Dropdown, Select, Card } from 'antd';
-import type { MenuProps } from 'antd';
-import {  MoreHorizontal } from 'lucide-react';
+import { Button, Table, Empty, Select, Card } from 'antd';
+
 import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io';
 import noData from "../../../../assets/noData.png"; 
 import { useNavigate } from 'react-router-dom';
-interface ClassSchedule {
-    key: string;
-    name: string;
-    serviceCategory: string;
-    scheduled: string;
-    status: 'active' | 'inactive';
-}
+
 
 const data = [
     {

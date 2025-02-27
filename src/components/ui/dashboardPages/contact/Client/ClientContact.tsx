@@ -78,7 +78,7 @@ const data = [
 
 const ClientContact = ({ setAddClient }: { setAddClient: (addClient: boolean) => void }) => {
     const [tabOption, setTabOption] = useState("services")
-
+console.log(tabOption);
     const items = [
         {
             key: "All",

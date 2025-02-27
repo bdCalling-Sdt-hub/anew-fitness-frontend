@@ -83,7 +83,7 @@ const data = [
 
 const ClassesTable = () => {
     const [tabOption, setTabOption] = useState("services") 
-
+console.log(tabOption);
     const tabItems = [
         {
             key: "All",
