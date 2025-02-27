@@ -1,7 +1,6 @@
 import { Card, Modal } from "antd";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FiUserPlus } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
 
 const AddNewLeadsModal = ({open , setOpen , setAddClient , setMultipleContact }:{open: boolean, setOpen: (open: boolean) => void , setAddClient: (addClient: boolean) => void , setMultipleContact: (multipleContact: boolean) => void}) => { 
 
