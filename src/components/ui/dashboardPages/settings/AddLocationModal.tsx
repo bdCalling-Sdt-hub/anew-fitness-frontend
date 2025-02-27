@@ -1,4 +1,5 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Cascader, Form, Input, Modal, Select } from "antd";
+import stateCityOptions from "../../../../constant/constant";
 
 const AddLocationModal = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) => {
     return (
@@ -24,18 +25,17 @@ const AddLocationModal = ({ open, setOpen }: { open: boolean, setOpen: (open: bo
                             <Input placeholder="Enter Address" size="large" style={{ height: "45px" }} />
                         </Form.Item> 
 
-                        <Form.Item name="Region" label={<p className=" text-primaryText text-[18px] font-semibold">  Region </p>}>
-                        <Select
-                            className=""
-                            placeholder="Select  Region"
-                            style={{ height: '45px', width: '100%' }}
-                            options={[
-                                { value: 'Location 1', label: 'Location 1' },
-                                { value: 'Location 2', label: 'Location 2' },
-                                { value: 'Location 3', label: 'Location 3' },
-                            ]}
-                        />
-                    </Form.Item>  
+                        <Form.Item
+                    label={<p className="text-[18px] font-semibold text-primaryText"> Region</p>}
+                    name="Region"
+                >
+                         <Cascader
+        options={stateCityOptions}
+        placeholder="Select State & City"
+        size="large"
+        style={{ width: "100%", height: "45px" }}
+      />
+                </Form.Item> 
 
                         <Form.Item name="Location Type" label={<p className=" text-primaryText text-[18px] font-semibold">  Location Type </p>}>
                         <Select
@@ -48,6 +48,14 @@ const AddLocationModal = ({ open, setOpen }: { open: boolean, setOpen: (open: bo
                                 { value: 'Location 3', label: 'Location 3' },
                             ]}
                         />
+                    </Form.Item> 
+
+                    <Form.Item
+                        label={<p className="text-[18px] font-semibold text-primaryText"> Hour Rate</p>}
+                        name="hour-rate"
+
+                    >
+                        <Input placeholder="Enter Hour Rate" size="large" style={{ height: "45px" }} />
                     </Form.Item> 
 
                     </div>
@@ -84,19 +92,6 @@ const AddLocationModal = ({ open, setOpen }: { open: boolean, setOpen: (open: bo
                         >
                             <Input placeholder="Enter Mobile Number" size="large" style={{ height: "45px" }} />
                         </Form.Item> 
-                    </div>
-
-           
-
-
-                    <Form.Item
-                        label={<p className="text-[18px] font-semibold text-primaryText"> Hour Rate</p>}
-                        name="hour-rate"
-
-                    >
-                        <Input placeholder="Enter Hour Rate" size="large" style={{ height: "45px" }} />
-                    </Form.Item>
-
                     <Form.Item name="work-type" label={<p className=" text-primaryText text-[18px] font-semibold"> Work Type </p>}>
                         <Select
                             className=""
@@ -108,6 +103,9 @@ const AddLocationModal = ({ open, setOpen }: { open: boolean, setOpen: (open: bo
                             ]}
                         />
                     </Form.Item>
+                    </div>
+
+
                 </div>
 
                 <div className="flex  items-center justify-end gap-4 mt-4">

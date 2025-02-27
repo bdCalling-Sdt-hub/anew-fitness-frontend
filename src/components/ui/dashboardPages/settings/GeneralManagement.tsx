@@ -26,15 +26,15 @@ const GeneralManagement = () => {
             <p className=" text-[22px] font-medium  pb-10"> Set up your general settings information </p>
 
             <Form layout="vertical" className=" border border-[#D8D8D8] p-8 rounded-lg "> 
-            <div className="flex justify-center">
-                    <div className="w-[300px] h-[200px] relative bg-red-50 rounded-lg">
+            <div className="flex justify-start items-center gap-4 pb-7">
+                    <div className="w-[150px] h-[150px] relative  rounded-full">
                         <img
                             src={imagePreview}
                             alt="User Profile"
-                            className="w-full h-full object-fill rounded-lg"
+                            className="w-[150px] h-[150px] object-cover rounded-full"
                         />
                         <label
-                            className="absolute bottom-[0px] cursor-pointer -right-[8px] bg-primary rounded-full p-1 text-white"
+                            className="absolute bottom-[0px] cursor-pointer right-1 bg-primary rounded-full p-1 text-white"
                             htmlFor="imageUploadBanner"
                         >
                             <CiEdit size={29} />
@@ -77,7 +77,7 @@ const GeneralManagement = () => {
                     label={<p className="text-[18px] font-semibold text-primaryText"> Address</p>}
                     name="Address Name"
                 >
-                    <Input placeholder="Enter Address Name" size="large" style={{ height: "45px" }} />
+                    <Input placeholder="Enter Address " size="large" style={{ height: "45px" }} />
                 </Form.Item> 
 
                 <Form.Item

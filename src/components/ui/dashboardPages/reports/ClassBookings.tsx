@@ -36,7 +36,7 @@ const classesData = [
   {
     id: 4,
     total: "75",
-    title: "Not Assign Class"
+    title: "Not Running Class"
   },
 ]
 

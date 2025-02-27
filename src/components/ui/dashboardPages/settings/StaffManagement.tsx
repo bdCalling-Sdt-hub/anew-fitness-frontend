@@ -9,11 +9,40 @@ import { useNavigate } from "react-router-dom";
 
 
 const data = [
-    { name: 'Mithila', roles: ['Instructor'], access: true, created: '02-feb-2025' },
-    { name: 'Mina', roles: ['Instructor'], access: true, created: '02-feb-2025' },
-    { name: 'Asad', roles: ['Sales'], access: false, created: '02-feb-2025' },
-    { name: 'Sarah', roles: ['Owner', 'Instructor'], access: false, created: '02-feb-2025' },
-];
+    { 
+        name: 'Mithila', 
+        roles: ['Instructor'], 
+        access: true, 
+        created: '02-feb-2025', 
+        document: 'mithila_certificate.pdf', 
+        documentationExpiredDate: '02-feb-2026' 
+    },
+    { 
+        name: 'Mina', 
+        roles: ['Instructor'], 
+        access: true, 
+        created: '02-feb-2025', 
+        document: 'mina_certificate.pdf', 
+        documentationExpiredDate: '15-mar-2026' 
+    },
+    { 
+        name: 'Asad', 
+        roles: ['Sales'], 
+        access: false, 
+        created: '02-feb-2025', 
+        document: 'asad_contract.pdf', 
+        documentationExpiredDate: '10-apr-2026' 
+    },
+    { 
+        name: 'Sarah', 
+        roles: ['Owner', 'Instructor'], 
+        access: false, 
+        created: '02-feb-2025', 
+        document: 'sarah_license.pdf', 
+        documentationExpiredDate: '05-may-2026' 
+    },
+]; 
+
 const StaffManagement = () => { 
     const [staff , setStaff]= useState(false) 
     const navigate = useNavigate();
@@ -39,6 +68,16 @@ const StaffManagement = () => {
             title: 'Created',
             dataIndex: 'created',
             key: 'created',
+        },
+        {
+            title: 'Document',
+            dataIndex: 'document',
+            key: 'document',
+        },
+        {
+            title: 'Document Expired Date',
+            dataIndex: 'documentationExpiredDate',
+            key: 'documentationExpiredDate'
         },
         {
             title: 'Actions',

@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Dropdown, Empty, MenuProps, Modal, Radio, Select, Space, Tag } from "antd";
+import { Button, ConfigProvider, Dropdown, Empty, MenuProps, Modal, Radio, Select, Space, Tabs, Tag } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
 import { LuPlus } from "react-icons/lu"; 
 import noData from "../../../../assets/noData.png"
@@ -49,7 +49,41 @@ const data: DataType[] = [
 ];
 const LocationManagement = () => { 
        const [isStatusOpen, setIsStatusOpen] = useState(false)  
-       const [location , setLocation] = useState(false)
+       const [location , setLocation] = useState(false) 
+
+       const [tabOption, setTabOption] = useState("services")
+
+       const tabItems = [
+           {
+               key: "All",
+               label: <div className='flex items-center gap-1'>
+                   <p className=" text-[18px] font-semibold "> Services </p>
+                   <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+               </div>,
+   
+           },
+           {
+               key: "active ",
+               label: <div className='flex items-center gap-1'>
+                   <p className=" text-[18px] font-semibold "> Active  </p>
+                   <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+               </div>,
+   
+           },
+   
+           {
+               key: "inactive ",
+               label: <div className='flex items-center gap-1'>
+                   <p className=" text-[18px] font-semibold ">  Inactive  </p>
+                   <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+               </div>,
+   
+           },
+       ];
+   
+       const onChange = (key: string) => {
+           setTabOption(key)
+       }; 
 
     const columns: ColumnsType<DataType> = [
         {
@@ -132,7 +166,7 @@ const LocationManagement = () => {
                         options={[
                             { value: 'All Location', label: 'All Location ' },
                             { value: 'Online Location', label: 'Online Location' },
-                            { value: 'offline Location', label: 'offline Location' },
+                            { value: 'offline Location', label: 'Offline Location' },
                         ]}
                     />
 
@@ -144,7 +178,26 @@ const LocationManagement = () => {
                 </div>
             </div>
 
-            <p className=" text-[16px] font-medium pt-2 pb-10">Manage multiple venues for your business and let attendees know where to show up.</p>
+            <p className=" text-[16px] font-medium pt-2 pb-10">Manage multiple venues for your business and let attendees know where to show up.</p> 
+
+            <div>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Tabs: {
+                                itemActiveColor: "#ab0906",
+                                itemSelectedColor: "#ab0906",
+                                inkBarColor: "#ab0906",
+                                itemHoverColor: "#ab0906",
+
+                            },
+                        },
+                    }}
+                >
+
+                    <Tabs defaultActiveKey="services" items={tabItems} onChange={onChange} />
+                </ConfigProvider>
+            </div> 
 
             <div className="mx-auto bg-white rounded-lg shadow-sm ">
                 {data.length > 0 ?

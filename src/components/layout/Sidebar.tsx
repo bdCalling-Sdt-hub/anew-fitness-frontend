@@ -8,7 +8,6 @@ import {  FaLocationDot, FaUsers } from 'react-icons/fa6';
 import { RxCalendar } from 'react-icons/rx';
 import { LiaChalkboardTeacherSolid, LiaMoneyCheckAltSolid } from 'react-icons/lia';
 import { HiOutlineClipboardDocumentCheck } from 'react-icons/hi2';
-import { RiUserStarFill } from 'react-icons/ri';
 import { TbReportMoney, TbReportSearch, TbUserShare } from 'react-icons/tb';
 import { GrMoney } from 'react-icons/gr';
 import { MdNotificationsActive } from 'react-icons/md';
@@ -52,7 +51,7 @@ const Sidebar = () => {
                 { 
                     key: "/appointment",  
                     icon: <HiOutlineClipboardDocumentCheck size={24} />,
-                    label: <Link to="/appointment">1-1 Appointment</Link>
+                    label: <Link to="/appointment">Staff Available</Link>
                 },
             
             ]

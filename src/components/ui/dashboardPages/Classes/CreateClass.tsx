@@ -95,7 +95,7 @@ const CreateClass = () => {
                 </div> 
 
 
-                <div className=' border border-[D8D8D8] rounded-xl p-4'> 
+                <div className=' border border-[D8D8D8] rounded-xl p-4 pb-0'> 
   
                 <div className="space-y-4 flex items-center justify-between">
                   <h3 className="text-[22px] font-bold">Frequency</h3>
@@ -105,13 +105,15 @@ const CreateClass = () => {
                     className="flex flex-col gap-4"
                   >
                     <Radio value="once" className="text-[16px]">Once (on Sun, 26 jan 2025)</Radio>
-                    <Radio value="recurring" className="text-[16px]">Recurring (Weekly)</Radio>
+                    <Radio value="recurring" className="text-[16px]">Recurring (Weekly)</Radio> 
+                    <div> 
                     <Radio value="biweekly" className="text-[16px]">Bi-Weekly</Radio>
                     <Radio value="monthly" className="text-[16px]">Monthly</Radio>
+                    </div>
                   </Radio.Group>
                 </div>
   
-                <div className=" border border-[#D8D8D8] rounded-xl p-[30px] my-4 w-full flex items-center justify-between gap-8"> 
+                <div className=" border border-[#D8D8D8] rounded-xl p-[30px] my-3 w-full flex items-center justify-between gap-8"> 
                     <div className=''> 
                   <h3 className="text-[22px] font-bold">Total Capacity</h3>
                   <p className="text-[16px] font-medium text-primaryText">How many participant can join this class in total?</p>
@@ -140,7 +142,17 @@ const CreateClass = () => {
                   </div>
                 </div>
 
-                </div>
+                </div> 
+
+                <div className="space-y-1 border border-[#D8D8D8] rounded-xl p-4">
+                  <h3 className="text-[22px] font-bold ">Select Lead</h3>
+                  <p className="text-[16px] text-gray-500 pb-3">Your Lead will see the class type from your website.</p>
+                  <Select
+                    className="w-full"
+                    placeholder="Select an staff"
+                    size="large"
+                  />
+                </div> 
               </div>
   
               {/* Right Column */}
@@ -212,7 +224,7 @@ const CreateClass = () => {
               </div>
             </div>
   
-            <div className="flex justify-end gap-3 mt-8">
+            <div className="flex justify-end gap-3 mt-0">
               <Button size="large" className="px-6">Cancel</Button>
               <Button type="primary" size="large" className="bg-primary  px-8">
                 Save

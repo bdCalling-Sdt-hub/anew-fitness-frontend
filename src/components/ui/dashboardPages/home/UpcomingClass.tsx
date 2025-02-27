@@ -13,24 +13,29 @@ const data = [
         name: "Event Name",
         serviceCategory: "Group Class",
         scheduled: "+New Schedule",
-        status: "active"
+        status: "active",
+        staffName: "John Doe",
+        leadName: "Alice Smith"
     }, 
     {
         key: '2',
         name: "Class Name",
         serviceCategory: "Group Class",
         scheduled: "+New Schedule",
-        status: "inactive"
+        status: "active",
+        staffName: "Emily Johnson",
+        leadName: "Michael Brown"
     },
     {
         key: '3',
         name: "Event Name",
         serviceCategory: "Group Class",
         scheduled: "+New Schedule",
-        status: "active"
+        status: "active",
+        staffName: "David Wilson",
+        leadName: "Sophia Martinez"
     }
 ];
-
 const UpcomingClass = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false); 
     const navigate = useNavigate();
@@ -42,6 +47,8 @@ const UpcomingClass = () => {
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
         { title: 'Service Category', dataIndex: 'serviceCategory', key: 'serviceCategory' },
+        { title: 'Staff Name', dataIndex: 'staffName', key: 'staffName' },
+        { title: 'Leads Name', dataIndex: 'leadName', key: 'leadName' },
         {
             title: 'Scheduled',
             dataIndex: 'scheduled',

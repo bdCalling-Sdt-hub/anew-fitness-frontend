@@ -6,13 +6,16 @@ import AddClientModal from "./Client/AddClientModal";
 import { useNavigate } from "react-router-dom";
 import AddNewLeadsModal from "./Leads/AddNewLeadsModal";
 import MultipleContactModal from "./MultipleContactModal";
+import ServicesPage from "../appointment/Services/ServicesPage";
+import AppointmentModal from "../calender/AppointmentModal";
 
 
 const MainContactPage = () => {
     const [selectedItem, setSelectedItem] = useState("Clients")
     const [addClient, setAddClient] = useState(false)
-    const [openLeads, setOpenLeads] = useState(false) 
+    const [openLeads, setOpenLeads] = useState(false)
     const [multipleContact, setMultipleContact] = useState(false)
+    const [openService, setOpenService] = useState(false)
     const navigate = useNavigate()
 
     return (
@@ -21,7 +24,7 @@ const MainContactPage = () => {
             <div className=" flex items-center justify-between">
 
                 <div className=" flex items-center gap-4">
-                    {["Clients", "Leads"].map((item, index) => (
+                    {["Clients", "Leads", "1-1 Appointment"].map((item, index) => (
 
                         <button key={index} className={`  text-[18px] font-semibold px-6 h-[45px] rounded-lg ${selectedItem === item ? "bg-primary text-white" : " border border-primary text-primaryText"} `} onClick={() => setSelectedItem(item)}> {item} </button>
                     )
@@ -33,18 +36,26 @@ const MainContactPage = () => {
                     <button className=" border border-primary text-primaryText text-[18px] font-semibold px-6 h-[45px] rounded-lg" onClick={() => navigate("/contact/email-contact")}> Email Contacts </button>
                     {
                         selectedItem === "Clients" ?
+
                             <button className=" flex items-center justify-center gap-2 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
                                 onClick={() => setAddClient(true)}
                             >
                                 <span> <LuPlus size={22} />  </span>
                                 <span className=""> Add New Client </span>
                             </button> :
-                            <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
-                                onClick={() => setOpenLeads(true)}
-                            >
-                                <span> <LuPlus size={25} />  </span>
-                                <span className=""> Add New Leads </span>
-                            </button>
+                            selectedItem === "Leads" ?
+                                <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
+                                    onClick={() => setOpenLeads(true)}
+                                >
+                                    <span> <LuPlus size={25} />  </span>
+                                    <span className=""> Add New Leads </span>
+                                </button> :
+                                <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
+                                    onClick={() => setOpenService(true)}
+                                >
+                                    <span className=""> New </span>
+                                    <span> <LuPlus size={25} />  </span>
+                                </button>
                     }
                 </div>
 
@@ -52,14 +63,15 @@ const MainContactPage = () => {
 
             <div className=" w-full pt-[60px] ">
                 {
-                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} /> : <LeadsContact setAddClient={setAddClient} />
+                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddClient} /> : <ServicesPage setOpenService={setOpenService} />
                 }
             </div>
 
 
             <AddClientModal open={addClient} setOpen={setAddClient} setOpenLeads={setOpenLeads} />
-            <AddNewLeadsModal open={openLeads} setOpen={setOpenLeads} setAddClient={setAddClient} setMultipleContact={setMultipleContact} /> 
+            <AddNewLeadsModal open={openLeads} setOpen={setOpenLeads} setAddClient={setAddClient} setMultipleContact={setMultipleContact} />
             <MultipleContactModal open={multipleContact} setOpen={setMultipleContact} setOpenLeads={setOpenLeads} />
+            <AppointmentModal open={openService} setOpen={setOpenService} />
         </div>
     );
 };

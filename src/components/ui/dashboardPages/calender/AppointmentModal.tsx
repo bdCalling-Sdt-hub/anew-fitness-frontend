@@ -51,6 +51,19 @@ const AppointmentModal = ({open , setOpen , setModalOpen }:{open: boolean, setMo
                             { value: 'Location 2', label: 'Location 2' },
                         ]}
                     />
+                </Form.Item> 
+
+                <Form.Item name="lead" label={<p className=" text-primaryText text-[18px] font-semibold"> Lead </p>}>
+                    <Select
+                        className=""
+                        placeholder="Select Lead"
+                        style={{ height: '45px', width: '100%' }}
+                        options={[
+                            { value: 'All Location', label: 'All Location' },
+                            { value: 'Location 1', label: 'Location 1' },
+                            { value: 'Location 2', label: 'Location 2' },
+                        ]}
+                    />
                 </Form.Item>
 
 

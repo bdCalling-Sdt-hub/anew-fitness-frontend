@@ -76,27 +76,36 @@ const data = [
     }
 ];
 
-const ClientContact = ({setAddClient}:{setAddClient: (addClient: boolean) => void}) => { 
-    const [tabOption, setTabOption] = useState("services") 
+const ClientContact = ({ setAddClient }: { setAddClient: (addClient: boolean) => void }) => {
+    const [tabOption, setTabOption] = useState("services")
 
     const items = [
         {
             key: "All",
-            label: <p className=" text-[18px] font-semibold "> Services </p>,
-          
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold "> Services </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+            </div>,
+
         },
         {
             key: "active ",
-            label: <p className=" text-[18px] font-semibold "> Active Clients </p>,
-           
-        }, 
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold "> Active Clients </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+            </div>,
+
+        },
 
         {
             key: "inactive ",
-            label: <p className=" text-[18px] font-semibold "> Inactive Clients </p>,
-           
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold ">  Inactive Clients </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
+            </div>,
+
         },
-    ];  
+    ];
 
     const onChange = (key: string) => {
         setTabOption(key)
@@ -133,22 +142,22 @@ const ClientContact = ({setAddClient}:{setAddClient: (addClient: boolean) => voi
     return (
         <div>
             <div>
-            <ConfigProvider
+                <ConfigProvider
                     theme={{
                         components: {
                             Tabs: {
                                 itemActiveColor: "#ab0906",
                                 itemSelectedColor: "#ab0906",
                                 inkBarColor: "#ab0906",
-                                itemHoverColor: "#ab0906" ,
-                             
+                                itemHoverColor: "#ab0906",
+
                             },
                         },
                     }}
                 >
 
                     <Tabs defaultActiveKey="services" items={items} onChange={onChange} />
-                </ConfigProvider> 
+                </ConfigProvider>
             </div>
             <div>
                 <div className="mx-auto bg-white rounded-lg shadow-sm">
@@ -177,7 +186,7 @@ const ClientContact = ({setAddClient}:{setAddClient: (addClient: boolean) => voi
                                         <p className="text-primaryText font-semibold text-[22px]">
                                             You don't have any client contact yet
                                         </p>
-                                  
+
                                     </div>
                                 }
                             />
