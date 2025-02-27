@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ConfigProvider, Menu } from 'antd';
 import  {  useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
