@@ -13,6 +13,7 @@ import { TbReportMoney, TbReportSearch, TbUserShare } from 'react-icons/tb';
 import { GrMoney } from 'react-icons/gr';
 import { MdNotificationsActive } from 'react-icons/md';
 import { IoHomeOutline } from 'react-icons/io5';
+import { PiInvoice } from 'react-icons/pi';
 
 
 const Sidebar = () => {
@@ -57,6 +58,11 @@ const Sidebar = () => {
             
             ]
         },
+        {
+            key: "/invoice",
+            icon: <PiInvoice size={24} />,
+            label: <Link to="/invoice"> Invoice </Link>
+        },  
         {
             key: "/contact",
             icon: <TbUserShare size={24} />,

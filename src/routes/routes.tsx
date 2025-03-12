@@ -26,6 +26,7 @@ import GeneralSettings from '../pages/dashboard/settings/GeneralSettings';
 import StaffManagementPage from '../pages/dashboard/settings/StaffManagementPage';
 import LocationManagementPage from '../pages/dashboard/settings/LocationManagementPage';
 import RoleManagement from '../components/ui/dashboardPages/settings/RoleManagement';
+import InvoicePage from '../pages/dashboard/Invoice/InvoicePage';
 
 
 const router = createBrowserRouter([
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
             { path: '/classes', element: <ClassesPage /> },      
             { path: '/appointment', element: <AppointmentPage /> },      
             { path: '/appointment/add-availability', element: <AddAvailability /> },      
+            { path: '/invoice', element: <InvoicePage /> },      
             { path: '/contact', element: <ContactPage /> },      
             { path: '/contact/email-contact', element: <EmailContact /> },      
             { path: '/contact/leads-details', element: <LeadsDetails /> },    
