@@ -1,8 +1,10 @@
-import { ConfigProvider, Empty, Switch, Table } from "antd";
-import { TbEdit } from "react-icons/tb";
+import { ConfigProvider, Empty, Table } from "antd";
 import noData from "../../../../assets/noData.png";
 import { LuPlus } from "react-icons/lu";
-
+import { useState } from "react";
+import AddInvoiceModal from "./AddInvoiceModal";
+import AddOnceInvoiceModal from "./AddOnceInvoiceModal";
+import AddMultipleInvoice from "./AddMultipleInvoice";
 
 const data = [
     {
@@ -40,13 +42,77 @@ const data = [
         invoiceNumber: "4",
         invoiceDate: "4/6/2018",
         invoiceDueDate: "6/6/2018"
-    }
+    },
+    {
+        key: "4",
+        invoiceID: "1-Porchcam Singapore-...",
+        client: "Porchcam Singapore",
+        project: "Brand Identity",
+        contactName: "Feng Li",
+        tasks: "Conception",
+        invoiceTotal: "$2,500.00",
+        invoiceNumber: "1",
+        invoiceDate: "4/6/2018",
+        invoiceDueDate: "4/27/2018"
+    },
+    {
+        key: "5",
+        invoiceID: "2-Porchcam Singapore-...",
+        client: "Porchcam Singapore",
+        project: "Brand Identity",
+        contactName: "Feng Li",
+        tasks: "Prototypes, Initial proposal",
+        invoiceTotal: "$8,250.00",
+        invoiceNumber: "2",
+        invoiceDate: "4/6/2018",
+        invoiceDueDate: "4/27/2018"
+    },
+    {
+        key: "6",
+        invoiceID: "4-Porchcam USA-Prototype 1",
+        client: "Porchcam USA",
+        project: "Docking Station",
+        contactName: "Billing Contact",
+        tasks: "Prototype 1",
+        invoiceTotal: "$15,000.00",
+        invoiceNumber: "4",
+        invoiceDate: "4/6/2018",
+        invoiceDueDate: "6/6/2018"
+    }, 
+    {
+        key: "7",
+        invoiceID: "1-Porchcam Singapore-...",
+        client: "Porchcam Singapore",
+        project: "Brand Identity",
+        contactName: "Feng Li",
+        tasks: "Conception",
+        invoiceTotal: "$2,500.00",
+        invoiceNumber: "1",
+        invoiceDate: "4/6/2018",
+        invoiceDueDate: "4/27/2018"
+    },
+    {
+        key: "8",
+        invoiceID: "2-Porchcam Singapore-...",
+        client: "Porchcam Singapore",
+        project: "Brand Identity",
+        contactName: "Feng Li",
+        tasks: "Prototypes, Initial proposal",
+        invoiceTotal: "$8,250.00",
+        invoiceNumber: "2",
+        invoiceDate: "4/6/2018",
+        invoiceDueDate: "4/27/2018"
+    },
 ];
-const Invoice = () => { 
+const Invoice = () => {  
+        const [addClient, setAddClient] = useState(false)
+        const [openInvoice, setOpenInvoice] = useState(false)
+        const [multipleInvoice, setMultipleInvoice] = useState(false)
+
     const columns = [
         { title: 'Invoice ID', dataIndex: 'invoiceID', key: 'invoiceID' },
         { title: 'Client', dataIndex: 'client', key: 'client' },
-        { title: 'Project', dataIndex: 'project', key: 'project' },
+        { title: 'Class Name', dataIndex: 'project', key: 'project' },
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
         { title: 'Services', dataIndex: 'tasks', key: 'tasks' },
         { title: 'Invoice Total $', dataIndex: 'invoiceTotal', key: 'invoiceTotal' },
@@ -64,7 +130,8 @@ const Invoice = () => {
                         {/* <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p> */}
                         </div>
         
-                        <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto p-2 px-5 rounded-lg"
+                        <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto p-2 px-5 rounded-lg" 
+                        onClick={()=>setOpenInvoice(true)}
                           >
                             <span className=""> New </span>
                             <span> <LuPlus size={25} />  </span>
@@ -99,7 +166,10 @@ const Invoice = () => {
                 />
             </div>
         )}
-    </div>
+    </div> 
+    <AddInvoiceModal  open={openInvoice} setOpen={setOpenInvoice} setAddClient={setAddClient} setMultipleInvoice={setMultipleInvoice} /> 
+    <AddOnceInvoiceModal  open={addClient} setOpen={setAddClient} setOpenInvoice={setOpenInvoice} /> 
+    <AddMultipleInvoice open={multipleInvoice} setOpen={setMultipleInvoice} setOpenInvoice={setOpenInvoice} />
         </div>
     );
 };

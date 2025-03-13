@@ -1,34 +1,59 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
 
-const AddOnceInvoiceModal = ({open , setOpen , setOpenLeads }:{open: boolean, setOpen: (open: boolean) => void , setOpenLeads: (openLeads: boolean) => void}) => {  
+const AddOnceInvoiceModal = ({open , setOpen , setOpenInvoice }:{open: boolean, setOpen: (open: boolean) => void , setOpenInvoice: (openInvoice: boolean) => void}) => {  
     useEffect(() => {
-        if (open && setOpenLeads) {
-          setOpenLeads(false);
+        if (open && setOpenInvoice) {
+          setOpenInvoice(false);
         }
-      }, [open, setOpenLeads]);  
+      }, [open, setOpenInvoice]);  
     return (
-        <Modal open={open}  onCancel={() => setOpen(false)} footer={null} width={600} title={<p className=" text-primary text-[24px] font-bold"> Contact Information </p>} centered>
+        <Modal open={open}  onCancel={() => setOpen(false)} footer={null} width={650} title={<p className=" text-primary text-[24px] font-bold"> Invoice Information </p>} centered>
         <Form layout="vertical" className=" pt-4"> 
-            <div className="">  
+            <div className=" grid grid-cols-2 gap-x-4">  
 
-            <Form.Item name="name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+            <Form.Item name="clientName" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
                 <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{ 
+                    height: '45px', 
+                    width: '100%', 
+                   
+                }} /> 
+            </Form.Item>  
+
+            <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Class Name </p>}>
+                <Input type="text" placeholder="Enter Class Name" className=" rounded-lg " style={{ 
                     height: '45px', 
                     width: '100%', 
                    
                 }} /> 
             </Form.Item> 
 
-            <Form.Item name="email" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Email </p>}>
-                <Input type="text" placeholder="Enter Client email" className=" rounded-lg " style={{ 
+            <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Contact Name </p>}>
+                <Input type="text" placeholder="Enter Contact Name" className=" rounded-lg " style={{ 
                     height: '45px', 
                     width: '100%', 
                    
                 }} /> 
-            </Form.Item>
-            <Form.Item name="address" label={<p className=" text-primaryText text-[18px] font-semibold"> Address </p>}>
-                <Input type="text" placeholder="Enter Address" className=" rounded-lg " style={{ 
+            </Form.Item> 
+
+            <Form.Item name="total" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Total  </p>}>
+                <Input type="text" placeholder="Enter Invoice Total " className=" rounded-lg " style={{ 
+                    height: '45px', 
+                    width: '100%', 
+                   
+                }} /> 
+            </Form.Item>  
+
+            <Form.Item name="invoice" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice </p>}>
+                <Input type="text" placeholder="Enter Invoice " className=" rounded-lg " style={{ 
+                    height: '45px', 
+                    width: '100%', 
+                   
+                }} /> 
+            </Form.Item> 
+
+            <Form.Item name="invoiceDate" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Date </p>}>  
+            <DatePicker placeholder="Enter Invoice Date"  style={{ 
                     height: '45px', 
                     width: '100%', 
                    
@@ -36,25 +61,26 @@ const AddOnceInvoiceModal = ({open , setOpen , setOpenLeads }:{open: boolean, se
             </Form.Item>
             
 
-            <Form.Item name="gender" label={<p className=" text-primaryText text-[18px] font-semibold"> Gender </p>}>
+            <Form.Item name="services" label={<p className=" text-primaryText text-[18px] font-semibold"> Services </p>}>
                 <Select
                     className=""
-                    placeholder="Select Gender"
+                    placeholder="Select Services"
                     style={{ height: '45px', width: '100%' }}
                     options={[
-                        { value: 'male', label: 'Male' },
-                        { value: 'female', label: 'Female' },
+                        { value: 'classes', label: 'Classes' },
+                        { value: 'staff', label: 'Staff' },
                     ]}
                 />
             </Form.Item>
 
-            <Form.Item name="phone" label={<p className=" text-primaryText text-[18px] font-semibold"> Phone </p>}>
-                <Input type="text" placeholder="Enter phone Number" className=" rounded-lg " style={{ 
+            <Form.Item name="date" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Due Date </p>}>  
+            <DatePicker placeholder="Enter Invoice Due Date"  style={{ 
                     height: '45px', 
                     width: '100%', 
                    
                 }} /> 
-            </Form.Item>
+
+            </Form.Item> 
 
  
             </div> 

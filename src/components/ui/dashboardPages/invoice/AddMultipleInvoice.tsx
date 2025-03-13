@@ -4,12 +4,12 @@ import { UploadCloud as CloudUpload } from 'lucide-react';
 import type { UploadProps } from 'antd';
 import { useEffect } from "react";
 
-const AddMultipleInvoice = ({ open, setOpen, setOpenLeads }: { open: boolean, setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void }) => { 
+const AddMultipleInvoice = ({ open, setOpen, setOpenInvoice }: { open: boolean, setOpen: (open: boolean) => void, setOpenInvoice: (openInvoice: boolean) => void }) => { 
     useEffect(() => {
-        if (open && setOpenLeads) {
-            setOpenLeads(false);
+        if (open && setOpenInvoice) {
+            setOpenInvoice(false);
         }
-    }, [open, setOpenLeads]);
+    }, [open, setOpenInvoice]);
 
     const props: UploadProps = {
         name: 'file',
@@ -25,12 +25,12 @@ const AddMultipleInvoice = ({ open, setOpen, setOpenLeads }: { open: boolean, se
     };
     return (
         <div>
-        <Modal open={open} onCancel={() => setOpen(false)} footer={null} width={600} title={<p className=" text-primary text-[24px] font-bold"> Add Multiple Contacts At Once </p>} centered>
+        <Modal open={open} onCancel={() => setOpen(false)} footer={null} width={600} title={<p className=" text-primary text-[24px] font-bold"> Add Multiple Invoices At Once </p>} centered>
 
             <div className="  py-[27px] px-5">
                 <div className=" mx-auto bg-white rounded-lg  ">
                     <h1 className="text-3xl font-bold mb-2">Upload File</h1>
-                    <p className="text-gray-600 text-[18px] font-medium mb-8">Upload a CSV file with your contact details</p>
+                    <p className="text-gray-600 text-[18px] font-medium mb-8">Upload a CSV file with your invoice details</p>
 
                     <Upload.Dragger {...props} className="bg-white  rounded-lg ">
                         <div className="text-center p-5">
@@ -40,7 +40,7 @@ const AddMultipleInvoice = ({ open, setOpen, setOpenLeads }: { open: boolean, se
                                 </div>
                             </div>
                             <p className="text-gray-600 text-sm max-w-sm mx-auto">
-                                By uploading you are agreeing that you have consent to email all of the imported contacts.
+                                By uploading you are agreeing that you have consent to email all of the imported Invoices.
                             </p>
                         </div>
                     </Upload.Dragger>
