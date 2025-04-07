@@ -20,7 +20,7 @@ const UserLogin = () => {
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    console.log(data?.token);
+                    SetLocalStorage("accessToken", data?.token);
                     SetLocalStorage("staffAccessToken", data?.token);
                     navigate('/');   
                     window.location.reload();

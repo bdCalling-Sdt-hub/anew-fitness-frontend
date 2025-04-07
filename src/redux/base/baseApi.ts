@@ -9,7 +9,7 @@ export const baseApi = createApi({
     baseUrl: "http://10.0.70.208:8080/api/v1" ,
       // baseUrl: "http://192.168.10.15:8000/api/v1" , 
       prepareHeaders: (headers) => {
-        const token = GetLocalStorage("staffAccessToken") || GetLocalStorage("adminAccessToken");
+        const token = GetLocalStorage("accessToken")
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);
         }

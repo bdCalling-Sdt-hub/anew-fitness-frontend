@@ -2,11 +2,15 @@ import { Cascader, Form, Input } from "antd";
 import stateCityOptions from "../../../../constant/constant";
 import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
+import { useGetProfileQuery } from "../../../../redux/features/auth/authApi";
 
 const GeneralManagement = () => { 
     const [imagePreview, setImagePreview] = useState<string>('/user.svg');
-    const [file, setFile] = useState<File | null>(null);  
-console.log(file);
+    const [file, setFile] = useState<File | null>(null);    
+    const {data:profile} = useGetProfileQuery(undefined) 
+    console.log(profile);
+
+    console.log(file);
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         if (selectedFile) {

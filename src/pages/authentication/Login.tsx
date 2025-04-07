@@ -21,6 +21,7 @@ const Login = () => {
                     showConfirmButton: false
                 }).then(() => {
                     console.log(data?.token);
+                    SetLocalStorage("accessToken", data?.token);
                     SetLocalStorage("adminAccessToken", data?.token);
                     navigate('/');   
                     window.location.reload();
