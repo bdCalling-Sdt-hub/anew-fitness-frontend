@@ -1,47 +1,44 @@
-import { Button, ConfigProvider, Form, Input } from 'antd';
+import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
+import { FieldNamesType } from 'antd/es/cascader';
 import { useNavigate } from 'react-router';
-import { GetLocalStorage } from '../../utils/LocalStroage';
-import { useResetPasswordMutation } from '../../redux/features/auth/authApi';
-import { useEffect } from 'react';
-import Swal from 'sweetalert2';
+import { useSetUserPasswordMutation } from '../../redux/features/auth/authApi';
+import { useEffect } from 'react'; 
+import Swal from 'sweetalert2'
+const SetPassword = () => {
 
-const NewPassword = () => {
     const navigate = useNavigate(); 
-    const email = GetLocalStorage("email")   
-    const [ resetPassword , { isLoading  , error , data , isSuccess, isError}] = useResetPasswordMutation() 
+    const [setUserPassword , { isLoading  , error , data , isSuccess, isError}] = useSetUserPasswordMutation() 
 
-         useEffect(() => {
-             if (isSuccess) {
-               if (data) {
-                 Swal.fire({
-                   text: data?.message,
-                   icon: "success",
-                   timer: 1500,
-                   showConfirmButton: false
-                 }).then(() => {
-                 //   setToLocalStorage("tradeToken", data?.data);   
-                    navigate('/auth/staff-login');    
-                   window.location.reload(); 
-                 });
-               }
-         
-             }
-             if (isError) {
-               Swal.fire({
-                 title: "Failed to Login",  
-                 //@ts-ignore
-                 text: error?.data?.message,  
-                 icon: "error",
-               });
-             }
-           }, [isSuccess, isError, error, data, navigate]);   
+    useEffect(() => {
+        if (isSuccess) {
+          if (data) {
+            Swal.fire({
+              text: data?.message,
+              icon: "success",
+              timer: 1500,
+              showConfirmButton: false
+            }).then(() => {
+            //   setToLocalStorage("tradeToken", data?.data);   
+               navigate('/auth/staff-login');  
+              window.location.reload();
+            });
+          }
+    
+        }
+        if (isError) {
+          Swal.fire({
+            title: "Failed to Login",  
+            //@ts-ignore
+            text: error?.data?.message,  
+            icon: "error",
+          });
+        }
+      }, [isSuccess, isError, error, data, navigate]);  
 
+    const onFinish: FormProps<FieldNamesType>['onFinish'] = async(values) => {
 
-    const onFinish= async(values:{newPassword:string , confirmPassword:string}) => {
- 
-        await resetPassword({email , ...values}).then((res) => {
-            console.log(res);
-        })
+        await setUserPassword(values)
+      
     };
 
     return (
@@ -67,8 +64,8 @@ const NewPassword = () => {
             <div className="">
                 <div className="">
                     <div className="text-primaryText max-w-md mx-auto  text-center pb-[30px]">
-                        <h1 className="text-3xl  font-semibold text-center pt-[30px] pb-[15px]">Set a new password</h1>
-                        <p>Your new password must be different to previously used passwords.</p>
+                        <h1 className="text-3xl  font-semibold text-center pt-[30px] ">Set password</h1>
+                        {/* <p>Your new password must be different to previously used passwords.</p> */}
                     </div>
 
                     <Form
@@ -78,6 +75,19 @@ const NewPassword = () => {
                         initialValues={{ remember: true }}
                         onFinish={onFinish}
                     >
+
+                        <Form.Item
+                            label={
+                                <label htmlFor="email" className="block text-primaryText mb-1 text-lg">
+                                    Email
+                                </label>
+                            }
+                            name="email"
+                            rules={[{ required: true, message: 'Please input your email!' }]}
+                        >
+                            <Input placeholder="Enter your email address" type="email" className=" h-12  px-6 " />
+                        </Form.Item>
+
                         <Form.Item
                             label={
                                 <label htmlFor="password" className="block text-primaryText mb-1 text-lg">
@@ -103,17 +113,17 @@ const NewPassword = () => {
 
                         <Form.Item>
                             <Button
-                                
+
                                 type="primary"
                                 htmlType="submit"
                                 style={{
                                     height: 45,
                                     width: '100%',
-                                    fontWeight: 500, 
+                                    fontWeight: 500,
                                     fontSize: 18,
                                 }}
                             >
-                            {isLoading ? "Updating..." : "Update Password"}
+                            {isLoading ? 'Updating...' : 'Update Password'}
                             </Button>
                         </Form.Item>
                     </Form>
@@ -123,4 +133,4 @@ const NewPassword = () => {
     );
 };
 
-export default NewPassword;
+export default SetPassword;

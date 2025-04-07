@@ -27,6 +27,8 @@ import StaffManagementPage from '../pages/dashboard/settings/StaffManagementPage
 import LocationManagementPage from '../pages/dashboard/settings/LocationManagementPage';
 import RoleManagement from '../components/ui/dashboardPages/settings/RoleManagement';
 import InvoicePage from '../pages/dashboard/Invoice/InvoicePage';
+import SetPassword from '../pages/authentication/SetPassword';
+import UserLogin from '../pages/authentication/UserLogin';
 
 
 const router = createBrowserRouter([
@@ -63,10 +65,6 @@ const router = createBrowserRouter([
         element: <Auth />,
         children: [
             {
-                path: "/auth",
-                element: <Login />,
-            },
-            {
                 path: "login",
                 element: <Login />,
             },
@@ -81,6 +79,14 @@ const router = createBrowserRouter([
             {
                 path: "new-password",
                 element: <NewPassword />,
+            } ,  
+            {
+                path: "set-password",
+                element: <SetPassword />,
+            }, 
+            {
+                path: "staff-login",
+                element: <UserLogin />,
             }
         ]
     },

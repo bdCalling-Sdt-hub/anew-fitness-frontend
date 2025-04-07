@@ -1,14 +1,14 @@
 import { Button, Checkbox, ConfigProvider, Form, FormProps, Input } from 'antd';
 import { FieldNamesType } from 'antd/es/cascader';
 import { Link, useNavigate } from 'react-router-dom';
+import { useStaffLoginMutation } from '../../redux/features/auth/authApi';
+import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { SetLocalStorage } from '../../utils/LocalStroage';
-import { useEffect } from 'react';
-import { useLoginUserMutation } from '../../redux/features/auth/authApi';
 
-const Login = () => {
+const UserLogin = () => {
     const navigate = useNavigate();
-    const [loginUser, { isError, isLoading, error, data, isSuccess }] = useLoginUserMutation()
+    const [staffLogin, { isError, isLoading, error, data, isSuccess }] = useStaffLoginMutation()
 
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const Login = () => {
                     showConfirmButton: false
                 }).then(() => {
                     console.log(data?.token);
-                    SetLocalStorage("adminAccessToken", data?.token);
+                    SetLocalStorage("staffAccessToken", data?.token);
                     navigate('/');   
                     window.location.reload();
                 });
@@ -42,11 +42,10 @@ const Login = () => {
 
     const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => {
 
-        await loginUser(values).then((res) => {
+        await staffLogin(values).then((res) => {
             console.log(res);
         })
     };
- 
 
     return (
         <ConfigProvider
@@ -70,8 +69,8 @@ const Login = () => {
         >
             <div className="">
                 <div className=" ">
-                        <p className="text-[16px] font-semibold py-3 text-[#383737]  flex items-center justify-center ">Welcome back! Please enter your details.</p>
-                  
+                    <p className="text-[16px] font-semibold py-3 text-[#383737]  flex items-center justify-center ">Welcome back! Please enter your details.</p>
+
 
                     <Form
                         name="normal_login"
@@ -104,6 +103,14 @@ const Login = () => {
                             <Input.Password placeholder="Enter your password" className=" h-12  px-6" />
                         </Form.Item>
 
+                        <div className="flex items-center justify-between mb-4">
+                            <Form.Item name="remember" valuePropName="checked" noStyle>
+                                <Checkbox className="text-primaryText text-lg">Remember me</Checkbox>
+                            </Form.Item>
+                            <Link to="/auth/forget-password" className="text-primary text-md hover:text-primary font-bold">
+                                Forget password
+                            </Link>
+                        </div>
 
                         <Form.Item>
                             <Button
@@ -113,12 +120,12 @@ const Login = () => {
                                 style={{
                                     height: 45,
                                     width: '100%',
-                                    fontWeight: 500, 
+                                    fontWeight: 500,
                                     fontSize: 18,
                                 }}
-                                // onClick={() => navigate('/')}
+                            // onClick={() => navigate('/')}
                             >
-                            {isLoading ? "Loading..." : "Log In"}  
+                                {isLoading ? "Loading..." : "Log In"}
                             </Button>
                         </Form.Item>
                     </Form>
@@ -128,4 +135,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default UserLogin;

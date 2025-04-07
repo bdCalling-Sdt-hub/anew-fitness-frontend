@@ -1,12 +1,49 @@
-import { Button, ConfigProvider, Form, FormProps, Input } from 'antd';
-import { FieldNamesType } from 'antd/es/cascader';
+import { Button, ConfigProvider, Form, Input } from 'antd';
 import { useNavigate } from 'react-router';
+import { useForgetPasswordMutation } from '../../redux/features/auth/authApi';
+import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { SetLocalStorage } from '../../utils/LocalStroage';
 
 const ForgetPassword = () => {
     const navigate = useNavigate();
-    const onFinish: FormProps<FieldNamesType>['onFinish'] = (values) => {
-        console.log('Received values of form: ', values);
-        navigate('/auth/verify-otp');
+    const [forgetPassword, { isLoading, isSuccess, isError, error, data }] = useForgetPasswordMutation(); 
+    const [email , setEmail] = useState("")
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data) {
+                Swal.fire({
+                    text: data?.message,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    navigate('/auth/verify-otp') 
+                    SetLocalStorage("email", email); 
+                    window.location.reload();
+                });
+            }
+
+        }
+        if (isError) {
+            Swal.fire({
+                title: "Failed to Login",
+                //@ts-ignore
+                text: error?.data?.message,
+                icon: "error",
+            });
+        }
+    }, [isSuccess, isError, error, data, navigate]);
+
+
+    const onFinish = async (values:{email:string}) => {
+ 
+        setEmail(values.email) 
+        await forgetPassword(values).then((res) => {
+            console.log(res);
+        })
+
     };
 
     return (
@@ -32,7 +69,7 @@ const ForgetPassword = () => {
             <div className="">
                 <div className="">
                     <div className="text-primaryText text-center">
-                        <h1 className="text-3xl  font-bold text-center pt-[30px] pb-[15px] text-[000000]">Forget Password ?</h1> 
+                        <h1 className="text-3xl  font-bold text-center pt-[30px] pb-[15px] text-[000000]">Forget Password ?</h1>
                         <p className=' pb-[32px]'>Don't worry, we will send you a reset link. Once you click on that link, you will be able to reset your password.</p>
                     </div>
 
@@ -57,17 +94,17 @@ const ForgetPassword = () => {
 
                         <Form.Item>
                             <Button
-                               
+
                                 type="primary"
                                 htmlType="submit"
                                 style={{
                                     height: 45,
                                     width: '100%',
-                                    fontWeight: 500, 
+                                    fontWeight: 500,
                                     fontSize: 18,
                                 }}
                             >
-                                Send Code
+                                {isLoading ? 'Sending...' : 'Send Code'}
                             </Button>
                         </Form.Item>
                     </Form>
