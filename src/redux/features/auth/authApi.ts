@@ -1,7 +1,7 @@
 import { baseApi } from "../../base/baseApi";
 
 const authApi = baseApi.injectEndpoints({
-  endpoints: (build) => ({ 
+  endpoints: (build) => ({
 
     // for admin 
     loginUser: build.mutation({
@@ -10,8 +10,8 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-    }), 
- 
+    }),
+
     //for staff
     staffLogin: build.mutation({
       query: (data) => ({
@@ -44,14 +44,14 @@ const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-    
+
     changePassword: build.mutation({
       query: (data) => ({
         url: "/auth/change-password",
         method: "POST",
         body: data,
       }),
-    }), 
+    }),
 
     setUserPassword: build.mutation({
       query: (data) => ({
@@ -59,25 +59,54 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-    }), 
+    }),
 
-    getProfile:build.query({
+    // for staff profile  
+    getStaffProfile: build.query({
       query: () => ({
         url: "/staff/stuff-profile",
-        method: "GET",
-      }),
+      }), 
+      transformResponse: (response: any) =>response?.user,
     }), 
+
+    updateStaffProfile: build.mutation({
+      query: (data) => ({
+        url: "/staff/stuff-profile",
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    //for admin profile  
+    getAdminProfile: build.query({
+      query: () => ({
+        url: "/admin/profile",
+      }),       
+      transformResponse: (response: any) => response.admin,
+    }), 
+
+    updateAdminProfile: build.mutation({
+      query: (data) => ({
+        url: "/admin/profile",
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
 
   }),
 });
 
 export const {
-  useLoginUserMutation, 
-  useStaffLoginMutation , 
+  useLoginUserMutation,
+  useStaffLoginMutation,
   useChangePasswordMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
-  useVerifyEmailMutation, 
-  useSetUserPasswordMutation,  
-  useGetProfileQuery,
+  useVerifyEmailMutation,
+  useSetUserPasswordMutation,
+  useGetStaffProfileQuery, 
+  useGetAdminProfileQuery ,  
+  useUpdateAdminProfileMutation , 
+  useUpdateStaffProfileMutation ,
 } = authApi;

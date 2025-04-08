@@ -1,51 +1,74 @@
-import { Button, ConfigProvider, Dropdown, Empty, MenuProps, Table } from "antd";
-import { MoreHorizontal } from "lucide-react";
+import { ConfigProvider,  Empty ,Select, Table } from "antd";
+import { Trash2 } from "lucide-react";
 import { LuPlus } from "react-icons/lu";
 import noData from "../../../../assets/noData.png"
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import AddStaffModal from "../appointment/StaffAvailable/AddStaffModal";
 import { useNavigate } from "react-router-dom";
-
-
-const data = [
-    { 
-        name: 'Mithila', 
-        roles: ['Instructor'], 
-        access: true, 
-        created: '02-feb-2025', 
-        document: 'mithila_certificate.pdf', 
-        documentationExpiredDate: '02-feb-2026' 
-    },
-    { 
-        name: 'Mina', 
-        roles: ['Instructor'], 
-        access: true, 
-        created: '02-feb-2025', 
-        document: 'mina_certificate.pdf', 
-        documentationExpiredDate: '15-mar-2026' 
-    },
-    { 
-        name: 'Asad', 
-        roles: ['Sales'], 
-        access: false, 
-        created: '02-feb-2025', 
-        document: 'asad_contract.pdf', 
-        documentationExpiredDate: '10-apr-2026' 
-    },
-    { 
-        name: 'Sarah', 
-        roles: ['Owner', 'Instructor'], 
-        access: false, 
-        created: '02-feb-2025', 
-        document: 'sarah_license.pdf', 
-        documentationExpiredDate: '05-may-2026' 
-    },
-]; 
+import { useDeleteStaffMutation, useGetAllStaffQuery } from "../../../../redux/features/staff/staffManagementApi";
+import { imageUrl } from "../../../../redux/base/baseApi"; 
+import moment from "moment"; 
+import { TbEdit } from "react-icons/tb";
+import Swal from "sweetalert2";
 
 const StaffManagement = () => { 
     const [staff , setStaff]= useState(false) 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
+    const {data:getAllStaff , refetch} = useGetAllStaffQuery(undefined)   
+    const [deleteStaff] = useDeleteStaffMutation();
+
+    console.log(getAllStaff); 
+
+    const data = getAllStaff?.map((item:any) => ({
+        name: item?.name,
+        roles: item?.role,
+        access: item?.status,
+        created: moment(item?.createdAt).format('YYYY-MM-D') ,
+        document: item?.documents?.startsWith("http") ? item?.documents : `${imageUrl}${item?.documents}`,
+        documentationExpiredDate: moment(item?.expiryDate).format('YYYY-MM-D'), 
+        id: item?._id,
+      }) ) 
+
+      const handleDelete = async (id:string) => {   
+        console.log(id);
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+          }).then(async (result) => { 
+           
+            if (result.isConfirmed) {
+              await deleteStaff(id).then((res) => { 
+                console.log(res);
+                if (res?.data) {
+                  Swal.fire({
+                    text: res?.data?.message,
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  }).then(() => {
+                    refetch(); 
+                  });
+                } else {
+                  Swal.fire({
+                    //@ts-ignore
+                    text: res?.error?.data?.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                  });
+                }
+              })
+            }
+          }); 
+
+      } 
+
 
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
@@ -54,15 +77,14 @@ const StaffManagement = () => {
             dataIndex: 'roles',
             key: 'roles',
             render: (roles: string[]) => <div className="flex gap-2">
-                {roles.map((role, index) => <div key={index} className=" text-primaryText border border-[#00721E] rounded-lg px-2 py-1 text-lg font-medium">{role}
-
-                </div>)}</div>
+                 <div className=" text-primaryText border border-[#00721E] rounded-lg px-2 py-1 text-lg font-medium">{roles}
+                </div></div>
         },
         {
             title: 'Access',
             dataIndex: 'access',
             key: 'access',
-            render: (access: boolean) => <div> {access ? <IoMdCheckmarkCircleOutline size={24} color="#AB0906" /> : <IoMdCheckmarkCircleOutline size={24} color="#D8D8D8" />}</div>,
+            render: (access: string) => <div> {access === "valid" ? <IoMdCheckmarkCircleOutline size={24} color="#AB0906" /> : <IoMdCheckmarkCircleOutline size={24} color="#D8D8D8" />}</div>,
         },
         {
             title: 'Created',
@@ -72,7 +94,12 @@ const StaffManagement = () => {
         {
             title: 'Document',
             dataIndex: 'document',
-            key: 'document',
+            key: 'document', 
+            render: (document: string) => (
+                <div className="flex items-center gap-2">
+                    <a href={document} target="_blank" rel="noopener noreferrer" className="text-primaryText font-normal text-[14px]  hover:text-blue-600">View Document</a>
+                </div>
+            )
         },
         {
             title: 'Document Expired Date',
@@ -82,17 +109,17 @@ const StaffManagement = () => {
         {
             title: 'Actions',
             key: 'actions',
-            render: () => (
-                <Dropdown menu={{ items, className: "custom-dropdown-width" }} trigger={['click']} >
-                    <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
-                </Dropdown>
+            render: (_:any,record:any) => (
+                <div className="flex gap-1">
+                <button className="p-2 hover:bg-gray-100 rounded-full">
+                    <TbEdit size={22} color="#575555"  /> 
+                </button>
+                <button className="p-2 hover:bg-gray-100 rounded-full" onClick={()=>handleDelete(record?.id)} >
+                  <Trash2 className="h-5 w-5 text-[#FE3838]" />
+                </button>
+              </div>
             ),
         },
-    ];
-
-    const items: MenuProps['items'] = [
-        { key: '1', label: <div className='font-medium tracking-wide ' onClick={() => setStaff(true)} > Edit </div> },
-        { key: '2', label: 'Delete' },
     ];
 
     return (
@@ -111,7 +138,7 @@ const StaffManagement = () => {
             </div>
 
             <div className="mx-auto bg-white rounded-lg shadow-sm mt-10">
-                {data.length > 0 ?
+                {data?.length > 0 ?
                     <ConfigProvider
                         theme={{
                             components: {
@@ -140,7 +167,7 @@ const StaffManagement = () => {
                         />
                     </div>}
             </div> 
-            <AddStaffModal openStaff={staff} setOpenStaff={setStaff} />
+            <AddStaffModal openStaff={staff} setOpenStaff={setStaff} refetch={refetch} />
         </div>
     );
 };

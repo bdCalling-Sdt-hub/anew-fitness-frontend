@@ -19,9 +19,9 @@ const UserLogin = () => {
                     icon: "success",
                     timer: 1500,
                     showConfirmButton: false
-                }).then(() => {
+                }).then(() => { 
                     SetLocalStorage("accessToken", data?.token);
-                    SetLocalStorage("staffAccessToken", data?.token);
+                    SetLocalStorage("role",data?.user?.role); 
                     navigate('/');   
                     window.location.reload();
                 });

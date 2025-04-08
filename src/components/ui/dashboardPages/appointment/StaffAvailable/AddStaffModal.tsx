@@ -1,21 +1,66 @@
 
 import { Button, Input, Modal, Form, DatePicker, Upload } from "antd";
 import {  X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAddStaffMutation } from "../../../../../redux/features/staff/staffManagementApi";
+import Swal from "sweetalert2";
 
 interface AddStaffModalProps {
     openStaff: boolean;
-    setOpenStaff: (isOpen: boolean) => void;
+    setOpenStaff: (isOpen: boolean) => void; 
+    refetch: () => void;
 }
 
-const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff }) => {
-  const [form] = Form.useForm();
+const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff , refetch }) => {
+  const [form] = Form.useForm(); 
+  const [doc , setDoc] = useState<any>(null)   
+  const [addStaff , {isError , isLoading , isSuccess , data , error}] = useAddStaffMutation();
 
-  const handleCreateStaff = () => {
-    form.validateFields().then((values) => {
-      console.log("Staff Name :", values);
-      setOpenStaff(false);
-      form.resetFields();
-    });
+      useEffect(() => {
+          if (isSuccess) {
+              if (data) {
+                  Swal.fire({
+                      text: data?.message,
+                      icon: "success",
+                      timer: 1500,
+                      showConfirmButton: false
+                  }).then(() => {
+                      setOpenStaff(false); 
+                      refetch();  
+                      form.resetFields(); 
+                  })
+              }
+          }
+          if (isError) {
+              Swal.fire({
+                  //@ts-ignore
+                  text: error?.data?.message,
+                  icon: "error",
+              });
+          }
+      }, [isSuccess, isError, error, data]); 
+
+  const handleCreateStaff = async(values:any) => {   
+
+    const formattedDate = values.expiryDate?.format("YYYY-MM-DD"); 
+
+    console.log(values?.document[0]?.originFileObj);
+    setDoc(values?.document[0]?.originFileObj); 
+    
+    const formData = new FormData();
+    
+    formData.append("name", values.name); 
+  if(doc){ 
+    console.log(doc);
+    formData.append("doc", doc);
+  } 
+    formData.append("expiryDate", formattedDate);
+
+
+    await addStaff(formData).then((res) => {
+        console.log(res); })
+      // setOpenStaff(false);
+      // form.resetFields();
   };
 
   return (
@@ -33,13 +78,13 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff }
       }
       open={openStaff}
       onCancel={() => setOpenStaff(false)}
-      footer={null}
+      footer={true}
       width={580}
       className="location-modal"
       closable={false} 
       centered
     >
-    <Form form={form} layout="vertical">
+    <Form form={form} layout="vertical" onFinish={handleCreateStaff}>
   {/* Name Input */}
   <Form.Item
     label={
@@ -50,7 +95,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff }
         </p>
       </div>
     }
-    name="staffName"
+    name="name"
   >
     <Input placeholder="Enter staff name" size="large" style={{ height: "50px" }} />
   </Form.Item>
@@ -84,7 +129,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff }
         </p>
       </div>
     }
-    name="expiredDate"
+    name="expiryDate"
   >
     <DatePicker size="large" style={{ width: "100%", height: "50px" }} />
   </Form.Item>
@@ -93,9 +138,10 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff }
   <div className="flex justify-end gap-3 pt-4">
     <Button size="large" onClick={() => setOpenStaff(false)}>
       Cancel
-    </Button>
-    <Button type="primary" size="large" onClick={handleCreateStaff} className="bg-red-700 hover:bg-red-800">
-      Add
+    </Button> 
+    
+    <Button type="primary" size="large"  htmlType="submit" className="bg-red-700 hover:bg-red-800">
+     {isLoading? "Adding.." : "Add"}
     </Button>
   </div>
 </Form>

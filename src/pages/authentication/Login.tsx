@@ -10,7 +10,6 @@ const Login = () => {
     const navigate = useNavigate();
     const [loginUser, { isError, isLoading, error, data, isSuccess }] = useLoginUserMutation()
 
-
     useEffect(() => {
         if (isSuccess) {
             if (data) {
@@ -20,9 +19,8 @@ const Login = () => {
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    console.log(data?.token);
                     SetLocalStorage("accessToken", data?.token);
-                    SetLocalStorage("adminAccessToken", data?.token);
+                    SetLocalStorage("role", data?.admin?.role); 
                     navigate('/');   
                     window.location.reload();
                 });
@@ -39,8 +37,6 @@ const Login = () => {
         }
     }, [isSuccess, isError, error, data, navigate]);
 
-
-
     const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => {
 
         await loginUser(values).then((res) => {
@@ -48,7 +44,6 @@ const Login = () => {
         })
     };
  
-
     return (
         <ConfigProvider
             theme={{
