@@ -2,110 +2,73 @@ import { ConfigProvider, Empty, Switch, Table, Tabs } from "antd";
 import { TbEdit } from "react-icons/tb";
 import noData from "../../../../../assets/noData.png";
 import { useState } from "react";
+import { useGetAllClientContactQuery } from "../../../../../redux/features/contact/clientContactApi";
 
-const data = [
-    {
-        clientName: "John Doe",
-        address: "123 Main St, New York, NY",
-        phone: "+1 555-1234",
-        gender: "Male",
-        email: "johndoe@example.com"
-    },
-    {
-        clientName: "Jane Smith",
-        address: "456 Oak Ave, Los Angeles, CA",
-        phone: "+1 555-5678",
-        gender: "Female",
-        email: "janesmith@example.com"
-    },
-    {
-        clientName: "Emma Wilson",
-        address: "789 Pine Rd, Chicago, IL",
-        phone: "+1 555-9012",
-        gender: "Female",
-        email: "emmawilson@example.com"
-    },
-    {
-        clientName: "Robert Johnson",
-        address: "321 Maple Dr, Houston, TX",
-        phone: "+1 555-3456",
-        gender: "Male",
-        email: "robertjohnson@example.com"
-    },
-    {
-        clientName: "Olivia Davis",
-        address: "654 Birch Ln, Phoenix, AZ",
-        phone: "+1 555-7890",
-        gender: "Female",
-        email: "oliviadavis@example.com"
-    },
-    {
-        clientName: "William Taylor",
-        address: "987 Cedar Ct, Philadelphia, PA",
-        phone: "+1 555-2345",
-        gender: "Male",
-        email: "williamtaylor@example.com"
-    },
-    {
-        clientName: "Sophia Miller",
-        address: "159 Spruce St, San Antonio, TX",
-        phone: "+1 555-6789",
-        gender: "Female",
-        email: "sophiamiller@example.com"
-    },
-    {
-        clientName: "Liam Martinez",
-        address: "753 Elm Blvd, San Diego, CA",
-        phone: "+1 555-0123",
-        gender: "Male",
-        email: "liammartinez@example.com"
-    },
-    {
-        clientName: "Ava Clark",
-        address: "852 Redwood Ave, Dallas, TX",
-        phone: "+1 555-4567",
-        gender: "Female",
-        email: "avaclark@example.com"
-    },
-    {
-        clientName: "Noah Hernandez",
-        address: "951 Aspen Cir, San Jose, CA",
-        phone: "+1 555-8901",
-        gender: "Male",
-        email: "noahhernandez@example.com"
-    }
-];
+
 
 const ClientContact = ({ setAddClient }: { setAddClient: (addClient: boolean) => void }) => {
-    const [tabOption, setTabOption] = useState("services")
-console.log(tabOption);
-    const items = [
-        {
-            key: "All",
-            label: <div className='flex items-center gap-1'>
-                <p className=" text-[18px] font-semibold "> Services </p>
-                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
-            </div>,
+    const [tabOption, setTabOption] = useState("services") 
+    const {data:allClient} = useGetAllClientContactQuery(undefined);  
 
-        },
-        {
-            key: "active ",
-            label: <div className='flex items-center gap-1'>
-                <p className=" text-[18px] font-semibold "> Active Clients </p>
-                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
-            </div>,
+console.log(allClient);
 
-        },
+const data = allClient?.map((item: any) => ({  
+    key: item?._id,
+    clientName: item?.client_name,
+    address: item?.address,
+    phone: item?.phone,
+    gender: item?.gender,
+    email: item?.client_email, 
+    status: item?.status,
 
-        {
-            key: "inactive ",
-            label: <div className='flex items-center gap-1'>
-                <p className=" text-[18px] font-semibold ">  Inactive Clients </p>
-                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">10</p>
-            </div>,
+})) 
 
-        },
-    ];
+const activeClients = data?.filter((item: any) => item?.status === true);
+const inactiveClients = data?.filter((item: any) => item?.status === false); 
+
+console.log(activeClients);
+
+const getCurrentData = () => {
+    if (tabOption === "active") return activeClients;
+    if (tabOption === "inactive") return inactiveClients;
+    return data || [];
+  };
+
+const items = [
+    {
+      key: "services", // changed from "All"
+      label: (
+        <div className="flex items-center gap-1">
+          <p className="text-[18px] font-semibold">All Clients</p>
+          <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
+            {allClient?.length || 0}
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "active", // removed trailing space
+      label: (
+        <div className="flex items-center gap-1">
+          <p className="text-[18px] font-semibold">Active Clients</p>
+          <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
+            {activeClients?.length || 0}
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "inactive", // removed trailing space
+      label: (
+        <div className="flex items-center gap-1">
+          <p className="text-[18px] font-semibold">Inactive Clients</p>
+          <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
+            {inactiveClients?.length || 0}
+          </p>
+        </div>
+      ),
+    },
+  ];
 
     const onChange = (key: string) => {
         setTabOption(key)
@@ -121,7 +84,7 @@ console.log(tabOption);
         {
             title: 'Actions',
             key: 'actions',
-            render: () => (
+            render: (_:any,record:any) => (
                 <div className="flex items-center gap-4">
                     <TbEdit size={22} color="#575555" onClick={() => setAddClient(true)} />
                     <ConfigProvider
@@ -131,7 +94,7 @@ console.log(tabOption);
                             },
                         }}
                     >
-                        <Switch defaultChecked />
+                        <Switch defaultValue={record?.status} />
                     </ConfigProvider>
                 </div>
             ),
@@ -161,7 +124,7 @@ console.log(tabOption);
             </div>
             <div>
                 <div className="mx-auto bg-white rounded-lg shadow-sm">
-                    {data.length > 0 ?
+                    {getCurrentData()?.length > 0 ?
 
                         <ConfigProvider
                             theme={{
@@ -176,7 +139,7 @@ console.log(tabOption);
                                 }
                             }}
                         >
-                            <Table columns={columns} dataSource={data} className="border rounded-lg" />
+                            <Table columns={columns} dataSource={getCurrentData()} className="border rounded-lg" />
                         </ConfigProvider> : <div className="py-8 flex justify-center items-center">
                             <Empty
                                 image={noData}

@@ -1,6 +1,7 @@
 import { Select } from "antd";
 import booking from "../../../../../assets/booking.png"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { useGetAllPayrollReportingQuery } from "../../../../../redux/features/payrollReporting/payrollReportingApi";
 
 
 const monthlyData = [
@@ -62,7 +63,9 @@ const classesData = [
     },
 
 ] 
-const PayrollReporting = () => {
+const PayrollReporting = () => { 
+  const {data} = useGetAllPayrollReportingQuery(undefined); 
+  console.log(data, "payroll reporting data"); 
     return (
         <div className="px-[30px] pt-[30px]">
                 <div>

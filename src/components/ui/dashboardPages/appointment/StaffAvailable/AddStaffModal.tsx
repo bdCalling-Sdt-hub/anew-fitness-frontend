@@ -2,19 +2,28 @@
 import { Button, Input, Modal, Form, DatePicker, Upload } from "antd";
 import {  X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useAddStaffMutation } from "../../../../../redux/features/staff/staffManagementApi";
+import { useAddStaffMutation, useEditStaffInfoMutation } from "../../../../../redux/features/staff/staffManagementApi";
 import Swal from "sweetalert2";
+import moment from "moment";
 
 interface AddStaffModalProps {
     openStaff: boolean;
     setOpenStaff: (isOpen: boolean) => void; 
-    refetch: () => void;
+    refetch: () => void; 
+    editStaff: { 
+        name: string | undefined;
+        document: string| undefined;
+        documentationExpiredDate: string| undefined;
+        id: string| undefined;
+    } 
+    setEditStaff:any
 }
 
-const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff , refetch }) => {
-  const [form] = Form.useForm(); 
-  const [doc , setDoc] = useState<any>(null)   
-  const [addStaff , {isError , isLoading , isSuccess , data , error}] = useAddStaffMutation();
+const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff , refetch , editStaff , setEditStaff }) => {
+  const [form] = Form.useForm();  
+  const [fileList, setFileList] = useState<any[]>([]);
+  const [addStaff , {isError , isLoading , isSuccess , data , error}] = useAddStaffMutation(); 
+  const [editStaffInfo , {isError: editIsError  , isSuccess: editIsSuccess , data: editData , error: editError}] = useEditStaffInfoMutation(); 
 
       useEffect(() => {
           if (isSuccess) {
@@ -38,40 +47,90 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
                   icon: "error",
               });
           }
-      }, [isSuccess, isError, error, data]); 
+      }, [isSuccess, isError, error, data]);    
+
+
+      useEffect(() => {
+          if (editIsSuccess) {
+              if (editData) {
+                  Swal.fire({
+                      text: editData?.message,
+                      icon: "success",
+                      timer: 1500,
+                      showConfirmButton: false
+                  }).then(() => {
+                      setOpenStaff(false);  
+                      setEditStaff({})
+                      refetch();  
+                      form.resetFields(); 
+                  })
+              }
+          }
+          if (editIsError) {
+              Swal.fire({
+                  //@ts-ignore
+                  text: editError?.editData?.message,
+                  icon: "error",
+              });
+          }
+      }, [editIsSuccess, editIsError, editError, editData]);   
+
+    useEffect(() => {
+      if (editStaff?.id && editStaff?.document) {
+        const existingFile = {
+          uid: "-1",
+          name: editStaff.document.split("/").pop(),
+          status: "done",
+          url: editStaff.document,
+        };
+        setFileList([existingFile]);
+      } else {
+        setFileList([]);
+      }
+    
+      form.setFieldsValue({
+        name: editStaff?.name || "",
+        expiryDate: editStaff?.documentationExpiredDate
+          ? moment(editStaff.documentationExpiredDate, "YYYY-MM-DD")
+          : null,
+      });
+    }, [editStaff]); 
 
   const handleCreateStaff = async(values:any) => {   
 
     const formattedDate = values.expiryDate?.format("YYYY-MM-DD"); 
-
-    console.log(values?.document[0]?.originFileObj);
-    setDoc(values?.document[0]?.originFileObj); 
-    
-    const formData = new FormData();
+    const formData = new FormData(); 
     
     formData.append("name", values.name); 
-  if(doc){ 
-    console.log(doc);
-    formData.append("doc", doc);
-  } 
-    formData.append("expiryDate", formattedDate);
 
+    formData.append("documents",values?.document?.[0]?.originFileObj);
 
-    await addStaff(formData).then((res) => {
-        console.log(res); })
-      // setOpenStaff(false);
-      // form.resetFields();
+    formData.append("expiryDate", formattedDate); 
+
+    const data = {
+      id: editStaff?.id, 
+      name: values.name, 
+      expiryDate: formattedDate,
+    }  
+
+    console.log(data);
+
+    if(editStaff?.id) { 
+    await editStaffInfo(data)
+    } else {
+    await addStaff(formData)
+    }
   };
 
   return (
     <Modal
       title={
         <div className="flex items-center justify-between  pb-4">
-          <h3 className="text-[22px] font-semibold text-primary">Add Staff</h3>
+          <h3 className="text-[22px] font-semibold text-primary">{editStaff?.id ? "Edit Staff" : "Add Staff"}</h3>
           <Button
             type="text"
             className="flex items-center justify-center w-8 h-8 p-0"
-            onClick={() => setOpenStaff(false)}
+            onClick={() => {setOpenStaff(false); form.resetFields(); setEditStaff({})}}
             icon={<X size={20} />}
           />
         </div>
@@ -114,8 +173,10 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
     valuePropName="fileList"
     getValueFromEvent={(e) => e?.fileList}
   >
-    <Upload beforeUpload={() => false} maxCount={1}>
-      <Button size="large" >Upload Document</Button>
+    <Upload   
+    fileList={fileList}
+    onChange={({ fileList }) => setFileList(fileList)} beforeUpload={() => false} maxCount={1}>
+      <Button size="large" disabled={editStaff?.id ? true : false} className="disabled:cursor-not-allowed" >Upload Document</Button>
     </Upload>
   </Form.Item>
 
@@ -131,7 +192,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
     }
     name="expiryDate"
   >
-    <DatePicker size="large" style={{ width: "100%", height: "50px" }} />
+    <DatePicker size="large" style={{ width: "100%", height: "50px" }} format={"YYYY-MM-DD"} />
   </Form.Item>
 
   {/* Buttons */}

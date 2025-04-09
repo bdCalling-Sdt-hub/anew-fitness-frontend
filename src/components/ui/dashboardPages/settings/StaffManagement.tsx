@@ -1,4 +1,5 @@
-import { ConfigProvider,  Empty ,Select, Table } from "antd";
+//@ts-nocheck
+import { ConfigProvider,  Empty, Table } from "antd";
 import { Trash2 } from "lucide-react";
 import { LuPlus } from "react-icons/lu";
 import noData from "../../../../assets/noData.png"
@@ -15,12 +16,14 @@ import Swal from "sweetalert2";
 const StaffManagement = () => { 
     const [staff , setStaff]= useState(false) 
     const navigate = useNavigate(); 
-    const {data:getAllStaff , refetch} = useGetAllStaffQuery(undefined)   
+    const {data:getAllStaff , refetch} = useGetAllStaffQuery(undefined)    
+    const [editStaff , setEditStaff] = useState({})
     const [deleteStaff] = useDeleteStaffMutation();
 
     console.log(getAllStaff); 
 
-    const data = getAllStaff?.map((item:any) => ({
+    const data = getAllStaff?.map((item:any , index:number) => ({ 
+        key: index+1 ,
         name: item?.name,
         roles: item?.role,
         access: item?.status,
@@ -31,7 +34,6 @@ const StaffManagement = () => {
       }) ) 
 
       const handleDelete = async (id:string) => {   
-        console.log(id);
         Swal.fire({
             title: "Are you sure?",
             icon: "warning",
@@ -111,7 +113,7 @@ const StaffManagement = () => {
             key: 'actions',
             render: (_:any,record:any) => (
                 <div className="flex gap-1">
-                <button className="p-2 hover:bg-gray-100 rounded-full">
+                <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() =>{setEditStaff(record) , setStaff(true)}} >
                     <TbEdit size={22} color="#575555"  /> 
                 </button>
                 <button className="p-2 hover:bg-gray-100 rounded-full" onClick={()=>handleDelete(record?.id)} >
@@ -166,8 +168,9 @@ const StaffManagement = () => {
                             }
                         />
                     </div>}
-            </div> 
-            <AddStaffModal openStaff={staff} setOpenStaff={setStaff} refetch={refetch} />
+            </div>  
+            
+            <AddStaffModal openStaff={staff} setOpenStaff={setStaff} refetch={refetch} editStaff={editStaff} setEditStaff={setEditStaff} />
         </div>
     );
 };
