@@ -12,7 +12,9 @@ import AppointmentModal from "../calender/AppointmentModal";
 
 const MainContactPage = () => {
     const [selectedItem, setSelectedItem] = useState("Clients")
-    const [addClient, setAddClient] = useState(false)
+    const [addClient, setAddClient] = useState(false) 
+    const [editClientData, setEditClientData] = useState<any>({})
+    const [editAppointmentData, setEditAppointmentData] = useState<any>({})
     const [openLeads, setOpenLeads] = useState(false)
     const [multipleContact, setMultipleContact] = useState(false)
     const [openService, setOpenService] = useState(false)
@@ -63,15 +65,15 @@ const MainContactPage = () => {
 
             <div className=" w-full pt-[60px] ">
                 {
-                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddClient} /> : <ServicesPage setOpenService={setOpenService} />
+                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} setEditClientData={setEditClientData} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddClient} /> : <ServicesPage setOpenService={setOpenService} setEditAppointmentData={setEditAppointmentData} />
                 }
             </div>
 
 
-            <AddClientModal open={addClient} setOpen={setAddClient} setOpenLeads={setOpenLeads} />
+            <AddClientModal open={addClient} setOpen={setAddClient} setOpenLeads={setOpenLeads} editClientData={editClientData} setEditClientData={setEditClientData} />
             <AddNewLeadsModal open={openLeads} setOpen={setOpenLeads} setAddClient={setAddClient} setMultipleContact={setMultipleContact} />
             <MultipleContactModal open={multipleContact} setOpen={setMultipleContact} setOpenLeads={setOpenLeads} />
-            <AppointmentModal open={openService} setOpen={setOpenService} />
+            <AppointmentModal open={openService} setOpen={setOpenService} setEditAppointmentData={setEditAppointmentData} editAppointmentData={editAppointmentData} />
         </div>
     );
 };

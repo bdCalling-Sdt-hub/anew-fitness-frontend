@@ -3,84 +3,62 @@ import noData from "../../../../../assets/noData.png";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { useDeleteAppointmentContactMutation, useGetAllAppointmentContactQuery } from "../../../../../redux/features/contact/appointmentClientApi";
+import Swal from "sweetalert2";
 
-const data = [
-    {
-        contactName: "John Doe",
-        service: "Web Development",
-        staff: "Alice Johnson",
-        date: "2025-03-01",
-        time: "10:00 AM"
-    },
-    {
-        contactName: "Jane Smith",
-        service: "Graphic Design",
-        staff: "Michael Brown",
-        date: "2025-03-02",
-        time: "11:30 AM"
-    },
-    {
-        contactName: "Emma Wilson",
-        service: "SEO Consultation",
-        staff: "Sophia Martinez",
-        date: "2025-03-03",
-        time: "2:00 PM"
-    },
-    {
-        contactName: "Robert Johnson",
-        service: "Marketing Strategy",
-        staff: "Daniel Lee",
-        date: "2025-03-04",
-        time: "9:00 AM"
-    },
-    {
-        contactName: "Olivia Davis",
-        service: "Content Writing",
-        staff: "Emily White",
-        date: "2025-03-05",
-        time: "4:00 PM"
-    },
-    {
-        contactName: "William Taylor",
-        service: "App Development",
-        staff: "James Anderson",
-        date: "2025-03-06",
-        time: "1:30 PM"
-    },
-    {
-        contactName: "Sophia Miller",
-        service: "Cybersecurity Audit",
-        staff: "Ethan Thomas",
-        date: "2025-03-07",
-        time: "3:00 PM"
-    },
-    {
-        contactName: "Liam Martinez",
-        service: "Cloud Services",
-        staff: "Charlotte Wilson",
-        date: "2025-03-08",
-        time: "12:00 PM"
-    },
-    {
-        contactName: "Ava Clark",
-        service: "Social Media Management",
-        staff: "Benjamin Moore",
-        date: "2025-03-09",
-        time: "5:30 PM"
-    },
-    {
-        contactName: "Noah Hernandez",
-        service: "E-commerce Setup",
-        staff: "Mia Robinson",
-        date: "2025-03-10",
-        time: "8:00 AM"
-    }
-];
+const ServicesPage = ({setOpenService , setEditAppointmentData }:{setOpenService: (openService: boolean) => void , setEditAppointmentData: (editAppointmentData: any) => void}) => { 
+const navigate = useNavigate();  
+const {data :getAllAppointment , refetch} = useGetAllAppointmentContactQuery(undefined)  
+const [deleteAppointmentContact] = useDeleteAppointmentContactMutation()
+console.log(getAllAppointment); 
+
+const data = getAllAppointment?.map((item: any) => ({
+    contactName: item?.contact?.client_name,
+    service: item?.service,
+    staff: item?.staff?.name,
+    date: item?.date,
+    time: item?.time ,
+    id:item._id
+})) 
 
 
+const handleDelete = async (id: string) => {
+    Swal.fire({
+        title: "Are you sure?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+    }).then(async (result) => {
 
-const ServicesPage = ({setOpenService}:{setOpenService: (openService: boolean) => void}) => { 
-const navigate = useNavigate();
+        if (result.isConfirmed) {
+            await deleteAppointmentContact(id).then((res) => {
+                console.log(res);
+                if (res?.data) {
+                    Swal.fire({
+                        text: res?.data?.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        refetch();
+                    });
+                } else {
+                    Swal.fire({
+                        //@ts-ignore
+                        text: res?.error?.data?.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                }
+            })
+        }
+    });
+
+} 
 
     const columns = [
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
@@ -91,10 +69,10 @@ const navigate = useNavigate();
         {
             title: 'Actions',
             key: 'actions',
-            render: () => (
+            render: (_:any,record:any) => (
                 <div className="flex items-center gap-4">
-                    <TbEdit size={22} color="#575555" onClick={() => setOpenService(true)} className="cursor-pointer" /> 
-                    <RiDeleteBinLine size={22} color="#AB0906"  className="cursor-pointer"/>
+                    <TbEdit size={22} color="#575555" onClick={() =>{ setOpenService(true) ; setEditAppointmentData(record)}} className="cursor-pointer" /> 
+                    <RiDeleteBinLine size={22} color="#AB0906"  className="cursor-pointer" onClick={() => handleDelete(record?.id)}/>
                 </div>
             ),
         },
@@ -104,7 +82,7 @@ const navigate = useNavigate();
     return (
         <div>
             <div className="mx-auto bg-white rounded-lg shadow-sm">
-                {data.length > 0 ?
+                {data?.length > 0 ?
 
                     <ConfigProvider
                         theme={{

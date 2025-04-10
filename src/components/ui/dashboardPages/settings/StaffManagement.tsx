@@ -162,7 +162,7 @@ const StaffManagement = () => {
                             description={
                                 <div className="flex flex-col items-center gap-1 text-center">
                                     <p className="text-primaryText font-semibold text-[22px]">
-                                        You don't have any Location yet
+                                        You don't have any staff yet
                                     </p>
                                 </div>
                             }

@@ -16,7 +16,7 @@ const clientContactApi = baseApi.injectEndpoints({
         addClientContact: build.mutation({
             query: (data) => {
                 return {
-                    url: `/contact/clients/create`,
+                    url: `/contact/clients/add`,
                     method: "POST",
                     body: data,
                 };
@@ -24,9 +24,28 @@ const clientContactApi = baseApi.injectEndpoints({
         }), 
 
         updateClientContact: build.mutation({
+            query: ({id ,data}) => {
+                return {
+                    url: `/contact/clients/${id}`,
+                    method: "PUT",
+                    body: data,
+                };
+            }
+        }),
+
+        deleteClientContact: build.mutation({
+            query: (id) => {
+                return {
+                    url: `/contact/clients/${id}`,
+                    method: "DELETE",
+                };
+            }
+        }), 
+
+        updateClientStatus: build.mutation({
             query: (data) => {
                 return {
-                    url: `/contact/clients/update/${data.id}`,
+                    url: `/contact/clients/active/${data.id}`,
                     method: "PUT",
                     body: data,
                 };
@@ -35,4 +54,4 @@ const clientContactApi = baseApi.injectEndpoints({
 
     }) 
 }) 
-export const {useGetAllClientContactQuery , useAddClientContactMutation , useUpdateClientContactMutation } = clientContactApi;
+export const {useGetAllClientContactQuery , useAddClientContactMutation , useUpdateClientContactMutation , useDeleteClientContactMutation , useUpdateClientStatusMutation} = clientContactApi;
