@@ -1,19 +1,19 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
-import { useAddClientContactMutation, useGetAllClientContactQuery, useUpdateClientContactMutation } from "../../../../../redux/features/contact/clientContactApi";
 import Swal from "sweetalert2";
+import { useAddLeadContactMutation, useGetAllLeadContactQuery, useUpdateLeadContactMutation } from "../../../../../redux/features/contact/leadContactApi";
 
-const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditClientData , editLeadData , setEditLeadData}: { open: boolean, editClientData: any, setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void , setEditClientData: (editClientData: any)=> void  , setEditLeadData: (editLeadData: any)=> void , editLeadData: any}) => {
+const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLeadData}: { open: boolean,  setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void , setEditLeadData: (editLeadData: any)=> void , editLeadData: any}) => {
 
     const [form] = Form.useForm(); 
 
     console.log(editLeadData); 
 
-    const [addClientContact, { isError, isLoading, isSuccess, data, error }] = useAddClientContactMutation();
+    const [addLeadContact, { isError, isLoading, isSuccess, data, error }] = useAddLeadContactMutation();
 
-    const [updateClientContact, { isError: isUpdateError, isLoading: isUpdateLoading, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateClientContactMutation(); 
+    const [updateLeadContact, { isError: isUpdateError, isLoading: isUpdateLoading, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateLeadContactMutation(); 
 
-    const {refetch} = useGetAllClientContactQuery(undefined);
+    const {refetch} = useGetAllLeadContactQuery(undefined);
 
               useEffect(() => {
                   if (isSuccess) {
@@ -50,7 +50,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
                               showConfirmButton: false
                           }).then(() => {
                               setOpen(false);  
-                              setEditClientData({})
+                              setEditLeadData({})
                               refetch();  
                               form.resetFields(); 
                           })
@@ -66,20 +66,14 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
               }, [isUpdateSuccess, isUpdateError, updateError, updateData]);     
  
 
-              //for client contact 
-    useEffect(() => {
-        if (editClientData) {
-            form.setFieldsValue(editClientData);
-        }
-    }, [editClientData])
 
  
     //for lead contact 
     useEffect(() => {
         if (editLeadData) {
             form.setFieldsValue({
-                client_name: editLeadData?.lead_name,
-                client_email: editLeadData?.lead_email,
+                lead_name: editLeadData?.lead_name,
+                lead_email: editLeadData?.lead_email,
                 gender: editLeadData?.gender,
                 address: editLeadData?.address,
                 phone: editLeadData?.phone,});
@@ -95,21 +89,20 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
  
     const OnFinish = (values:{ client_name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
  
-        console.log(editClientData?.id);
-        if (editClientData?.id) {
-            updateClientContact({ id: editClientData?.id, data: values }).then((res) => { console.log(res);});
+        console.log(editLeadData?.id);
+        if (editLeadData?.id) {
+            updateLeadContact({ id: editLeadData?.id, data: values }).then((res) => { console.log(res);});
         } else {
-
-            addClientContact(values).then((res) => { console.log(res);});
+            addLeadContact(values).then((res) => { console.log(res);});
         }
     }
 
     return (
-        <Modal open={open} onCancel={() => {setOpen(false) ; setEditClientData({})}} footer={null} width={600} title={<p className=" text-primary text-[24px] font-bold"> Contact Information </p>} centered>
+        <Modal open={open} onCancel={() => {setOpen(false) ; setEditLeadData({})}} footer={null} width={600} title={<p className=" text-primary text-[24px] font-bold">Lead Contact Information </p>} centered>
             <Form layout="vertical" className=" pt-4" form={form} onFinish={OnFinish}>
                 <div className="">
 
-                    <Form.Item name="client_name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                    <Form.Item name="lead_name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
                         <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',
@@ -117,7 +110,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
                         }} />
                     </Form.Item>
 
-                    <Form.Item name="client_email" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Email </p>}>
+                    <Form.Item name="lead_email" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Email </p>}>
                         <Input type="text" placeholder="Enter Client email" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',
@@ -166,4 +159,4 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
     );
 };
 
-export default AddClientModal;
+export default EditLeadModal;

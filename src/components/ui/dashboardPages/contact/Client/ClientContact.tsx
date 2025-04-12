@@ -8,11 +8,11 @@ import Swal from "sweetalert2";
 
 
 
-const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (addClient: boolean) => void , setEditClientData: (editClientData: any) => void }) => {
+const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (addClient: boolean) => void, setEditClientData: (editClientData: any) => void }) => {
     const [tabOption, setTabOption] = useState("services")
     const { data: allClient, refetch } = useGetAllClientContactQuery(undefined);
-    const [deleteClientContact] = useDeleteClientContactMutation() 
-    const [updateClientStatus ] = useUpdateClientStatusMutation()     
+    const [deleteClientContact] = useDeleteClientContactMutation()
+    const [updateClientStatus] = useUpdateClientStatusMutation()
 
     console.log(tabOption);
 
@@ -23,7 +23,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
         phone: item?.phone,
         gender: item?.gender,
         client_email: item?.client_email,
-        status: item?.active, 
+        status: item?.active,
         id: item?._id
     }))
 
@@ -36,7 +36,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
             phone: item?.phone,
             gender: item?.gender,
             client_email: item?.client_email,
-            status: item?.active, 
+            status: item?.active,
             id: item?._id
         }));
 
@@ -100,7 +100,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
 
     const items = [
         {
-            key: "services", // changed from "All"
+            key: "services",
             label: (
                 <div className="flex items-center gap-1">
                     <p className="text-[18px] font-semibold">All Clients</p>
@@ -111,7 +111,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
             ),
         },
         {
-            key: "active", // removed trailing space
+            key: "active",
             label: (
                 <div className="flex items-center gap-1">
                     <p className="text-[18px] font-semibold">Active Clients</p>
@@ -122,7 +122,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
             ),
         },
         {
-            key: "inactive", // removed trailing space
+            key: "inactive",
             label: (
                 <div className="flex items-center gap-1">
                     <p className="text-[18px] font-semibold">Inactive Clients</p>
@@ -150,7 +150,7 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
             key: 'actions',
             render: (_: any, record: any) => (
                 <div className="flex items-center gap-4">
-                    <TbEdit size={22} color="#575555" onClick={() => {setAddClient(true) , setEditClientData(record)}} />
+                    <TbEdit size={22} color="#575555" onClick={() => { setAddClient(true), setEditClientData(record) }} />
                     <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => handleDelete(record?.id)} >
                         <Trash2 className="h-5 w-5 text-[#FE3838]" />
                     </button>
@@ -161,40 +161,40 @@ const ClientContact = ({ setAddClient , setEditClientData  }: { setAddClient: (a
                             },
                         }}
                     >
-                        <Switch defaultValue={record?.status} onChange={(value) => handleStatusChange(value , record?.id)} />
+                        <Switch defaultValue={record?.status} onChange={(value) => handleStatusChange(value, record?.id)} />
                     </ConfigProvider>
 
                 </div>
             ),
         },
     ];
- 
-    const handleStatusChange = async (value :any ,id : string ) => {
-         console.log("status value " , value);  
-         const data={ 
-            active: value ,
+
+    const handleStatusChange = async (value: any, id: string) => {
+        console.log("status value ", value);
+        const data = {
+            active: value,
             id
-         }
-         await updateClientStatus(data).then((res) => {
-                   if (res?.data) {
-                                Swal.fire({
-                                  text: res?.data?.message,
-                                  icon: "success",
-                                  showConfirmButton: false,
-                                  timer: 1500,
-                                }).then(() => {
-                                  refetch(); 
-                                });
-                              } else {
-                                Swal.fire({
-                                  //@ts-ignore
-                                  text: res?.error?.data?.message,
-                                  icon: "error",
-                                  timer: 1500,
-                                  showConfirmButton: false,
-                                });
-                              } 
-         })
+        }
+        await updateClientStatus(data).then((res) => {
+            if (res?.data) {
+                Swal.fire({
+                    text: res?.data?.message,
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                }).then(() => {
+                    refetch();
+                });
+            } else {
+                Swal.fire({
+                    //@ts-ignore
+                    text: res?.error?.data?.message,
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                });
+            }
+        })
     }
 
     return (

@@ -1,30 +1,17 @@
 import { ConfigProvider, Empty, Table } from "antd";
 import noData from "../../../../../assets/noData.png";
+import moment from "moment";
  
-const data = [
-    {
-        className: "Mathematics 101",
-        schedule: "Monday - 10:00 AM",
-        staffName: "Mr. John Doe"
-    },
-    {
-        className: "Physics 201",
-        schedule: "Tuesday - 11:30 AM",
-        staffName: "Dr. Jane Smith"
-    },
-    {
-        className: "Chemistry 301",
-        schedule: "Wednesday - 2:00 PM",
-        staffName: "Prof. Emma Wilson"
-    },
-    {
-        className: "Biology 101",
-        schedule: "Thursday - 9:00 AM",
-        staffName: "Dr. Robert Johnson"
-    },
+const LeadsClasses = ({sort, pastClasses , upcomingClasses}: {sort:string, pastClasses:any, upcomingClasses:any}) => {  
+     
+ const data = (sort === "upcoming" ? upcomingClasses : pastClasses)?.map((item:any)=>({
+    className: item?.name,
+    schedule:moment(item?.schedule?.date).format("YYYY-MM-DD  , HH:mm a"),
+    staffName: item?._id 
+}))
  
-];
-const LeadsClasses = () => { 
+console.log(upcomingClasses);
+
     const columns = [
         { title: 'Class Name', dataIndex: 'className', key: 'className' },
         { title: 'Schedule', dataIndex: 'schedule', key: 'schedule' },
@@ -34,7 +21,7 @@ const LeadsClasses = () => {
     return (
         <div>
                       <div className="mx-auto bg-white rounded-lg shadow-sm">
-                    {data.length > 0 ?
+                    {data?.length > 0 ?
 
                         <ConfigProvider
                             theme={{

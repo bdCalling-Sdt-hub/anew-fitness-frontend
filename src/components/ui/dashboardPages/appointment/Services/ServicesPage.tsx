@@ -15,7 +15,9 @@ console.log(getAllAppointment);
 const data = getAllAppointment?.map((item: any) => ({
     contactName: item?.contact?.client_name,
     service: item?.service,
-    staff: item?.staff?.name,
+    staff: item?.staff?.name, 
+    staffId: item?.staff?._id, 
+    leadId: item?.lead?._id,
     date: item?.date,
     time: item?.time ,
     id:item._id

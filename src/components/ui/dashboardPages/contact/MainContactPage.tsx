@@ -8,13 +8,16 @@ import AddNewLeadsModal from "./Leads/AddNewLeadsModal";
 import MultipleContactModal from "./MultipleContactModal";
 import ServicesPage from "../appointment/Services/ServicesPage";
 import AppointmentModal from "../calender/AppointmentModal";
+import EditLeadModal from "./Leads/EditLeadModal";
 
 
 const MainContactPage = () => {
     const [selectedItem, setSelectedItem] = useState("Clients")
-    const [addClient, setAddClient] = useState(false) 
+    const [addClient, setAddClient] = useState(false)  
+    const [addNewLeads, setAddNewLeads] = useState(false)
     const [editClientData, setEditClientData] = useState<any>({})
     const [editAppointmentData, setEditAppointmentData] = useState<any>({})
+    const [editLeadData, setEditLeadData] = useState<any>({})
     const [openLeads, setOpenLeads] = useState(false)
     const [multipleContact, setMultipleContact] = useState(false)
     const [openService, setOpenService] = useState(false)
@@ -59,19 +62,20 @@ const MainContactPage = () => {
                                     <span> <LuPlus size={25} />  </span>
                                 </button>
                     }
-                </div>
+                </div> 
 
             </div>
 
             <div className=" w-full pt-[60px] ">
                 {
-                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} setEditClientData={setEditClientData} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddClient} /> : <ServicesPage setOpenService={setOpenService} setEditAppointmentData={setEditAppointmentData} />
+                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} setEditClientData={setEditClientData} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddNewLeads} setEditLeadData={setEditLeadData} /> : <ServicesPage setOpenService={setOpenService} setEditAppointmentData={setEditAppointmentData} />
                 }
-            </div>
+            </div>    
 
 
-            <AddClientModal open={addClient} setOpen={setAddClient} setOpenLeads={setOpenLeads} editClientData={editClientData} setEditClientData={setEditClientData} />
-            <AddNewLeadsModal open={openLeads} setOpen={setOpenLeads} setAddClient={setAddClient} setMultipleContact={setMultipleContact} />
+            <AddClientModal open={addClient} setOpen={setAddClient} setOpenLeads={setOpenLeads} editClientData={editClientData} setEditClientData={setEditClientData} editLeadData={editLeadData} setEditLeadData={setEditLeadData}  />
+            <AddNewLeadsModal open={openLeads} setOpen={setOpenLeads} setAddClient={setAddNewLeads} setMultipleContact={setMultipleContact} /> 
+            <EditLeadModal open={addNewLeads} setOpen={setAddNewLeads} setOpenLeads={setOpenLeads} editLeadData={editLeadData} setEditLeadData={setEditLeadData} />
             <MultipleContactModal open={multipleContact} setOpen={setMultipleContact} setOpenLeads={setOpenLeads} />
             <AppointmentModal open={openService} setOpen={setOpenService} setEditAppointmentData={setEditAppointmentData} editAppointmentData={editAppointmentData} />
         </div>

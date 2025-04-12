@@ -1,30 +1,14 @@
 import { ConfigProvider, Empty, Table } from "antd";
 import noData from "../../../../../assets/noData.png";
- 
-const data = [
-    {
-        contactName: "John Doe",
-        date: "2025-02-24",
-        service: "Website Development"
-    },
-    {
-        contactName: "Jane Smith",
-        date: "2025-02-25",
-        service: "Cybersecurity Audit"
-    },
-    {
-        contactName: "Emma Wilson",
-        date: "2025-02-26",
-        service: "Cloud Infrastructure Setup"
-    },
-    {
-        contactName: "Robert Johnson",
-        date: "2025-02-27",
-        service: "IT Support & Maintenance"
-    }
-]; 
 
-const LeadsAppointment = () => { 
+const LeadsAppointment = ({sort , upcomingAppointments , pastAppointments}: {sort:string, upcomingAppointments:any, pastAppointments:any}) => {  
+
+    const data = (sort === "upcoming" ? upcomingAppointments : pastAppointments)?.map((item:any)=>({ 
+        contactName: item?.contact, 
+        date: item?.date, 
+        service: item?.service 
+    })) 
+
     const columns = [
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
         { title: 'Date', dataIndex: 'date', key: 'date' },
