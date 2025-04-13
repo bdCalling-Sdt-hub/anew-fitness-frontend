@@ -1,97 +1,151 @@
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
+import { useCreateSingleInvoiceMutation } from "../../../../redux/features/invoice/invoiceApi";
+import Swal from "sweetalert2";
+import moment from "moment";
 
-const AddOnceInvoiceModal = ({open , setOpen , setOpenInvoice }:{open: boolean, setOpen: (open: boolean) => void , setOpenInvoice: (openInvoice: boolean) => void}) => {  
+const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean, setOpen: (open: boolean) => void, setOpenInvoice: (openInvoice: boolean) => void }) => {
+
+    const [form] = Form.useForm();
+    const [createSingleInvoice, { isLoading, isError, isSuccess, error, data }] = useCreateSingleInvoiceMutation()
+
+    useEffect(() => {
+        if (isSuccess) {
+            if (data) {
+                Swal.fire({
+                    text: data?.message,
+                    icon: "success",
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    setOpen(false);
+                });
+            }
+
+        }
+        if (isError) {
+            Swal.fire({
+                //@ts-ignore
+                text: error?.data?.message,
+                icon: "error",
+            });
+        }
+    }, [isSuccess, isError, error, data]);
+
     useEffect(() => {
         if (open && setOpenInvoice) {
-          setOpenInvoice(false);
+            setOpenInvoice(false);
         }
-      }, [open, setOpenInvoice]);  
-    return (
-        <Modal open={open}  onCancel={() => setOpen(false)} footer={null} width={650} title={<p className=" text-primary text-[24px] font-bold"> Invoice Information </p>} centered>
-        <Form layout="vertical" className=" pt-4"> 
-            <div className=" grid grid-cols-2 gap-x-4">  
+    }, [open, setOpenInvoice]);
 
-            <Form.Item name="clientName" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
-                <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item>  
+    const onFinish = async(values: any) => {
+        const { invoiceDate, invoiceDueDate, invoiceTotal, ...otherValues } = values
 
-            <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Class Name </p>}>
-                <Input type="text" placeholder="Enter Class Name" className=" rounded-lg " style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item> 
+        const formattedDate = moment(invoiceDate).format("YYYY-MM-DD")
+        const formattedDueDate = moment(invoiceDueDate).format("YYYY-MM-DD") 
+        const formattedTotal = Number(invoiceTotal)
 
-            <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Contact Name </p>}>
-                <Input type="text" placeholder="Enter Contact Name" className=" rounded-lg " style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item> 
-
-            <Form.Item name="total" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Total  </p>}>
-                <Input type="text" placeholder="Enter Invoice Total " className=" rounded-lg " style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item>  
-
-            <Form.Item name="invoice" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice </p>}>
-                <Input type="text" placeholder="Enter Invoice " className=" rounded-lg " style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item> 
-
-            <Form.Item name="invoiceDate" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Date </p>}>  
-            <DatePicker placeholder="Enter Invoice Date"  style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-            </Form.Item>
-            
-
-            <Form.Item name="services" label={<p className=" text-primaryText text-[18px] font-semibold"> Services </p>}>
-                <Select
-                    className=""
-                    placeholder="Select Services"
-                    style={{ height: '45px', width: '100%' }}
-                    options={[
-                        { value: 'classes', label: 'Classes' },
-                        { value: 'staff', label: 'Staff' },
-                    ]}
-                />
-            </Form.Item>
-
-            <Form.Item name="date" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Due Date </p>}>  
-            <DatePicker placeholder="Enter Invoice Due Date"  style={{ 
-                    height: '45px', 
-                    width: '100%', 
-                   
-                }} /> 
-
-            </Form.Item> 
-
+        const data = {
+            ...otherValues,
+            invoiceDate: formattedDate,
+            invoiceDueDate: formattedDueDate , 
+            invoiceTotal: formattedTotal
+        } 
  
-            </div> 
+await createSingleInvoice(data).then((res) => { console.log(res); })
 
-            <div className="flex  items-center justify-end gap-4 mt-4">
-                <Button  onClick={() => setOpen(false)}>Close</Button>
-                <button className='px-6 py-[6px] text-white bg-primary rounded' type="submit">Save</button>
-            </div>
+    }
 
-        </Form>
-    </Modal>
+
+    return (
+        <Modal open={open} onCancel={() => setOpen(false)} footer={null} width={650} title={<p className=" text-primary text-[24px] font-bold"> Invoice Information </p>} centered>
+            <Form layout="vertical" className=" pt-4" form={form} onFinish={onFinish}>
+                <Form.Item name="invoiceId" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Id </p>}>
+                    <Input type="text" placeholder="Enter Invoice Id" className=" rounded-lg " style={{
+                        height: '45px',
+                        width: '100%',
+
+                    }} />
+                </Form.Item>
+
+                <div className=" grid grid-cols-2 gap-x-4">
+
+                    <Form.Item name="clientName" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                        <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Class Name </p>}>
+                        <Input type="text" placeholder="Enter Class Name" className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="contactName" label={<p className=" text-primaryText text-[18px] font-semibold"> Contact Name </p>}>
+                        <Input type="text" placeholder="Enter Contact Name" className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="invoiceTotal" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Total  </p>}>
+                        <Input type="number" placeholder="Enter Invoice Total " className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="invoiceNumber" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Number </p>}>
+                        <Input type="text" placeholder="Enter Invoice " className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="invoiceDate" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Date </p>}>
+                        <DatePicker placeholder="Enter Invoice Date" style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+
+                    <Form.Item name="services" label={<p className=" text-primaryText text-[18px] font-semibold"> Services </p>}>
+                        <Input type="text" placeholder="Enter Invoice Total " className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="invoiceDueDate" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Due Date </p>}>
+                        <DatePicker placeholder="Enter Invoice Due Date" style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+
+                    </Form.Item>
+
+
+                </div>
+
+                <div className="flex  items-center justify-end gap-4 mt-4">
+                    <Button onClick={() => setOpen(false)}>Close</Button>
+                    <Button htmlType="submit" className=' px-6 py-[6px] text-white bg-primary rounded '> {isLoading ? "Saving..." : "Save"} </Button>
+                </div>
+
+            </Form>
+        </Modal>
     );
 };
 

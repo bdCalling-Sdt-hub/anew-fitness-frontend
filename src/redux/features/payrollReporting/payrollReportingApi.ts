@@ -10,7 +10,7 @@ const payrollReporting = baseApi.injectEndpoints({
                 //     params.append("workType", data);  
                 // }
                 return{
-                    url: `/report/getall`,
+                    url: `/report/overview`,
                     method: "GET",
                 }    
             },

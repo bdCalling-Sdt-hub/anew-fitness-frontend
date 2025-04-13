@@ -5,116 +5,58 @@ import noData from "../../../../assets/noData.png";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LuPlus } from 'react-icons/lu';
+import { useGetAllClassesQuery, useUpdateClassStatusMutation } from '../../../../redux/features/services/classesApi';
+import moment from 'moment';
 
-const data = [
-    {
-        key: '1',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "John Doe",
-        leadName: "Alice Smith"
-    },
-    {
-        key: '2',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "inactive",
-        staffName: "Emily Johnson",
-        leadName: "Michael Brown"
-    },
-    {
-        key: '3',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "David Wilson",
-        leadName: "Sophia Martinez"
-    },
-    {
-        key: '4',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "Olivia Taylor",
-        leadName: "James Anderson"
-    },
-    {
-        key: '5',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "inactive",
-        staffName: "William Thomas",
-        leadName: "Charlotte White"
-    },
-    {
-        key: '6',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "Benjamin Harris",
-        leadName: "Amelia Lewis"
-    },
-    {
-        key: '7',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "inactive",
-        staffName: "Henry Martin",
-        leadName: "Evelyn Walker"
-    },
-    {
-        key: '8',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "Alexander King",
-        leadName: "Mia Scott"
-    }
-];
 
 const ClassesTable = () => {
-    const [tabOption, setTabOption] = useState("services") 
-console.log(tabOption);
+    const [tabOption, setTabOption] = useState("services")
+    const { data: getAllClass } = useGetAllClassesQuery(undefined) 
+    const [editClassData , setEditClassData] = useState({})
+    // const [updateClassStatus, { isLoading, isError, isSuccess, data: updateData, error }] = useUpdateClassStatusMutation() 
+    console.log(getAllClass);
+
+    const data = getAllClass?.map((item: any) => ({
+        key: item?._id,
+        name: item?.name,
+        serviceCategory: item?.serviceCategory,
+        scheduled: moment(item?.scheduled).format('YYYY-MM-DD'),
+        status: item?.status,
+        staffName: item?.staff,
+        leadName: item?.lead
+    }))
     const tabItems = [
         {
             key: "All",
-            label: <div className='flex items-center gap-1'> 
- <p className=" text-[18px] font-semibold "> Classes </p> 
- <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold "> Classes </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
+                    {data?.length}</p>
             </div>,
-          
+
         },
         {
             key: "active ",
-            label:<div className='flex items-center gap-1'> 
-            <p className=" text-[18px] font-semibold ">  Active Classes </p> 
-            <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">3</p>
-                       </div>,
-           
-        }, 
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold ">  Active Classes </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">3</p>
+            </div>,
+
+        },
 
         {
             key: "inactive ",
-            label:<div className='flex items-center gap-1'> 
-            <p className=" text-[18px] font-semibold "> Inactive Classes </p> 
-            <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">5</p>
-                       </div>,
-           
+            label: <div className='flex items-center gap-1'>
+                <p className=" text-[18px] font-semibold "> Inactive Classes </p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">5</p>
+            </div>,
+
         },
-    ];  
+    ];
 
     const onChange = (key: string) => {
         setTabOption(key)
-    }; 
+    };
     const [isStatusOpen, setIsStatusOpen] = useState(false)
     const navigate = useNavigate();
 
@@ -144,7 +86,7 @@ console.log(tabOption);
         {
             title: 'Actions',
             key: 'actions',
-            render: () => (
+            render: (_, record) => (
                 <Dropdown menu={{ items, className: "custom-dropdown-width" }} trigger={['click']} >
                     <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
                 </Dropdown>
@@ -178,11 +120,11 @@ console.log(tabOption);
 
     return (
         <div className="p-8  relative">
-            <div className="flex justify-between items-center mb-6"> 
-                <div className='flex items-center gap-1'> 
+            <div className="flex justify-between items-center mb-6">
 
-                <h2 className="text-[30px] font-bold"> Classes</h2>  
-                {/* <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p> */}
+                <div className='flex items-center gap-1'>
+                    <h2 className="text-[30px] font-bold"> Classes</h2>
+                    {/* <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p> */}
                 </div>
 
                 <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto p-2 px-5 rounded-lg"
@@ -191,27 +133,27 @@ console.log(tabOption);
                     <span> <LuPlus size={25} />  </span>
                 </button>
 
-            </div> 
+            </div>
             <div>
-            <ConfigProvider
+                <ConfigProvider
                     theme={{
                         components: {
                             Tabs: {
                                 itemActiveColor: "#ab0906",
                                 itemSelectedColor: "#ab0906",
                                 inkBarColor: "#ab0906",
-                                itemHoverColor: "#ab0906" ,
-                             
+                                itemHoverColor: "#ab0906",
+
                             },
                         },
                     }}
                 >
 
                     <Tabs defaultActiveKey="services" items={tabItems} onChange={onChange} />
-                </ConfigProvider> 
-            </div> 
+                </ConfigProvider>
+            </div>
             <div className="mx-auto bg-white rounded-lg shadow-sm">
-                {data.length > 0 ?
+                {data?.length > 0 ?
                     <ConfigProvider
                         theme={{
                             components: {

@@ -6,129 +6,77 @@ import AddInvoiceModal from "./AddInvoiceModal";
 import AddOnceInvoiceModal from "./AddOnceInvoiceModal";
 import AddMultipleInvoice from "./AddMultipleInvoice";
 import { PiExport } from "react-icons/pi";
+import { useGetAllInvoiceQuery } from "../../../../redux/features/invoice/invoiceApi";
+import moment from "moment";
+import { exportToCSV } from "../../../shared/ExportToCSV";
 
-const data = [
-    {
-        key: "1",
-        invoiceID: "1-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Conception",
-        invoiceTotal: "$2,500.00",
-        invoiceNumber: "1",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-    {
-        key: "2",
-        invoiceID: "2-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Prototypes, Initial proposal",
-        invoiceTotal: "$8,250.00",
-        invoiceNumber: "2",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-    {
-        key: "3",
-        invoiceID: "4-Porchcam USA-Prototype 1",
-        client: "Porchcam USA",
-        project: "Docking Station",
-        contactName: "Billing Contact",
-        tasks: "Prototype 1",
-        invoiceTotal: "$15,000.00",
-        invoiceNumber: "4",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "6/6/2018"
-    },
-    {
-        key: "4",
-        invoiceID: "1-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Conception",
-        invoiceTotal: "$2,500.00",
-        invoiceNumber: "1",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-    {
-        key: "5",
-        invoiceID: "2-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Prototypes, Initial proposal",
-        invoiceTotal: "$8,250.00",
-        invoiceNumber: "2",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-    {
-        key: "6",
-        invoiceID: "4-Porchcam USA-Prototype 1",
-        client: "Porchcam USA",
-        project: "Docking Station",
-        contactName: "Billing Contact",
-        tasks: "Prototype 1",
-        invoiceTotal: "$15,000.00",
-        invoiceNumber: "4",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "6/6/2018"
-    },
-    {
-        key: "7",
-        invoiceID: "1-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Conception",
-        invoiceTotal: "$2,500.00",
-        invoiceNumber: "1",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-    {
-        key: "8",
-        invoiceID: "2-Porchcam Singapore-...",
-        client: "Porchcam Singapore",
-        project: "Brand Identity",
-        contactName: "Feng Li",
-        tasks: "Prototypes, Initial proposal",
-        invoiceTotal: "$8,250.00",
-        invoiceNumber: "2",
-        invoiceDate: "4/6/2018",
-        invoiceDueDate: "4/27/2018"
-    },
-];
 const Invoice = () => {
     const [addClient, setAddClient] = useState(false)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [multipleInvoice, setMultipleInvoice] = useState(false)
+    const { data: allInvoice } = useGetAllInvoiceQuery(undefined)
+
+    const data = allInvoice?.map((item: any) => ({
+        key: item?._id,
+        invoiceID: item?.invoiceId,
+        client: item?.client,
+        className: item?.className,
+        contactName: item?.contactName,
+        services: item?.services,
+        invoiceTotal: item?.invoiceTotal,
+        invoiceNumber: item?.invoiceNumber,
+        invoiceDate: item?.invoiceDate,
+        invoiceDueDate: item?.invoiceDueDate,
+        id: item?._id
+    }))
 
     const columns = [
         { title: 'Invoice ID', dataIndex: 'invoiceID', key: 'invoiceID' },
         { title: 'Client', dataIndex: 'client', key: 'client' },
-        { title: 'Class Name', dataIndex: 'project', key: 'project' },
+        { title: 'Class Name', dataIndex: 'className', key: 'className' },
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
-        { title: 'Services', dataIndex: 'tasks', key: 'tasks' },
+        { title: 'Services', dataIndex: 'services', key: 'services' },
         { title: 'Invoice Total $', dataIndex: 'invoiceTotal', key: 'invoiceTotal' },
         { title: 'Invoice #', dataIndex: 'invoiceNumber', key: 'invoiceNumber' },
-        { title: 'Invoice Date', dataIndex: 'invoiceDate', key: 'invoiceDate' },
-        { title: 'Invoice Due Date', dataIndex: 'invoiceDueDate', key: 'invoiceDueDate' },
+        { title: 'Invoice Date', dataIndex: 'invoiceDate', key: 'invoiceDate' , render: (invoiceDate: any) => <span>{moment(invoiceDate).format('MM/DD/YYYY')}</span>},
+        { title: 'Invoice Due Date', dataIndex: 'invoiceDueDate', key: 'invoiceDueDate' , render: (invoiceDueDate: any) => <span>{moment(invoiceDueDate).format('MM/DD/YYYY')}</span> },
         {
             title: 'Action',
             dataIndex: 'Action',
             key: 'Action',
-            render: () => (
-                <div>
-                  <PiExport size={20} color="#ab0906" />
+            render: (_:any, record:any) => (
+                <div    onClick={() => {
+                    if (record) {
+                        exportToCSV([record], {
+                            filename: "invoice-list",
+                            fields: [
+                                "invoiceID",
+                                "client",
+                                "className",
+                                "contactName",
+                                "services",
+                                "invoiceTotal",
+                                "invoiceNumber",
+                                "invoiceDate",
+                                "invoiceDueDate",
+                            ],
+                            headers: {
+                                invoiceID: "invoiceId",
+                                client: "clientName",
+                                className: "className",
+                                contactName: "contactName",
+                                services: "services",
+                                invoiceTotal: "invoiceTotal",
+                                invoiceNumber: "invoiceNumber",
+                                invoiceDate: "invoiceDate",
+                                invoiceDueDate: "invoiceDueDate",
+                            },
+                        });
+                    }
+                }} >
+                    <PiExport size={20} color="#ab0906"  />
                 </div>
-              )
+            )
         },
 
     ];
@@ -154,7 +102,39 @@ const Invoice = () => {
                         ]}
                     />
 
-                    <button className=" flex items-center justify-center gap-4 border border-primary text-primary hover:bg-primary hover:text-white w-auto p-2 px-5 rounded-lg"> Export
+                    <button
+                        className="flex items-center justify-center gap-4 border border-primary text-primary hover:bg-primary hover:text-white w-auto p-2 px-5 rounded-lg"
+                        onClick={() => {
+                            if (data) {
+                                exportToCSV(data, {
+                                    filename: "invoice-list",
+                                    fields: [
+                                        "invoiceID",
+                                        "client",
+                                        "className",
+                                        "contactName",
+                                        "services",
+                                        "invoiceTotal",
+                                        "invoiceNumber",
+                                        "invoiceDate",
+                                        "invoiceDueDate",
+                                    ],
+                                    headers: {
+                                        invoiceID: "invoiceId",
+                                        client: "clientName",
+                                        className: "className",
+                                        contactName: "contactName",
+                                        services: "services",
+                                        invoiceTotal: "invoiceTotal",
+                                        invoiceNumber: "invoiceNumber",
+                                        invoiceDate: "invoiceDate",
+                                        invoiceDueDate: "invoiceDueDate",
+                                    },
+                                });
+                            }
+                        }}
+                    >
+                        Export
                     </button>
 
                     <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto p-2 px-5 rounded-lg"
@@ -170,7 +150,7 @@ const Invoice = () => {
             </div>
 
             <div className="mx-auto bg-white rounded-lg shadow-sm">
-                {data.length > 0 ? (
+                {data?.length > 0 ? (
                     <ConfigProvider
                         theme={{
                             components: {
