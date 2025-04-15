@@ -10,7 +10,6 @@ import moment from "moment";
 
 const LeadsDetails = () => {
     const navigate = useNavigate()
-
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const [sort, setSort] = useState("past")

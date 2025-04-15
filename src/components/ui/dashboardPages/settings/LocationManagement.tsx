@@ -222,7 +222,9 @@ const LocationManagement = () => {
                 </Radio.Group>
             </Modal>
         );
-    };
+    }; 
+
+    console.log(activeData);
 
     const getCurrentData = () => {
         if (tabOption === "Active") return activeData;

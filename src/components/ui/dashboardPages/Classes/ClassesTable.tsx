@@ -1,68 +1,129 @@
-import { Button, Table, Empty, Dropdown, Modal, Radio, ConfigProvider, Tabs } from 'antd';
-import type { MenuProps } from 'antd';
-import { MoreHorizontal } from 'lucide-react';
+import {  Table, Empty, Modal, Radio, ConfigProvider, Tabs } from 'antd';
+import { Trash2 } from 'lucide-react';
 import noData from "../../../../assets/noData.png";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LuPlus } from 'react-icons/lu';
-import { useGetAllClassesQuery, useUpdateClassStatusMutation } from '../../../../redux/features/services/classesApi';
+import { useDeleteClassesMutation, useGetAllClassesQuery, useUpdateClassStatusMutation } from '../../../../redux/features/services/classesApi';
 import moment from 'moment';
+import Swal from 'sweetalert2';
+import { TbEdit } from 'react-icons/tb';
+
+interface DataType {
+    _id: string;
+    name: string;
+    serviceCategory: any;
+    scheduled: any;
+    status: string;
+    staff: any;
+    lead: any;
+}
 
 
 const ClassesTable = () => {
-    const [tabOption, setTabOption] = useState("services")
-    const { data: getAllClass } = useGetAllClassesQuery(undefined) 
-    const [editClassData , setEditClassData] = useState({})
-    // const [updateClassStatus, { isLoading, isError, isSuccess, data: updateData, error }] = useUpdateClassStatusMutation() 
+    const [tabOption, setTabOption] = useState("all")
+    const { data: getAllClass, refetch } = useGetAllClassesQuery(undefined)
+    const [editClassData, setEditClassData] = useState({})
+    const [isStatusOpen, setIsStatusOpen] = useState(false)
+    const navigate = useNavigate();
+    const [deleteClasses] = useDeleteClassesMutation();   
+    
     console.log(getAllClass);
 
-    const data = getAllClass?.map((item: any) => ({
+    const data = getAllClass?.map((item: DataType) => ({
         key: item?._id,
         name: item?.name,
-        serviceCategory: item?.serviceCategory,
         scheduled: moment(item?.scheduled).format('YYYY-MM-DD'),
         status: item?.status,
-        staffName: item?.staff,
-        leadName: item?.lead
+        staffName: item?.staff?.name,
+        leadName: item?.lead?.lead_name,
+        id: item?._id
     }))
+
+    const activeData = data?.filter((item: DataType) => item.status === 'active') || [];
+    const inactiveData = data?.filter((item: DataType) => item.status === 'inactive') || [];
+
     const tabItems = [
         {
-            key: "All",
+            key: "all",
             label: <div className='flex items-center gap-1'>
                 <p className=" text-[18px] font-semibold "> Classes </p>
                 <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
-                    {data?.length}</p>
+                    {data?.length || 0}</p>
             </div>,
 
         },
         {
-            key: "active ",
+            key: "active",
             label: <div className='flex items-center gap-1'>
                 <p className=" text-[18px] font-semibold ">  Active Classes </p>
-                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">3</p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">{activeData?.length || 0}</p>
             </div>,
 
         },
 
         {
-            key: "inactive ",
+            key: "inactive",
             label: <div className='flex items-center gap-1'>
                 <p className=" text-[18px] font-semibold "> Inactive Classes </p>
-                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">5</p>
+                <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">{inactiveData?.length || 0}</p>
             </div>,
 
         },
     ];
 
+    const getCurrentData = () => {
+        if (tabOption === "active") return activeData;
+        if (tabOption === "inactive") return inactiveData;
+        return data || [];
+    };
+
     const onChange = (key: string) => {
         setTabOption(key)
-    };
-    const [isStatusOpen, setIsStatusOpen] = useState(false)
-    const navigate = useNavigate();
+    }; 
+
+           const handleDelete = async (id:string) => {   
+                Swal.fire({
+                    title: "Are you sure?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                  }).then(async (result) => { 
+                   
+                    if (result.isConfirmed) {
+                      await deleteClasses(id).then((res) => { 
+                        console.log(res);
+                        if (res?.data) {
+                          Swal.fire({
+                            text: res?.data?.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                          }).then(() => {
+                            refetch(); 
+                          });
+                        } else {
+                          Swal.fire({
+                            //@ts-ignore
+                            text: res?.error?.data?.message,
+                            icon: "error",
+                            timer: 1500,
+                            showConfirmButton: false,
+                          });
+                        }
+                      })
+                    }
+                  }); 
+        
+              }   
+
+
 
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Service Category', dataIndex: 'serviceCategory', key: 'serviceCategory' },
         { title: 'Staff Name', dataIndex: 'staffName', key: 'staffName' },
         { title: 'Leads Name', dataIndex: 'leadName', key: 'leadName' },
         {
@@ -75,10 +136,10 @@ const ClassesTable = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            render: (status: string) => (
+            render: (_: any, record: any) => (
 
-                <div className={` flex justify-center items-center w-[100px] h-[30px] cursor-pointer ${status === 'active' ? ' border border-[#00721E] rounded-full text-[#00721E]' : 'border border-[#AB0906] rounded-full text-[#AB0906]'}`} onClick={() => setIsStatusOpen(true)} >
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                <div className={` flex justify-center items-center w-[100px] h-[30px] cursor-pointer ${record?.status === 'active' ? ' border border-[#00721E] rounded-full text-[#00721E]' : 'border border-[#AB0906] rounded-full text-[#AB0906]'}`} onClick={() => { setIsStatusOpen(true); setEditClassData(record) }} >
+                    {record?.status.charAt(0).toUpperCase() + record?.status.slice(1)}
                 </div>
 
             ),
@@ -86,20 +147,54 @@ const ClassesTable = () => {
         {
             title: 'Actions',
             key: 'actions',
-            render: (_, record) => (
-                <Dropdown menu={{ items, className: "custom-dropdown-width" }} trigger={['click']} >
-                    <Button type="text" icon={<MoreHorizontal className="w-5 h-5" />} />
-                </Dropdown>
+            render: (_: any, record: any) => (
+                <div className="flex gap-1">
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => { setEditClassData(record) ; navigate(`/create-class?id=${record?.id}`)}}>
+                        <TbEdit size={22} color="#575555" />
+                    </button>
+                    <button className="p-2 hover:bg-gray-100 rounded-full" onClick={() => handleDelete(record.id)}>
+                        <Trash2 className="h-5 w-5 text-[#FE3838]" />
+                    </button>
+                </div>
             ),
         },
     ];
 
-    const items: MenuProps['items'] = [
-        { key: '1', label: <div className='font-medium tracking-wide ' onClick={() => navigate('/create-class')} > Edit </div> },
-        { key: '2', label: 'Delete' },
-    ];
 
-    const StatusModal = ({ isStatusOpen, setIsStatusOpen }: { isStatusOpen: boolean; setIsStatusOpen: (open: boolean) => void }) => {
+    const StatusModal = ({ isStatusOpen, setIsStatusOpen, editClassData, setEditClassData, refetch }: { isStatusOpen: boolean; setIsStatusOpen: (open: boolean) => void, editClassData: any, setEditClassData: any, refetch: () => void }) => {
+        const [updateClassStatus] = useUpdateClassStatusMutation()
+
+        const handleStatusChange = async (status: string) => {
+            const data = {
+                id: editClassData?.id,
+                status: status,
+            };
+            await updateClassStatus(data).then((res) => {
+                console.log(res);
+                if (res?.data) {
+                    Swal.fire({
+                        text: res?.data?.message,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        refetch();
+                        setEditClassData({})
+                        setIsStatusOpen(false);
+                    });
+                } else {
+                    Swal.fire({
+                        //@ts-ignore
+                        text: res?.error?.data?.message,
+                        icon: "error",
+                        timer: 1500,
+                        showConfirmButton: false,
+                    });
+                }
+            });
+
+        }
+
         return (
             <Modal
                 title={<h3 className="text-[22px] font-semibold text-primary border-b border-primary py-2">Class Status</h3>}
@@ -109,7 +204,7 @@ const ClassesTable = () => {
                 width={250}
                 centered
             >
-                <Radio.Group className="flex flex-col gap-3 mt-2">
+                <Radio.Group className="flex flex-col gap-3 mt-2" defaultValue={editClassData?.status} onChange={(e) => handleStatusChange(e.target.value)}>
                     <Radio value="active" className="text-[18px]">Active</Radio>
                     <Radio value="inactive" className="text-[18px]">Inactive</Radio>
                 </Radio.Group>
@@ -153,7 +248,7 @@ const ClassesTable = () => {
                 </ConfigProvider>
             </div>
             <div className="mx-auto bg-white rounded-lg shadow-sm">
-                {data?.length > 0 ?
+                {getCurrentData()?.length > 0 ?
                     <ConfigProvider
                         theme={{
                             components: {
@@ -167,7 +262,7 @@ const ClassesTable = () => {
                             }
                         }}
                     >
-                        <Table columns={columns} dataSource={data} className="border rounded-lg" />
+                        <Table columns={columns} dataSource={getCurrentData()} className="border rounded-lg" />
                     </ConfigProvider> : <div className="py-8 flex justify-center items-center">
                         <Empty
                             image={noData}
@@ -185,7 +280,7 @@ const ClassesTable = () => {
                         />
                     </div>}
             </div>
-            <StatusModal isStatusOpen={isStatusOpen} setIsStatusOpen={setIsStatusOpen} />
+            <StatusModal isStatusOpen={isStatusOpen} setIsStatusOpen={setIsStatusOpen} setEditClassData={setEditClassData} editClassData={editClassData} refetch={refetch} />
         </div>
     );
 };

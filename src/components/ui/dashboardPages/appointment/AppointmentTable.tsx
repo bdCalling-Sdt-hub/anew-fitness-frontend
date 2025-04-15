@@ -1,26 +1,26 @@
+//@ts-nocheck
 import { ConfigProvider, Tabs } from "antd";
 import { LuPlus } from "react-icons/lu";
 import StaffAvailablePage from "./StaffAvailable/StaffAvailablePage";
 import { useState } from "react";
 import AddStaffModal from "./StaffAvailable/AddStaffModal";
+import { useGetAllStaffQuery } from "../../../../redux/features/staff/staffManagementApi";
 
 
 const AppointmentTable = () => {
    
-    const [openStaff , setOpenStaff] = useState(false)
-    const [tabOption, setTabOption] = useState("services") 
-console.log("tabOption", tabOption);
+    const [openStaff , setOpenStaff] = useState(false) 
+    const [editStaff , setEditStaff] = useState({}) 
+    const {refetch} = useGetAllStaffQuery(undefined) 
+
     const items = [
         {
             key: "staff",
             label: <p className=" text-[18px] font-semibold "> Staff Available </p>,
-            children: <StaffAvailablePage setOpenStaff={setOpenStaff} />,
+            children: <StaffAvailablePage setOpenStaff={setOpenStaff} setEditStaff={setEditStaff} />,
         },
     ];
 
-    const onChange = (key: string) => {
-        setTabOption(key)
-    };
 
 
     return (
@@ -53,12 +53,12 @@ console.log("tabOption", tabOption);
                     }}
                 >
 
-                    <Tabs defaultActiveKey="services" items={items} onChange={onChange} />
+                    <Tabs defaultActiveKey="services" items={items}  />
                 </ConfigProvider>
 
             </div>
             
-            <AddStaffModal openStaff={openStaff} setOpenStaff={setOpenStaff} />
+            <AddStaffModal openStaff={openStaff} setOpenStaff={setOpenStaff} refetch={refetch} editStaff={editStaff} setEditStaff={setEditStaff} />
         </div>
     );
 };

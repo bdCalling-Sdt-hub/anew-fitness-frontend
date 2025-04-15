@@ -43,8 +43,15 @@ const staffManagementApi = baseApi.injectEndpoints({
       }),
     }),
 
+    addStaffAvailability: build.mutation({
+      query: (data) => ({
+        url: "/staff/add-aviliability",
+        method: "POST",
+        body: data,
+      }),
+    })
 
   })
 })
 
-export const { useGetAllStaffQuery, useAddStaffMutation, useDeleteStaffMutation, useEditStaffInfoMutation , useAssignStaffMutation } = staffManagementApi;
+export const { useGetAllStaffQuery, useAddStaffMutation, useDeleteStaffMutation, useEditStaffInfoMutation , useAssignStaffMutation , useAddStaffAvailabilityMutation } = staffManagementApi;

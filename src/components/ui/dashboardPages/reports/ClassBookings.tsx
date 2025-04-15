@@ -4,6 +4,8 @@ import booking from "../../../../assets/booking.png"
 import noData from "../../../../assets/noData.png"
 import { Table, Tag } from "antd"
 import type { ColumnsType } from "antd/es/table"
+import { useGetClassReportQuery } from "../../../../redux/features/reports/reportsApi";
+import moment from "moment";
 
 interface DataType {
   key: string
@@ -15,115 +17,53 @@ interface DataType {
   trainer?: string
   bookingId: string
   paymentMethod: string
-  status: "Running" | "Not Running"
+  status: "Running" | "Not Running" 
+  _id:string 
+  createdAt:string
 }
-const classesData = [
-  {
-    id: 1,
-    total: "$12,000",
-    title: "Total Class Sales"
-  },
-  {
-    id: 2,
-    total: "357",
-    title: "Completed Class"
-  },
-  {
-    id: 3,
-    total: "128",
-    title: "Running Class"
-  },
-  {
-    id: 4,
-    total: "75",
-    title: "Not Running Class"
-  },
-]
 
-const data: DataType[] = [
-  {
-    key: "1",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    trainer: "Rakibul Hasan",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Running",
-  },
-  {
-    key: "2",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Not Running",
-  },
-  {
-    key: "3",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    trainer: "Rakibul Hasan",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Running",
-  },
-  {
-    key: "4",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Not Running",
-  },
-  {
-    key: "5",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    trainer: "Rakibul Hasan",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Running",
-  },
-  {
-    key: "6",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Not Running",
-  },
-  {
-    key: "7",
-    bookedAt: "04-02-2025",
-    contact: "Sabbir Ahmed",
-    email: "example@gmail.com",
-    class: "Class Name",
-    location: "Demo Location",
-    trainer: "Rakibul Hasan",
-    bookingId: "#123456",
-    paymentMethod: "Visa Card",
-    status: "Running",
-  },
-]
-const ClassBookings = () => {
+const ClassBookings = () => { 
+
+  const {data:classReport} = useGetClassReportQuery(undefined) 
+
+  console.log(classReport); 
+
+  const classesData = [
+    {
+      id: 1,
+      total: classReport?.totalClasses,
+      title: "Total Classes"
+    },
+    {
+      id: 2,
+      total: classReport?.completedClasses,
+      title: "Completed Class"
+    },
+    {
+      id: 3,
+      total: classReport?.runningClasses,
+      title: "Running Class"
+    },
+    {
+      id: 4,
+      total: classReport?.notRunningClasses,
+      title: "Not Running Class"
+    },
+  ] 
+
+  const data = classReport?.runningClassesData?.map((item:DataType)=>({
+    key: item?._id,
+    bookedAt: moment(item?.createdAt).format('YYYY-MM-D'),
+    contact: item?.contact,
+    email: item?.email,
+    class: item?.class,
+    location: item?.location,
+    trainer: item?.trainer,
+    bookingId: item?._id,
+    paymentMethod: item?.paymentMethod,
+    status: "Running",  
+    id: item?._id
+  }))
 
   const columns: ColumnsType<DataType> = [
     {
@@ -160,11 +100,6 @@ const ClassBookings = () => {
       title: "Booking ID",
       dataIndex: "bookingId",
       key: "bookingId",
-    },
-    {
-      title: "Payment Method",
-      dataIndex: "paymentMethod",
-      key: "paymentMethod",
     },
     {
       title: "Status",

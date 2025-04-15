@@ -14,7 +14,8 @@ const Invoice = () => {
     const [addClient, setAddClient] = useState(false)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [multipleInvoice, setMultipleInvoice] = useState(false)
-    const { data: allInvoice } = useGetAllInvoiceQuery(undefined)
+    const { data: allInvoice } = useGetAllInvoiceQuery(undefined) 
+    console.log(allInvoice);
 
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,
