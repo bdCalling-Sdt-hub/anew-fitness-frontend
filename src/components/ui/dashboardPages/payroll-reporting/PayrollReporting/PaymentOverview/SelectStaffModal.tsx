@@ -1,10 +1,15 @@
 import { Button, Form, Modal, Select } from "antd";
 import { X } from "lucide-react";
+import { useGetPayrollOverviewQuery } from "../../../../../../redux/features/payrollReporting/payrollReportingApi";
 
-const SelectStaffModal = ({ open, setOpen }:{open: boolean, setOpen: (open: boolean) => void}) => { 
+const SelectStaffModal = ({ open, setOpen , setStaffData  }:{open: boolean, setOpen: (open: boolean) => void , setStaffData: (staffData: any) => void}) => { 
+ 
+  const {data:useAllPayroll} = useGetPayrollOverviewQuery({})  
 
-    const handleCreateStaff = () => {
-      setOpen(false);
+  const nameOption  = useAllPayroll?.overviewData?.map((item: any) => ({ label: item?.instructorName, value: item?.instructorName }))
+    const onFinish = (values:{staffName:string}) => {
+      setOpen(false); 
+      setStaffData(values?.staffName)
     }
     return (
         <Modal
@@ -27,7 +32,7 @@ const SelectStaffModal = ({ open, setOpen }:{open: boolean, setOpen: (open: bool
         closable={false} 
         centered
       >
-        <Form  layout="vertical">
+        <Form  layout="vertical" onFinish={onFinish} >
           <Form.Item
             label={ <div className=" flex flex-col gap-y-2"> 
             <p className="text-[22px] font-semibold text-primaryText"> Name</p>
@@ -36,15 +41,10 @@ const SelectStaffModal = ({ open, setOpen }:{open: boolean, setOpen: (open: bool
           
           >
            <Select
-                            placeholder="Jolanca LaSalle" 
-                            defaultValue={'Jolanca LaSalle'}
+                            placeholder="Select name"          
                             className="placeholder:text-primary placeholder:font-semibold placeholder:text-[18px]"
                             style={{ height: '45px', width: '100%', border: '1px solid #ab0906', borderRadius: '7px' }}
-                            options={[
-                                { value: 'Jolanca LaSalle', label: 'Jolanca LaSalle ' },
-                                { value: 'Mithila', label: 'Mithila' },
-                                { value: 'Asad potol', label: 'Asad potol' },
-                            ]}
+                            options={nameOption}
                         />
           </Form.Item>
   
@@ -53,7 +53,7 @@ const SelectStaffModal = ({ open, setOpen }:{open: boolean, setOpen: (open: bool
             <Button size="large" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="primary" size="large" onClick={handleCreateStaff} className="bg-red-700 hover:bg-red-800">
+            <Button htmlType="submit" size="large"  className="bg-red-700 hover:bg-red-800 text-white">
               Search
             </Button>
           </div>

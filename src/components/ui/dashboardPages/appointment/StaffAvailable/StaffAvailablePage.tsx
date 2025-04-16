@@ -15,7 +15,8 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
   const navigate = useNavigate(); 
   const [userId , setUserId] = useState("")
   const { data: allStaff, refetch } = useGetAllStaffQuery(undefined)
-  const [deleteStaff] = useDeleteStaffMutation();
+  const [deleteStaff] = useDeleteStaffMutation();  
+  console.log(allStaff);
 
   const data = allStaff?.map((item: { name: string, role: string, status: string, createdAt: string, documents: string, expiryDate: string, _id: string, availability: any }, index: number) => ({
     key: index + 1,
@@ -71,7 +72,8 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
 
   const toggleItem = (id: number) => {
     setOpenItems((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
+  }; 
+
 
   return (
     <div className="w-full">
@@ -97,38 +99,38 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
                 </div>
 
                 {item?.availability && item?.availability.length > 0 ? (
-                  <div>
-
-
-                    <Table
-                      dataSource={item?.availability.map((slot: { day: string, startTime: string, endTime: string }, idx: number) => ({
-                        key: idx,
-                        day: slot.day,
-                        startTime: slot.startTime,
-                        endTime: slot.endTime,
-                      }))}
-                      columns={[
-                        {
-                          title: "Day",
-                          dataIndex: "day",
-                          key: "day",
-                        },
-                        {
-                          title: "Start Time",
-                          dataIndex: "startTime",
-                          key: "startTime",
-                        },
-                        {
-                          title: "End Time",
-                          dataIndex: "endTime",
-                          key: "endTime",
-                        },
-                      ]}
-                      pagination={false}
-                      bordered
-                      size="small"
-                    />
-                  </div>
+                 <div className="mt-4">
+    <Table
+      dataSource={item.availability.map((slot:{ day: string; timeSlots: { startTime: string; endTime: string; }[]; }, idx:number) => ({
+        key: idx,
+        day: slot.day,
+        timeSlots: slot.timeSlots
+          .map((time:{ startTime: string; endTime: string; }) => `${time.startTime} - ${time.endTime}`)
+          .join(", "),
+      }))}
+      columns={[
+        {
+          title: "Day",
+          dataIndex: "day",
+          key: "day",
+          render: (text) => <strong>{text}</strong>,
+        },
+        {
+          title: "Time Slots",
+          dataIndex: "timeSlots",
+          key: "timeSlots",
+          render: (text) => (
+            <div style={{ whiteSpace: "pre-wrap", lineHeight: "1.6" }}>
+              {text}
+            </div>
+          ),
+        },
+      ]}
+      pagination={false}
+      bordered
+      size="small"
+    />
+  </div> 
                 ) : (
                   <div className="flex items-center gap-2 cursor-pointer" onClick={() =>{ toggleItem(index); setUserId(item?.id)}}>
                     <span className="text-[#FE3838] text-[22px] font-bold">

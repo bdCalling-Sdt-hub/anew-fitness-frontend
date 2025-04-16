@@ -4,14 +4,29 @@ const payrollReporting = baseApi.injectEndpoints({
     endpoints: (build) => ({    
  
         getAllPayrollReporting: build.query({
-            query: () => {
-                // const params = new URLSearchParams();  
-                // if(data) { 
-                //     params.append("workType", data);  
-                // }
+            query: (status) => {
+                const params = new URLSearchParams();  
+                if(status) { 
+                    params.append("year", status);  
+                }
                 return{
-                    url: `/report/overview`,
-                    method: "GET",
+                    url: `/report/overview?${params.toString()}`,
+                }    
+            },
+            transformResponse: (response: any) => response,
+        }), 
+
+        getPayrollOverview: build.query({
+            query: ({filterType ,staffData }) => {
+                const params = new URLSearchParams();  
+                if(filterType) { 
+                    params.append("filterType", filterType);  
+                }
+                if(staffData) { 
+                    params.append("instrtuctorName", staffData);  
+                }
+                return{
+                    url: `/report/getOverviewReport?${params.toString()}`,
                 }    
             },
             transformResponse: (response: any) => response,
@@ -19,4 +34,4 @@ const payrollReporting = baseApi.injectEndpoints({
 
     })
 })
-export const {useGetAllPayrollReportingQuery } = payrollReporting;
+export const {useGetAllPayrollReportingQuery , useGetPayrollOverviewQuery } = payrollReporting;

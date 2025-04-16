@@ -6,27 +6,32 @@ import { Table, Tag } from "antd"
 import type { ColumnsType } from "antd/es/table"
 import { useGetClassReportQuery } from "../../../../redux/features/reports/reportsApi";
 import moment from "moment";
+import { useState } from "react";
 
 interface DataType {
   key: string
   bookedAt: string
-  contact: string
-  email: string
-  class: string
-  location: string
-  trainer?: string
+  name: string
+  frequency: string
+  totalCapacity: string
+  location: {
+    locationName: string
+  }
+  workType?: string
+  staff: {
+    name: string
+  }
   bookingId: string
   paymentMethod: string
-  status: "Running" | "Not Running" 
-  _id:string 
-  createdAt:string
+  status: "Running" | "Not Running"
+  _id: string
+  createdAt: string
 }
 
-const ClassBookings = () => { 
-
-  const {data:classReport} = useGetClassReportQuery(undefined) 
-
-  console.log(classReport); 
+const ClassBookings = () => {
+  const [status, setStatus] = useState("") 
+  const [search , setSearch]= useState("") 
+  const { data: classReport } = useGetClassReportQuery({ status , search })
 
   const classesData = [
     {
@@ -49,19 +54,18 @@ const ClassBookings = () => {
       total: classReport?.notRunningClasses,
       title: "Not Running Class"
     },
-  ] 
+  ]
 
-  const data = classReport?.runningClassesData?.map((item:DataType)=>({
+  const data = classReport?.classesData?.map((item: DataType) => ({
     key: item?._id,
     bookedAt: moment(item?.createdAt).format('YYYY-MM-D'),
-    contact: item?.contact,
-    email: item?.email,
-    class: item?.class,
-    location: item?.location,
-    trainer: item?.trainer,
-    bookingId: item?._id,
-    paymentMethod: item?.paymentMethod,
-    status: "Running",  
+    workType: item?.workType,
+    frequency: item?.frequency,
+    totalCapacity: item?.totalCapacity,
+    class: item?.name,
+    location: item?.location?.locationName,
+    trainer: item?.staff?.name,
+    status: item?.status,
     id: item?._id
   }))
 
@@ -72,19 +76,29 @@ const ClassBookings = () => {
       key: "bookedAt",
     },
     {
-      title: "Contact",
-      dataIndex: "contact",
-      key: "contact",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Class",
+      title: "Class Name",
       dataIndex: "class",
       key: "class",
+    },
+    {
+      title: "Work Type",
+      dataIndex: "workType",
+      key: "workType",
+    },
+    {
+      title: "Frequency",
+      dataIndex: "frequency",
+      key: "frequency",
+    },
+    {
+      title: "Capacity",
+      dataIndex: "totalCapacity",
+      key: "totalCapacity",
+    },
+    {
+      title: "Staff Name",
+      dataIndex: "trainer",
+      key: "trainer",
     },
     {
       title: "Location",
@@ -92,20 +106,15 @@ const ClassBookings = () => {
       key: "location",
     },
     {
-      title: "Trainer",
+      title: "Staff Name",
       dataIndex: "trainer",
       key: "trainer",
-    },
-    {
-      title: "Booking ID",
-      dataIndex: "bookingId",
-      key: "bookingId",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status: string) => <Tag color={status === "Running" ? "green" : "red"}>{status}</Tag>,
+      render: (status: string) => <Tag color={status === "active" ? "green" : "red"} >{status === "active" ? "Running" : "Not Running"}</Tag>,
     },
   ]
 
@@ -113,14 +122,13 @@ const ClassBookings = () => {
   return (
     <div className="px-[30px] pt-[20px]">
       <div className=" flex items-center justify-between">
-        <Input placeholder="Search here" prefix={<RiSearchLine size={22} color="#808080" />} style={{ width: "500px", height: "51px", borderRadius: "8px" }} />
-        <button className=" h-[51px] px-7 bg-primary text-white rounded-lg font-semibold text-[22px]"> Export</button>
+        <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search here"  prefix={<RiSearchLine size={22} color="#808080" />} style={{ width: "500px", height: "51px", borderRadius: "8px" }} />
       </div>
 
       <div>
         <div className=" grid grid-cols-4 gap-10 w-full  my-6 " >
           {
-            classesData.map((item) => (
+            classesData?.map((item) => (
               <div className="px-[29px] py-[35px] border border-primary rounded-lg  flex items-center gap-4">
                 <div className=" flex items-center justify-center h-[85px] w-[85px] rounded-full bg-[#ffc1c0] border border-primary">
                   <img src={booking} alt="" className=" h-[45px] w-[50px] " />
@@ -140,16 +148,17 @@ const ClassBookings = () => {
           <Select
             placeholder="All Classes"
             className="placeholder:text-primary placeholder:font-semibold placeholder:text-[18px]"
-            style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }}
+            style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }} 
+            onChange={(value) => setStatus(value)}
             options={[
-              { value: 'all', label: 'All' },
+              { value: '', label: 'All' },
               { value: 'running', label: 'Running' },
               { value: 'not running', label: 'Not Running' },
             ]}
           />
         </div>
         <div className="mx-auto bg-white rounded-lg shadow-sm">
-          {data.length > 0 ?
+          {data?.length > 0 ?
             <ConfigProvider
               theme={{
                 components: {

@@ -1,78 +1,84 @@
-import { Select } from "antd";
+
 import booking from "../../../../../assets/booking.png"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { useGetAllPayrollReportingQuery } from "../../../../../redux/features/payrollReporting/payrollReportingApi";
-
-
-const monthlyData = [
-  { name: 'Jan', payroll: 150000, instructors: 150, classes: 150 },
-  { name: 'Feb', payroll: 160000, instructors: 160, classes: 155 },
-  { name: 'Mar', payroll: 155000, instructors: 155, classes: 160 },
-  { name: 'Apr', payroll: 175000, instructors: 170, classes: 165 },
-  { name: 'May', payroll: 165000, instructors: 165, classes: 170 },
-  { name: 'Jun', payroll: 170000, instructors: 175, classes: 175 },
-  { name: 'Jul', payroll: 160000, instructors: 165, classes: 165 },
-  { name: 'Aug', payroll: 180000, instructors: 180, classes: 180 },
-  { name: 'Sep', payroll: 170000, instructors: 170, classes: 170 },
-  { name: 'Oct', payroll: 175000, instructors: 175, classes: 175 },
-  { name: 'Nov', payroll: 180000, instructors: 180, classes: 180 },
-  { name: 'Dec', payroll: 175000, instructors: 175, classes: 175 },
-];
+import { DatePicker, Select } from "antd";
+import { useState } from "react";
+import dayjs from "dayjs";
 
 const chartConfigs = [
   {
     title: 'Total Payroll',
     dataKey: 'payroll',
-    prefix: '$',
-    yDomain: [140000, 190000],
-    growth: '+10%',
-    value: '150K'
+    yDomain: [400, 1000],
   },
   {
     title: 'Total Instructors',
     dataKey: 'instructors',
-    yDomain: [140, 190],
-    growth: '+15%',
-    value: '150'
+    yDomain: [50, 100],
   },
   {
     title: 'Total Classes',
     dataKey: 'classes',
-    yDomain: [140, 190],
-    growth: '+10%',
-    value: '150'
+    yDomain: [50, 100],
   }
 ];
 
 
-const classesData = [
+
+const PayrollReporting = () => { 
+  const [status, setStatus] = useState("")
+  const {data:allPayroll} = useGetAllPayrollReportingQuery(status);  
+
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
+  const transformedMonthlyData = monthNames.map((month) => ({
+    name: month.slice(0, 3), // Jan, Feb, etc.
+    payroll: allPayroll?.monthlyPayroll?.find((item:{ month: string; value: number; }) => item.month === month)?.value || 0,
+    instructors: allPayroll?.monthlyInstructors?.find((item:{ month: string; value: number; }) => item.month === month)?.value || 0,
+    classes: allPayroll?.monthlyClasses?.find((item:{ month: string; value: number; }) => item.month === month)?.value || 0,
+  })); 
+
+  const classesData = [
     {
         id: 1,
-        total: "$12,000",
-        title: "Total Payroll"
+        total: allPayroll?.totalPayrollAmount,
+        title: "Total Payroll Amount"
     },
     {
         id: 2,
-        total: "357",
+        total: allPayroll?.totalInstructors,
         title: "Total Instructor"
     },
     {
         id: 3,
-        total: "128",
-        title: "Total Class"
+        total: allPayroll?.totalClasses,
+        title: "Total Classes"
+    },
+    {
+        id: 4,
+        total: allPayroll?.totalPayrollAmount,
+        title: "Total Miles Amount"
     },
 
-] 
-const PayrollReporting = () => { 
-  const {data} = useGetAllPayrollReportingQuery(undefined); 
-  console.log(data, "payroll reporting data"); 
+]   
+
+const onchange = (date: any) => { 
+  const formattedDate = dayjs(date).format('YYYY'); 
+    setStatus(formattedDate)
+}
+
     return (
         <div className="px-[30px] pt-[30px]">
                 <div>
                 <div className=" grid grid-cols-4 gap-10 w-full  my-6 " >  
-                    <div className=" col-span-3 "> 
+                    <div className=" col-span-4 "> 
 
-                    <div className="grid grid-cols-3 gap-10 ">
+                    <div className="grid grid-cols-4 gap-10 ">
 
                     {
                         classesData.map((item) => (
@@ -90,24 +96,13 @@ const PayrollReporting = () => {
                     </div>
                     </div>
 
-                    <div className=" col-span-1  flex items-start justify-end gap-5">  
-                    <Select
-                            placeholder="Biweekly" 
-                            defaultValue={'Biweekly'}
-                            className="placeholder:text-primary placeholder:font-semibold placeholder:text-[18px]"
-                            style={{ height: '50px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }}
-                            options={[
-                                { value: 'Biweekly', label: 'Biweekly ' },
-                                { value: 'Monthly', label: 'Monthly' },
-                                { value: 'Yearly', label: 'Yearly' },
-                            ]}
-                        />
-                    <button className=" h-[50px] px-7 bg-primary text-white rounded-lg font-medium text-[22px]"> Export</button>
-
-                    </div>
+               
                 </div>
             </div>  
-
+ 
+            <div className=" flex items-center justify-end pb-6">
+            <DatePicker   onChange={onchange} picker="year" style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }}  />
+        </div>
             <div className=" ">
       <div className="grid grid-cols-1 gap-6">
         {chartConfigs.map((config, index) => (
@@ -115,19 +110,11 @@ const PayrollReporting = () => {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h2 className="text-2xl font-bold text-primaryText pb-2">{config.title}</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[34px] font-semibold">
-                    {config.prefix}{config.value}
-                  </span>
-                  <span className="text-primary text-sm font-medium">
-                    {config.growth}
-                  </span>
-                </div>
               </div>
            
             </div>
             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+              <LineChart data={transformedMonthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
                 <defs>
                   <linearGradient id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#EF4136" stopOpacity={0.1}/>

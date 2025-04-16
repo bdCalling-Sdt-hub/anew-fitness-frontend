@@ -4,72 +4,44 @@ import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import SelectStaffModal from "./SelectStaffModal"; 
 import Table, { ColumnsType } from "antd/es/table"; 
 import noData from "../../../../../../assets/noData.png";
+import { useGetPayrollOverviewQuery } from "../../../../../../redux/features/payrollReporting/payrollReportingApi";
+import moment from "moment";
+import { exportToCSV } from "../../../../../shared/ExportToCSV";
 
 interface DataType {
     key: string
     biweeklyDate: string
     instructorName: string
-    totalWorkingHour: number
-    workingAmount: number
+    totalWorkingHours: number
+    totalWorkAmount: number
     totalMiles: number
     mileageRate: number
-    totalAmount: number
+    totalAmount: number 
+    _id: string  
+    periodEnding: string 
+    periodBeginning: string
+
   }
-const data: DataType[] = [
-    {
-      key: "1",
-      biweeklyDate: "Jan 01, 25 - Jan 14, 25",
-      instructorName: "Jolanca LaSalle",
-      totalWorkingHour: 12.0,
-      workingAmount: 330,
-      totalMiles: 10,
-      mileageRate: 10,
-      totalAmount: 340,
-    },
-    {
-      key: "2",
-      biweeklyDate: "Jan 15, 25 - Jan 28, 25",
-      instructorName: "Jolanca LaSalle",
-      totalWorkingHour: 12.0,
-      workingAmount: 330,
-      totalMiles: 10,
-      mileageRate: 10,
-      totalAmount: 340,
-    },
-    {
-      key: "3",
-      biweeklyDate: "Jan 29, 25 - Feb 11, 25",
-      instructorName: "Jolanca LaSalle",
-      totalWorkingHour: 12.0,
-      workingAmount: 330,
-      totalMiles: 10,
-      mileageRate: 10,
-      totalAmount: 340,
-    },
-    {
-      key: "4",
-      biweeklyDate: "Feb 12, 25 - Feb 26, 25",
-      instructorName: "Jolanca LaSalle",
-      totalWorkingHour: 12.0,
-      workingAmount: 330,
-      totalMiles: 10,
-      mileageRate: 10,
-      totalAmount: 340,
-    },
-    {
-      key: "5",
-      biweeklyDate: "Feb 27, 25 - Mar 12, 25",
-      instructorName: "Jolanca LaSalle",
-      totalWorkingHour: 12.0,
-      workingAmount: 330,
-      totalMiles: 10,
-      mileageRate: 10,
-      totalAmount: 340,
-    },
-  ] 
+
 
 const PaymentOverview = () => {
-    const [staffModal, setStaffModal] = useState(false) 
+    const [staffModal, setStaffModal] = useState(false)   
+    const [filterType , setFilterType] = useState("") 
+    const [staffData , setStaffData] = useState("")
+
+    const {data:useAllPayroll} = useGetPayrollOverviewQuery({filterType ,staffData }) 
+    console.log(useAllPayroll); 
+
+    const data = useAllPayroll?.overviewData?.map((item:DataType)=>({
+        key: item?._id,
+        biweeklyDate: `${moment(item?.periodBeginning).format("MMM DD, YY")} - ${moment(item?.periodEnding).format("MMM DD, YY")}` ,
+        instructorName: item?.instructorName,
+        totalWorkingHour: item?.totalWorkingHours,
+        workingAmount: item?.totalWorkAmount,
+        totalMiles: item?.totalMiles,
+        mileageRate: item?.mileageRate,
+        totalAmount: item?.totalAmount
+    }))
 
     const columns: ColumnsType<DataType> = [
         {
@@ -126,27 +98,53 @@ const PaymentOverview = () => {
                     placeholder="Biweekly"
                     defaultValue={'Biweekly'}
                     className="placeholder:text-primary placeholder:font-semibold placeholder:text-[18px]"
-                    style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }}
+                    style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }} 
+                    onChange={(value) => setFilterType(value)}
                     options={[
-                        { value: 'Biweekly', label: 'Biweekly ' },
-                        { value: 'Monthly', label: 'Monthly' },
-                        { value: 'Yearly', label: 'Yearly' },
+                        { value: 'biweekly', label: 'Biweekly ' },
+                        { value: 'monthly', label: 'Monthly' },
+                        { value: 'yearly', label: 'Yearly' },
                     ]}
                 />
 
                 <button className=" h-[45px] px-7 border border-primary text-primaryText rounded-lg font-medium text-[20px] flex items-center justify-center gap-2" onClick={() => setStaffModal(true)}>
 
                     <span><HiOutlineAdjustmentsHorizontal size={22} /> </span>
-                    <span>Jolanca LaSalle </span>
+                    <span>Filter by name </span>
                 </button>
 
-                <button className=" h-[45px] px-7 bg-primary text-white rounded-lg font-medium text-[22px]"> Export</button>
+                <button className=" h-[45px] px-7 bg-primary text-white rounded-lg font-medium text-[22px]" 
+                onClick={() => {
+                                            if (data) {
+                                                exportToCSV(data, {
+                                                    filename: "payment-overview",
+                                                    fields: [
+                                                        "biweeklyDate",
+                                                        "instructorName",
+                                                        "totalWorkingHour",
+                                                        "workingAmount",
+                                                        "totalMiles",
+                                                        "mileageRate",
+                                                        "totalAmount",
+                                                    ],
+                                                    headers: {
+                                                        biweeklyDate: "biweeklyDate",
+                                                        instructorName: "instructorName",
+                                                        totalWorkingHour: "totalWorkingHour",
+                                                        workingAmount: "workingAmount",
+                                                        totalMiles: "totalMiles",
+                                                        mileageRate: "mileageRate",
+                                                        totalAmount: "totalAmount",
+                                                    },
+                                                });
+                                            }
+                                        }} > Export</button>
 
             </div> 
 
             <div> 
             <div className="mx-auto bg-white rounded-lg shadow-sm pt-[40px]">
-                {data.length > 0 ?
+                {data?.length > 0 ?
                     <ConfigProvider
                         theme={{
                             components: {
@@ -177,7 +175,7 @@ const PaymentOverview = () => {
                     </div>}
             </div> 
             </div>
-            <SelectStaffModal open={staffModal} setOpen={setStaffModal} />
+            <SelectStaffModal open={staffModal} setOpen={setStaffModal} setStaffData={setStaffData}/>
         </div>
     );
 };
