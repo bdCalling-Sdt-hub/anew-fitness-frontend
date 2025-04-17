@@ -4,13 +4,16 @@ import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
 import { IoIosArrowDown } from 'react-icons/io'; 
 import noData from "../../../../assets/noData.png";
 import { useNavigate } from 'react-router-dom';
+import { useGetHomeDataQuery } from '../../../../redux/features/home/homeApi';
 
 interface ClassSchedule {
     key: string;
     name: string;
-    serviceCategory: string;
-    scheduled: string;
-    status: 'active' | 'inactive';
+    location: string;
+    startTime: string; 
+    staff:{name: string}
+    status: 'active' | 'inactive'; 
+    _id:string
 }
 
 // const data = [
@@ -37,24 +40,38 @@ interface ClassSchedule {
 //     }
 // ];
  
-const data: ClassSchedule[] = []
 const UpcomingEvent = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false); 
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
-        location: 'All Location',
-        dateRange: 'Today'
-    });
+       location: '',
+        dateRange: ''
+    }); 
+ 
+    const { data: allData } = useGetHomeDataQuery({ location: filters?.location, dateRange: filters?.dateRange });
+
+    const upComingEventsData = allData?.upcomingEvents
+    console.log(upComingEventsData); 
+
+    const data = upComingEventsData?.map((item: ClassSchedule) => ({
+        key: item?._id,
+        name: item?.name,
+        location: item?.location, 
+        startTime: item?.startTime,
+        staff: item?.staff?.name,
+        status: item?.status,
+    }));
 
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Service Category', dataIndex: 'serviceCategory', key: 'serviceCategory' },
+        { title: 'Location', dataIndex: 'location', key: 'location' },
         {
-            title: 'Scheduled',
-            dataIndex: 'scheduled',
-            key: 'scheduled',
+            title: 'Start Time',
+            dataIndex: 'startTime',
+            key: 'startTime',
             render: (text: string) => <span className="text-red-600">{text}</span>,
-        },
+        }, 
+        { title: 'Staff Name', dataIndex: 'staff', key: 'staff' },
         {
             title: 'Status',
             dataIndex: 'status',
@@ -101,9 +118,9 @@ const UpcomingEvent = () => {
 
                        }}
                         options={[
-                            { value: 'Today', label: 'Today' },
-                            { value: 'This Week', label: 'This Week' },
-                            { value: 'This Month', label: 'This Month' },
+                            { value: 'today', label: 'Today' },
+                            { value: 'thisWeek', label: 'This Week' },
+                            { value: 'thisMonth', label: 'This Month' },
                         ]}
                     />
                 </div>
@@ -121,7 +138,7 @@ const UpcomingEvent = () => {
                 <div>
                     <div className='flex items-center gap-1'>
                         <h2 className="text-[30px] font-bold">Upcoming Event</h2>
-                        <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
+                        <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data?.length}</p>
                     </div>
                     <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
                 </div>
@@ -140,7 +157,7 @@ const UpcomingEvent = () => {
                 {isFilterOpen && <FilterCard />}
             </div>
             <div className=" bg-white rounded-lg shadow-sm">
-                {data.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
+                {data?.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
             <Empty 
                 image={noData}
                 imageStyle={{ width: 150, height: 150 , marginLeft:65 }} 

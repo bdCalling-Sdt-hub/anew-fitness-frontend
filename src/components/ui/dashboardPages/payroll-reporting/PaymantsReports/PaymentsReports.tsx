@@ -1,9 +1,12 @@
-import { DatePicker, Select, Table } from 'antd';
+import {  Table } from 'antd';
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import { TbReport } from 'react-icons/tb';
 import ReportDetailsModal from './ReportDetailsModal';
 import MilesReportModal from '../../appointment/StaffAvailable/MilesReportModal';
+import { useSearchParams } from 'react-router-dom';
+import { useGetNewInstructorByIdQuery } from '../../../../../redux/features/payrollReporting/paymentReportApi';
+import moment from 'moment';
 
 
 interface WeeklyData {
@@ -17,51 +20,21 @@ interface WeeklyData {
 
 const PaymentsReports = () => {
   const [reportDetails, setReportDetails] = useState(false);
-  const [milesReport, setMilesReport] = useState(false);
-
-  const week1Data: WeeklyData[] = [
-    {
-      date: '04-01-2025',
-      workDescription: 'Group Class',
-      workType: 'Offline',
-      workingHour: 2.00,
-      hourRate: 30.00,
-      totalAmount: 60
-    },
-    {
-      date: '04-02-2025',
-      workDescription: 'Team Meeting',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 20.00,
-      totalAmount: 20
-    },
-    {
-      date: '04-03-2025',
-      workDescription: 'Events',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 30.00,
-      totalAmount: 30
-    },
-    {
-      date: '04-04-2025',
-      workDescription: 'Personal Training',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 35.00,
-      totalAmount: 35
-    },
-    {
-      date: '04-05-2025',
-      workDescription: 'Training Hours',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 20.00,
-      totalAmount: 20
-    }
-  ];
-
+  const [milesReport, setMilesReport] = useState(false);  
+ const [searchParams] = useSearchParams()  
+ const id = searchParams.get('id')    
+const {data:instructorDetails} = useGetNewInstructorByIdQuery(id) 
+console.log(instructorDetails);
+ 
+const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
+  date: moment(item?.workDetails?.date).format('MM-DD-YYYY'), 
+  workDescription: item?.workDetails?.workDescription,
+  workType: item?.workDetails?.workType,
+  workingHour: item?.workDetails?.hours,
+  hourRate: item?.workDetails?.hourRate,
+  totalAmount:item?.totalAmount
+}))
+ 
   const week2Data: WeeklyData[] = [
     {
       date: '04-08-2025',
@@ -307,26 +280,10 @@ const PaymentsReports = () => {
 
         <p className=' flex items-center gap-1 text-[30px] font-bold'> <span> <TbReport size={24} />  </span> <span>View Report</span>    </p>
 
-        <div>
-          <p className='text-[22px] font-bold pt-5'>Instructor Name </p>
-          <p className='text-[18px] font-medium py-3'> Select the Instructor Name you'd like to create a new report </p>
-          <Select placeholder="Select an option" style={{ height: '50px', width: '32%' }}>
-            <Select.Option value="instructor1">Instructor 1</Select.Option>
-            <Select.Option value="instructor2">Instructor 2</Select.Option>
-          </Select>
-        </div>
+        <div className="my-8 w-full"> 
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6  py-5">
-
-          <div>
-            <p className='text-[22px] font-bold'>Period Beginning </p>
-            <DatePicker className="w-full" style={{ height: '50px' }} />
-          </div>
-
-          <div>
-            <p className='text-[22px] font-bold'>Period Ending </p>
-            <DatePicker className="w-full" style={{ height: '50px' }} />
-          </div>
+          <div className='flex justify-between items-center pb-4'> 
+          <p className="text-primary font-bold text-[30px] ">Week-1</p>
 
           <div className='flex items-end'>
             <button
@@ -335,14 +292,9 @@ const PaymentsReports = () => {
             >
               <span> Add Report Details </span>  <span><FiPlus size={22} /></span>
             </button>
+          </div> 
+
           </div>
-
-        </div>
-
-
-
-        <div className="my-8 w-full">
-          <p className="text-primary font-bold text-[30px] pb-4">Week-1</p>
           <Table
             columns={columns}
             dataSource={week1Data}
@@ -465,7 +417,7 @@ const PaymentsReports = () => {
           </button>
         </div>
       </div> 
-      <ReportDetailsModal open={reportDetails} setOpen={setReportDetails} /> 
+      <ReportDetailsModal open={reportDetails} setOpen={setReportDetails} id={id} /> 
       <MilesReportModal open={milesReport} setOpen={setMilesReport} />
     </div>
   );

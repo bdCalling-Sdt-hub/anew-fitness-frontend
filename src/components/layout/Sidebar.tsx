@@ -119,9 +119,9 @@ const Sidebar = () => {
                     label: <Link to="/payment-overview">Payment Overview</Link>
                 },
                 {
-                    key: "/payment-reports",
+                    key: "/create-payment-reports",
                     icon: <TbReportMoney size={22} />,
-                    label: <Link to="/payment-reports">Payment Reports</Link>
+                    label: <Link to="/create-payment-reports">Payment Reports</Link>
                 },
 
             ]

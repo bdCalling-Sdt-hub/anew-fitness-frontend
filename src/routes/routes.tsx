@@ -29,6 +29,7 @@ import RoleManagement from '../components/ui/dashboardPages/settings/RoleManagem
 import InvoicePage from '../pages/dashboard/Invoice/InvoicePage';
 import SetPassword from '../pages/authentication/SetPassword';
 import UserLogin from '../pages/authentication/UserLogin';
+import CreateInstructor from '../components/ui/dashboardPages/payroll-reporting/PaymantsReports/CreateInstructor';
 
 
 const router = createBrowserRouter([
@@ -51,7 +52,8 @@ const router = createBrowserRouter([
             {path: "/class-booking", element: <ClassBookings />}  ,
             {path: "/appointment-booking", element: <AppointmentBookings />}  ,
             { path: '/payroll-reporting', element: <PayrollReportingPage /> },
-            { path: '/payment-overview', element: <PaymentOverviewPage /> },
+            { path: '/payment-overview', element: <PaymentOverviewPage /> }, 
+            { path: '/create-payment-reports', element: <CreateInstructor /> },
             { path: '/payment-reports', element: <PaymentReportsPage /> },
             { path: '/general-settings', element: <GeneralSettings /> },
             { path: '/staff-management', element: <StaffManagementPage /> },

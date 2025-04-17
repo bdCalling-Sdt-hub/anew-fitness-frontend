@@ -1,64 +1,70 @@
-import { Button, Table, Empty,  Select, Card } from 'antd';
+import { Button, Table, Empty, Select, Card } from 'antd';
 import { useState } from 'react';
 import { HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
-import { IoIosArrowDown } from 'react-icons/io'; 
+import { IoIosArrowDown } from 'react-icons/io';
 import noData from "../../../../assets/noData.png";
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import { useGetHomeDataQuery } from '../../../../redux/features/home/homeApi';
+import { useGetLocationQuery } from '../../../../redux/features/location/locationApi';
 
-const data = [
-    {
-        key: '1',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "John Doe",
-        leadName: "Alice Smith"
-    }, 
-    {
-        key: '2',
-        name: "Class Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "Emily Johnson",
-        leadName: "Michael Brown"
-    },
-    {
-        key: '3',
-        name: "Event Name",
-        serviceCategory: "Group Class",
-        scheduled: "+New Schedule",
-        status: "active",
-        staffName: "David Wilson",
-        leadName: "Sophia Martinez"
-    }
-];
 const UpcomingClass = () => {
-    const [isFilterOpen, setIsFilterOpen] = useState(false); 
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const navigate = useNavigate();
     const [filters, setFilters] = useState({
-        location: 'All Location',
-        dateRange: 'Today'
+        location: '',
+        dateRange: ''
     });
+
+    const { data: allData } = useGetHomeDataQuery({location:filters?.location, dateRange:filters?.dateRange}); 
+    const {data:allLocation} = useGetLocationQuery(undefined);  
+
+    const locationOptions = allLocation?.map((item: any) => ({
+        value: item?.locationName,
+        label: item?.locationName
+    }));
+
+    const upComingClassesData = allData?.upcomingClasses
+    const data = upComingClassesData?.map((item: any) => ({
+        key: item?._id,
+        name: item?.name,
+        scheduled: item?.schedule,
+        status: item?.status,
+        location: item?.location?.locationName,
+        totalCapacity: item?.totalCapacity, 
+        frequency: item?.frequency,
+        staffName: item?.staff?.name,
+        leadName: item?.lead?.lead_name
+    }))
+
 
     const columns = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Service Category', dataIndex: 'serviceCategory', key: 'serviceCategory' },
         { title: 'Staff Name', dataIndex: 'staffName', key: 'staffName' },
         { title: 'Leads Name', dataIndex: 'leadName', key: 'leadName' },
+        { title: 'Frequency', dataIndex: 'frequency', key: 'frequency' },
+        { title: 'Total Capacity', dataIndex: 'totalCapacity', key: 'totalCapacity' },
+        { title: 'Location', dataIndex: 'location', key: 'location' },
         {
             title: 'Scheduled',
             dataIndex: 'scheduled',
             key: 'scheduled',
-            render: (text: string) => <span className="text-primary cursor-pointer" onClick={() => navigate('/calender')}>{text}</span>,
+            render: (scheduled: any) => <span className="text-primary cursor-pointer" onClick={() => navigate('/calender')}>
+                {
+                    scheduled?.map((item: any , index: number) => (
+                        <div key={index} className='flex flex-wrap '> 
+                      {  moment(item?.date).format('DD-MM , hh:mm A')} , 
+                         </div>
+                    ))
+                }
+            </span>,
         },
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (status: string) => (
-              
+
                 <div className={` flex justify-center items-center w-[100px] h-[30px]  ${status === 'active' ? ' border border-[#00721E] rounded-full text-[#00721E]' : 'border border-[#AB0906] rounded-full text-[#AB0906]'}`} >
                     {status.charAt(0).toUpperCase() + status.slice(1)}
                 </div>
@@ -74,40 +80,36 @@ const UpcomingClass = () => {
                     <p className=" text-lg font-medium text-gray-700 mb-1">Location  </p>
                     <Select
                         className="w-full"
-                        value={filters.location} 
-                        style={{ 
-                             height:'40px', 
+                        value={filters.location}
+                        style={{
+                            height: '40px',
                             width: '190px'
                         }}
                         onChange={(value) => setFilters(prev => ({ ...prev, location: value }))}
-                        options={[
-                            { value: 'All Location', label: 'All Location' },
-                            { value: 'Location 1', label: 'Location 1' },
-                            { value: 'Location 2', label: 'Location 2' },
-                        ]}
+                        options={locationOptions}
                     />
                 </div>
-                <div  className='flex items-center justify-between gap-2'>
+                <div className='flex items-center justify-between gap-2'>
                     <p className="text-lg font-medium text-gray-700 mb-1">Date Range</p>
                     <Select
                         className="w-full"
                         value={filters.dateRange}
-                        onChange={(value) => setFilters(prev => ({ ...prev, dateRange: value }))} 
-                        style={{ 
-                            height:'40px' ,
+                        onChange={(value) => setFilters(prev => ({ ...prev, dateRange: value }))}
+                        style={{
+                            height: '40px',
                             width: '190px'
 
-                       }}
+                        }}
                         options={[
-                            { value: 'Today', label: 'Today' },
-                            { value: 'This Week', label: 'This Week' },
-                            { value: 'This Month', label: 'This Month' },
+                            { value: 'today', label: 'Today' },
+                            { value: 'thisWeek', label: 'This Week' },
+                            { value: 'thisMonth', label: 'This Month' },
                         ]}
                     />
                 </div>
                 <div className="flex  items-center justify-end gap-4 mt-4">
                     <Button onClick={() => setFilters({ location: 'All Location', dateRange: 'Today' })}>Clear</Button>
-                    <button className='px-5 py-[6px] text-white bg-primary rounded'  onClick={() => setIsFilterOpen(false)}>Save</button>
+                    <button className='px-5 py-[6px] text-white bg-primary rounded' onClick={() => setIsFilterOpen(false)}>Save</button>
                 </div>
             </div>
         </Card>
@@ -119,7 +121,7 @@ const UpcomingClass = () => {
                 <div>
                     <div className='flex items-center gap-1'>
                         <h2 className="text-[30px] font-bold">Upcoming Class</h2>
-                        <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data.length}</p>
+                        <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data?.length}</p>
                     </div>
                     <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
                 </div>
@@ -133,27 +135,27 @@ const UpcomingClass = () => {
 
                     <span className={`transition-transform duration-300 ${isFilterOpen ? "rotate-180" : "rotate-0"}`}>
                         <IoIosArrowDown />
-                    </span> 
+                    </span>
                 </button>
                 {isFilterOpen && <FilterCard />}
             </div>
             <div className="mx-auto bg-white rounded-lg shadow-sm">
-                {data.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
-            <Empty 
-                image={noData}
-                imageStyle={{ width: 150, height: 150 , marginLeft:65 }} 
-                description={
-                    <div className="flex flex-col items-center gap-1 text-center">
-                        <p className="text-primaryText font-semibold text-[22px]">
-                            You don't have any classes yet
-                        </p>
-                        <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
-                            Schedule an Event
-                        </p>
-                    </div>
-                }
-            />
-        </div>}
+                {data?.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
+                    <Empty
+                        image={noData}
+                        imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                        description={
+                            <div className="flex flex-col items-center gap-1 text-center">
+                                <p className="text-primaryText font-semibold text-[22px]">
+                                    You don't have any classes yet
+                                </p>
+                                <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
+                                    Schedule an Event
+                                </p>
+                            </div>
+                        }
+                    />
+                </div>}
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 import { Button } from 'antd';
-const Notification = () => {
+const Notification = () => { 
+
     return (
         <div className="">
             <div className="bg-white p-5 rounded-xl">
