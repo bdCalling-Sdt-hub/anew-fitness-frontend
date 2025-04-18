@@ -7,7 +7,7 @@ import { useGetAllLeadContactQuery } from "../../../../redux/features/contact/le
 import { useGetAllStaffQuery } from "../../../../redux/features/staff/staffManagementApi";
 import dayjs from "dayjs";
 
-const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData, editAppointmentData }: { open: boolean, setModalOpen?: (modalOpen: boolean) => void, setOpen: (open: boolean) => void, editAppointmentData?: any, setEditAppointmentData: (editAppointmentData: any) => void }) => {
+const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData, editAppointmentData }: { open: boolean, setModalOpen?: (modalOpen: boolean) => void, setOpen: (open: boolean) => void, editAppointmentData?: any, setEditAppointmentData?: (editAppointmentData: any) => void }) => {
 
     const [form] = Form.useForm();
 

@@ -1,12 +1,38 @@
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import { useCreateReportDetailsMutation } from "../../../../../redux/features/payrollReporting/paymentReportApi";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
-const ReportDetailsModal = ({ open, setOpen, id , refetch }: { open: boolean, setOpen: (open: boolean) => void, id: string | null  , refetch: () => void}) => {
+const ReportDetailsModal = ({ open, setOpen, id, refetch }: { open: boolean, setOpen: (open: boolean) => void, id: string | null, refetch: () => void }) => {
 
   const [form] = Form.useForm();
-  const [createReportDetails, {  isLoading }] = useCreateReportDetailsMutation(); 
+  const [createReportDetails, { isLoading, isError, isSuccess, data, error }] = useCreateReportDetailsMutation();
 
+  useEffect(() => {
+    if (isSuccess) {
+      if (data) { 
+        console.log(data);
+        Swal.fire({
+          text: data?.message,
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          form.resetFields();
+          refetch();
+          setOpen(false);
+        });
+      }
+
+    }
+    if (isError) {
+      Swal.fire({
+        //@ts-ignore
+        text: error?.data?.message,
+        icon: "error",
+      });
+    }
+  }, [isSuccess, isError, error, data]);
 
   const onFinish = async (values: any) => {
     const payload = {
@@ -20,16 +46,8 @@ const ReportDetailsModal = ({ open, setOpen, id , refetch }: { open: boolean, se
       }
     };
 
-    try {
       await createReportDetails(payload)
-      form.resetFields(); 
-      refetch();
-      setOpen(false);
-      Swal.fire("Success", "Report details saved successfully", "success");
-    } catch (err) {
-      Swal.fire("Error", "Something went wrong", "error");
-      console.error(err);
-    }
+
   };
 
   return (
@@ -60,8 +78,8 @@ const ReportDetailsModal = ({ open, setOpen, id , refetch }: { open: boolean, se
             label={<p className=" text-primaryText text-[18px] font-semibold"> Work Description </p>}
             rules={[{ required: true, message: "Please select a description" }]}
           >
-             <Input placeholder="Enter work description" size="large" style={{ height: "45px" }} />
-          
+            <Input placeholder="Enter work description" size="large" style={{ height: "45px" }} />
+
           </Form.Item>
 
           <Form.Item

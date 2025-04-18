@@ -10,6 +10,8 @@ import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import AddNewModal from "./AddNewModal";
 import AppointmentModal from "./AppointmentModal";
+import { useGetCalenderDataQuery } from "../../../../redux/features/calender/calenderApi";
+import moment from "moment";
 
 interface Resource {
     id: string;
@@ -28,15 +30,61 @@ export default function ScheduleCalender() {
     const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false) 
+    const  {data:getCalenderData} = useGetCalenderDataQuery(undefined)  
+    console.log(getCalenderData);
 
-    const demoEvents: CalendarEvent[] = [
-        { id: "1", title: "Yoga Class", start: "2025-02-17T10:00:00", resourceId: "room1", category: "Classes" },
-        { id: "2", title: "HIIT Training", start: "2025-02-17T12:00:00", resourceId: "room2", category: "Classes" },
-        { id: "3", title: "Strength Training", start: "2025-02-18T14:00:00", resourceId: "room1", category: "Events" },
-        { id: "4", title: "Pilates Session", start: "2025-02-19T08:00:00", resourceId: "room3", category: "1-1 Appointments" },
-        { id: "5", title: "Full Moon Yoga", start: "2025-02-20T18:00:00", resourceId: "room1", category: "Full Calendar" },
-    ];
+    const demoEvents = getCalenderData?.classesData?.flatMap((item: any) =>
+        item.schedule?.flatMap((sched: any) => {
+          // Parse date string
+          const baseDate = moment(sched.date, [
+            moment.ISO_8601,
+            "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)",
+            "YYYY-MM-DD , hh:mm A",
+          ]);
+      
+          // Handle multiple sessions
+          if (sched.sessions && sched.sessions.length > 0) {
+            return sched.sessions.map((session: any) => {
+              const sessionStart = moment(baseDate).set({
+                hour: moment(session.startTime, ["hh:mm A", "h:mm A"]).hour(),
+                minute: moment(session.startTime, ["hh:mm A", "h:mm A"]).minute(),
+              });
+      
+              return {
+                id: session._id,
+                title: item.name,
+                start: sessionStart.format("YYYY-MM-DDTHH:mm:ss"),
+                resourceId: item.resourceId || "room1", // Fallback if missing
+                category: "Full Calendar",
+              };
+            });
+          }
+      
+          // Handle single date + time without sessions
+          const singleStartTime = moment(sched.startTime, ["hh:mm A", "HH:mm"]);
+          const fallbackStart = moment(baseDate).set({
+            hour: singleStartTime.hour(),
+            minute: singleStartTime.minute(),
+          });
+      
+          return {
+            id: sched._id,
+            title: item.name,
+            start: fallbackStart.format("YYYY-MM-DDTHH:mm:ss"),
+            resourceId: item.resourceId || "room1",
+            category: "Classes",
+          };
+        })
+      ) || [];
+
+    // const demoEvents: CalendarEvent[] = [
+    //     { id: "1", title: "Yoga Class", start: "2025-04-17T10:00:00", resourceId: "room1", category: "Classes" },
+    //     { id: "2", title: "HIIT Training", start: "2025-04-17T12:00:00", resourceId: "room2", category: "Classes" },
+    //     { id: "3", title: "Strength Training", start: "2025-04-18T14:00:00", resourceId: "room1", category: "Events" },
+    //     { id: "4", title: "Pilates Session", start: "2025-04-19T08:00:00", resourceId: "room3", category: "1-1 Appointments" },
+    //     { id: "5", title: "Full Moon Yoga", start: "2025-04-20T18:00:00", resourceId: "room1", category: "Full Calendar" },
+    // ];
 
     const demoResources: Resource[] = [
         { id: "room1", title: "Yoga Room" },

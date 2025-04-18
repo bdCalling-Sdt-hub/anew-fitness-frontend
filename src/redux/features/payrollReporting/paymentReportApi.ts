@@ -11,7 +11,7 @@ const paymentReportApi = baseApi.injectEndpoints({
             }),
           }),  
 
-          getNewInstructorById: build.query({
+          getAllReport: build.query({
             query: (id) => ({
               url: `/report/inalldetails/${id}`,
               method: "GET",
@@ -24,8 +24,16 @@ const paymentReportApi = baseApi.injectEndpoints({
               method: "POST",
               body: data,
             }),
+          }), 
+
+          createMiles: build.mutation({
+            query: (data) => ({
+              url: `/report/milesdetails`,
+              method: "POST",
+              body: data,
+            }),
           })
      }) 
 }) 
 
-export const {useCreateNewInstructorMutation , useGetNewInstructorByIdQuery , useCreateReportDetailsMutation} =  paymentReportApi
+export const {useCreateNewInstructorMutation , useGetAllReportQuery , useCreateReportDetailsMutation , useCreateMilesMutation} =  paymentReportApi

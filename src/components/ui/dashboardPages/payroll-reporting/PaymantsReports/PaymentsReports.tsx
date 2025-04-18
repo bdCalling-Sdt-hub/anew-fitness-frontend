@@ -5,7 +5,7 @@ import { TbReport } from 'react-icons/tb';
 import ReportDetailsModal from './ReportDetailsModal';
 import MilesReportModal from '../../appointment/StaffAvailable/MilesReportModal';
 import { useSearchParams } from 'react-router-dom';
-import { useGetNewInstructorByIdQuery } from '../../../../../redux/features/payrollReporting/paymentReportApi';
+import { useGetAllReportQuery } from '../../../../../redux/features/payrollReporting/paymentReportApi';
 import moment from 'moment';
 
 
@@ -23,60 +23,43 @@ const PaymentsReports = () => {
   const [milesReport, setMilesReport] = useState(false);  
  const [searchParams] = useSearchParams()  
  const id = searchParams.get('id')    
-const {data:instructorDetails} = useGetNewInstructorByIdQuery(id) 
-console.log(instructorDetails);
+const {data:instructorDetails , refetch} = useGetAllReportQuery(id)  
+const firstWeekData = instructorDetails?.weeklyData?.[0]; 
+const secondWeekData = instructorDetails?.weeklyData?.[1]; 
+const biweeklyDatas = instructorDetails?.biweeklyData?.workDetails
+console.log(secondWeekData); 
+const week1StartDate = moment(firstWeekData?.weekStart).format(' MMM DD , YY'); 
+const week1EndDate = moment(firstWeekData?.weekEnd).format(' MMM DD,  YY'); 
+
+
+const week2StartDate = moment(secondWeekData?.weekStart).format(' MMM DD , YY'); 
+const week2EndDate = moment(secondWeekData?.weekEnd).format(' MMM DD,  YY');
  
-const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
+const week1Data = firstWeekData?.workDetails?.map((item:any) => ({
   date: moment(item?.workDetails?.date).format('MM-DD-YYYY'), 
   workDescription: item?.workDetails?.workDescription,
   workType: item?.workDetails?.workType,
   workingHour: item?.workDetails?.hours,
   hourRate: item?.workDetails?.hourRate,
   totalAmount:item?.totalAmount
-}))
- 
-  const week2Data: WeeklyData[] = [
-    {
-      date: '04-08-2025',
-      workDescription: 'Group Class',
-      workType: 'Offline',
-      workingHour: 2.00,
-      hourRate: 30.00,
-      totalAmount: 60
-    },
-    {
-      date: '04-09-2025',
-      workDescription: 'Team Meeting',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 20.00,
-      totalAmount: 20
-    },
-    {
-      date: '04-10-2025',
-      workDescription: 'Events',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 30.00,
-      totalAmount: 30
-    },
-    {
-      date: '04-11-2025',
-      workDescription: 'Personal Training',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 35.00,
-      totalAmount: 35
-    },
-    {
-      date: '04-12-2025',
-      workDescription: 'Training Hours',
-      workType: 'Offline',
-      workingHour: 1.00,
-      hourRate: 20.00,
-      totalAmount: 20
-    }
-  ];
+})) 
+
+const week2Data = secondWeekData?.workDetails?.map((item:any) => ({
+  date: moment(item?.workDetails?.date).format('MM-DD-YYYY'), 
+  workDescription: item?.workDetails?.workDescription,
+  workType: item?.workDetails?.workType,
+  workingHour: item?.workDetails?.hours,
+  hourRate: item?.workDetails?.hourRate,
+  totalAmount:item?.totalAmount
+}))  
+
+console.log(biweeklyDatas);
+const biweeklyData = biweeklyDatas?.map((item:any) => ({
+  workDescription: item?.workDetails?.workDescription,
+  totalHours: item?.workDetails?.hours,
+  hourRate: item?.workDetails?.hourRate,
+  totalAmount:item?.totalAmount
+})) 
 
   const columns = [
     {
@@ -87,7 +70,8 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
     {
       title: 'Work Description',
       dataIndex: 'workDescription',
-      key: 'workDescription',
+      key: 'workDescription',  
+      
     },
     {
       title: 'Work Type',
@@ -133,15 +117,15 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
   ];
 
   const week1SummaryData = [{
-    date: 'jan 01, 25 - jan 07, 25',
-    totalHours: 6.00,
-    totalAmount: 165,
+    date: week1StartDate + ' - ' + week1EndDate,
+    totalHours: firstWeekData?.summary?.totalWorkingHours,
+    totalAmount: firstWeekData?.summary?.totalWorkAmount,
   }];
 
   const week2SummaryData = [{
-    date: 'jan 08, 25 - jan 14, 25',
-    totalHours: 6.00,
-    totalAmount: 165,
+    date: week2StartDate + ' - ' + week2EndDate,
+    totalHours: secondWeekData?.summary?.totalWorkingHours,
+    totalAmount: secondWeekData?.summary?.totalWorkAmount,
   }];
 
   const milesColumns = [
@@ -181,21 +165,21 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
   ];
 
   const week1MilesData = [{
-    date: 'jan 01, 25 - jan 07, 25',
-    totalHours: 6.00,
-    workingAmount: 165,
-    totalMiles: '5mi',
-    mileageRate: 30,
-    totalAmount: 205,
+    date: week1StartDate + ' - ' + week1EndDate,
+    totalHours: firstWeekData?.summary?.totalWorkingHours,
+    workingAmount: firstWeekData?.summary?.totalWorkAmount,
+    totalMiles: firstWeekData?.summary?.totalMiles,
+    mileageRate: firstWeekData?.summary?.avgMileageRate,
+    totalAmount:  firstWeekData?.summary?.weekTotalAmount,
   }];
 
   const week2MilesData = [{
-    date: 'jan 08, 25 - jan 14, 25',
-    totalHours: 6.00,
-    workingAmount: 165,
-    totalMiles: '5mi',
-    mileageRate: 30,
-    totalAmount: 205,
+    date: week2StartDate + ' - ' + week2EndDate,
+    totalHours: secondWeekData?.summary?.totalWorkingHours,
+    workingAmount: secondWeekData?.summary?.totalWorkAmount,
+    totalMiles: secondWeekData?.summary?.totalMiles,
+    mileageRate: secondWeekData?.summary?.avgMileageRate,
+    totalAmount:  secondWeekData?.summary?.weekTotalAmount,
   }];
 
   const biweeklyColumns = [
@@ -213,7 +197,7 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
       title: 'Hour Rate',
       dataIndex: 'hourRate',
       key: 'hourRate',
-      render: (rate: number) => `$${rate.toFixed(2)}`,
+      render: (rate: number) => `$${rate?.toFixed(2)}`,
     },
     {
       title: 'Total Amount',
@@ -223,52 +207,21 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
     },
   ];
 
-  const biweeklyData = [
-    {
-      workDescription: 'Group Class',
-      totalHours: 4.00,
-      hourRate: 30.00,
-      totalAmount: 120,
-    },
-    {
-      workDescription: 'Team Meeting',
-      totalHours: 2.00,
-      hourRate: 20.00,
-      totalAmount: 40,
-    },
-    {
-      workDescription: 'Events',
-      totalHours: 2.00,
-      hourRate: 30.00,
-      totalAmount: 60,
-    },
-    {
-      workDescription: 'Personal Training',
-      totalHours: 2.00,
-      hourRate: 35.00,
-      totalAmount: 70,
-    },
-    {
-      workDescription: 'Training Hours',
-      totalHours: 2.00,
-      hourRate: 20.00,
-      totalAmount: 40,
-    },
-  ];
+
 
   const biweeklySummaryData = [{
-    date: 'jan 01, 25 - jan 14, 25',
-    totalHours: 12.00,
-    totalAmount: 330,
+    date: week1StartDate + ' - ' + week2EndDate,
+    totalHours: instructorDetails?.biweeklyData?.summary?.totalWorkingHours,
+    totalAmount: instructorDetails?.biweeklyData?.summary?.totalWorkAmount,
   }];
 
   const biweeklyMilesData = [{
-    date: 'jan 01, 25 - jan 14, 25',
-    totalHours: 12.00,
-    workingAmount: 330,
+    date: week1StartDate + ' - ' + week2EndDate,
+    totalHours: instructorDetails?.overallTotals?.totalWorkingHours,
+    workingAmount: instructorDetails?.overallTotals?.totalWorkAmount,
     totalMiles: '10mi',
     mileageRate: 30,
-    totalAmount: 410,
+    totalAmount: instructorDetails?.overallTotals?.grandTotalAmount,
   }];
 
   return (
@@ -283,12 +236,13 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
         <div className="my-8 w-full"> 
 
           <div className='flex justify-between items-center pb-4'> 
-          <p className="text-primary font-bold text-[30px] ">Week-1</p>
+          <p className="text-primary flex items-center gap-3  "> <span className='font-bold text-[30px]'>Week-1 </span>  <span className='font-medium text-[16px]'> ({` ${week1StartDate} - ${week1EndDate}`}) </span> </p>
 
           <div className='flex items-end'>
             <button
-              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px]"
-              onClick={() => setReportDetails(true)}
+              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setReportDetails(true)} 
+              disabled={week1Data?.length === 7}
             >
               <span> Add Report Details </span>  <span><FiPlus size={22} /></span>
             </button>
@@ -317,8 +271,9 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
           <div className="flex justify-between items-center mb-4">
             <p className="text-primary font-bold text-[30px] ">Week-1 Totals</p>
             <button
-              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px]" 
-              onClick={() => setMilesReport(true)}
+              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
+              onClick={() => setMilesReport(true)} 
+              disabled={firstWeekData?.milesDetails?.length === 1}
             >
               <span> Add Miles Report </span>  <span><FiPlus size={22} /></span>
             </button>
@@ -330,18 +285,23 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
             className='border border-primary rounded-lg'
           />
 
-          <div className=' flex justify-end items-center mt-6'>
+
+        </div>
+
+        <div className="mb-8 mt-24"> 
+          
+          <div className='flex justify-between items-center mb-4 '> 
+          <p className="text-primary flex items-center gap-3  "> <span className='font-bold text-[30px]'>Week-2 </span>  <span className='font-medium text-[16px]'> ({` ${week2StartDate} - ${week2EndDate}`}) </span> </p>
+          <div className=' flex justify-end items-center '>
             <button
-              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px]" 
-              onClick={() => setReportDetails(true)}
+              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
+              onClick={() => setReportDetails(true)} 
+              disabled={week2Data?.length === 7}
             >
               <span> Add  Report Details </span>  <span><FiPlus size={22} /></span>
             </button>
+          </div> 
           </div>
-        </div>
-
-        <div className="mb-8">
-          <p className="text-primary font-bold text-[30px] mb-4">Week-2</p>
           <Table
             columns={columns}
             dataSource={week2Data}
@@ -363,8 +323,9 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
           <div className="flex justify-between items-center mb-4">
             <p className="text-primary font-bold text-[30px] ">Week-2 Totals</p>
             <button
-              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px]" 
-              onClick={() => setMilesReport(true)}
+              className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
+              onClick={() => setMilesReport(true)} 
+              disabled={secondWeekData?.milesDetails?.length === 1}
             >
               <span> Add Miles Report </span>  <span><FiPlus size={22} /></span>
             </button>
@@ -408,17 +369,9 @@ const week1Data = instructorDetails?.workDetails?.map((item:any) => ({
           />
         </div>
 
-        <div className="flex justify-end gap-4 my-8">
-          <button className='border border-primary text-primary font-medium py-2 px-7 text-[22px] rounded h-[45px]'>Cancel</button>
-          <button
-            className="bg-primary text-white font-medium py-2 px-7 text-[22px] rounded h-[45px]"
-          >
-            Save
-          </button>
-        </div>
       </div> 
-      <ReportDetailsModal open={reportDetails} setOpen={setReportDetails} id={id} /> 
-      <MilesReportModal open={milesReport} setOpen={setMilesReport} />
+      <ReportDetailsModal open={reportDetails} setOpen={setReportDetails} id={id} refetch={refetch} /> 
+      <MilesReportModal open={milesReport} setOpen={setMilesReport} id={id} refetch={refetch} />
     </div>
   );
 };

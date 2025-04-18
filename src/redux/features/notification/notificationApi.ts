@@ -3,12 +3,12 @@ import { baseApi } from "../../base/baseApi"
 const notificationApi = baseApi.injectEndpoints({
     endpoints: (build) => ({     
 
-        NotificationQuery: build.query({ 
+        Notification: build.query({ 
             
-            query: (id) => `/notification/${id}`,  
+            query: () => `/notification/admin`,  
         
         }), 
     }) 
 }) 
  
-export const { useNotificationQueryQuery} =  notificationApi
+export const { useNotificationQuery} =  notificationApi
