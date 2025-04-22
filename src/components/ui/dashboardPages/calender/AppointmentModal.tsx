@@ -19,8 +19,8 @@ const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData,
     const { data: allLeads } = useGetAllLeadContactQuery(undefined);
     const { data: allStaff } = useGetAllStaffQuery(undefined);
 
-    const ContactName = clientContact?.map((item: any) => ({ label: item?.client_name, value: item?.client_name }));
-    const LeadName = allLeads?.map((item: any) => ({ label: item?.lead_name, value: item?._id }));
+    const ContactName = clientContact?.map((item: any) => ({ label: item?.name, value: item?.name }));
+    const LeadName = allLeads?.map((item: any) => ({ label: item?.name, value: item?._id }));
     const StaffName = allStaff?.map((item: any) => ({ label: item?.name, value: item?._id }));
 
     useEffect(() => {

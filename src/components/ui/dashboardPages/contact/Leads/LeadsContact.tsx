@@ -21,7 +21,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
 
     const data = allLeads?.map((lead: any) => ({
         key: lead._id,
-        lead_name: lead?.lead_name,
+        lead_name: lead?.name,
         address: lead?.address,
         phone: lead?.phone,
         gender: lead?.gender,
@@ -36,7 +36,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
         ?.filter((item: any) => item?.active)
         ?.map((lead: any) => ({
             key: lead._id,
-            lead_name: lead?.lead_name,
+            lead_name: lead?.name            ,
             address: lead?.address,
             phone: lead?.phone,
             gender: lead?.gender,
@@ -50,7 +50,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
         ?.filter((item: any) => !item?.active)
         ?.map((lead: any) => ({
             key: lead._id,
-            lead_name: lead?.lead_name,
+            lead_name: lead?.name,
             address: lead?.address,
             phone: lead?.phone,
             gender: lead?.gender,

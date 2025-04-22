@@ -10,7 +10,7 @@ const payrollReporting = baseApi.injectEndpoints({
                     params.append("year", status);  
                 }
                 return{
-                    url: `/report/overview?${params.toString()}`,
+                    url: `/report/getoverview?${params.toString()}`,
                 }    
             },
             transformResponse: (response: any) => response,

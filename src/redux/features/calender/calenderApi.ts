@@ -7,7 +7,7 @@ const calenderApi = baseApi.injectEndpoints({
             query: () => ({
                 url: `/class/getstates`,
             }), 
-            transformResponse: (response: any) => response?.data,
+            transformResponse: (response: any) =>response?.data,
         }),
       }) 
 })  

@@ -29,9 +29,10 @@ interface DataType {
 }
 
 const ClassBookings = () => {
-  const [status, setStatus] = useState("") 
-  const [search , setSearch]= useState("") 
-  const { data: classReport } = useGetClassReportQuery({ status , search })
+  const [status, setStatus] = useState("")
+  const [search, setSearch] = useState("")
+  const { data: classReport } = useGetClassReportQuery({ status, search })
+  console.log(classReport);
 
   const classesData = [
     {
@@ -41,17 +42,17 @@ const ClassBookings = () => {
     },
     {
       id: 2,
-      total: classReport?.completedClasses,
+      total: classReport?.completedClassesCount      ,
       title: "Completed Class"
     },
     {
       id: 3,
-      total: classReport?.runningClasses,
+      total: classReport?.runningClassesCount,
       title: "Running Class"
     },
     {
       id: 4,
-      total: classReport?.notRunningClasses,
+      total: classReport?.notRunningClassesCount,
       title: "Not Running Class"
     },
   ]
@@ -122,7 +123,7 @@ const ClassBookings = () => {
   return (
     <div className="px-[30px] pt-[20px]">
       <div className=" flex items-center justify-between">
-        <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search here"  prefix={<RiSearchLine size={22} color="#808080" />} style={{ width: "500px", height: "51px", borderRadius: "8px" }} />
+        <Input onChange={(e) => setSearch(e.target.value)} placeholder="Search here" prefix={<RiSearchLine size={22} color="#808080" />} style={{ width: "500px", height: "51px", borderRadius: "8px" }} />
       </div>
 
       <div>
@@ -148,7 +149,7 @@ const ClassBookings = () => {
           <Select
             placeholder="All Classes"
             className="placeholder:text-primary placeholder:font-semibold placeholder:text-[18px]"
-            style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }} 
+            style={{ height: '45px', width: '120px', border: '1px solid #ab0906', borderRadius: '7px' }}
             onChange={(value) => setStatus(value)}
             options={[
               { value: '', label: 'All' },

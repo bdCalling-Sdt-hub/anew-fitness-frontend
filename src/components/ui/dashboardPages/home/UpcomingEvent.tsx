@@ -9,36 +9,13 @@ import { useGetHomeDataQuery } from '../../../../redux/features/home/homeApi';
 interface ClassSchedule {
     key: string;
     name: string;
-    location: string;
+    location: {locationName: string};
     startTime: string; 
     staff:{name: string}
     status: 'active' | 'inactive'; 
     _id:string
 }
 
-// const data = [
-//     {
-//         key: '1',
-//         name: "Event Name",
-//         serviceCategory: "Event",
-//         scheduled: "+New Schedule",
-//         status: "active"
-//     }, 
-//     {
-//         key: '2',
-//         name: "Class Name",
-//         serviceCategory: "Event",
-//         scheduled: "+New Schedule",
-//         status: "inactive"
-//     },
-//     {
-//         key: '3',
-//         name: "Event Name",
-//         serviceCategory: "Event",
-//         scheduled: "+New Schedule",
-//         status: "active"
-//     }
-// ];
  
 const UpcomingEvent = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false); 
@@ -56,7 +33,7 @@ const UpcomingEvent = () => {
     const data = upComingEventsData?.map((item: ClassSchedule) => ({
         key: item?._id,
         name: item?.name,
-        location: item?.location, 
+        location: item?.location?.locationName, 
         startTime: item?.startTime,
         staff: item?.staff?.name,
         status: item?.status,
@@ -140,7 +117,6 @@ const UpcomingEvent = () => {
                         <h2 className="text-[30px] font-bold">Upcoming Event</h2>
                         <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data?.length}</p>
                     </div>
-                    <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
                 </div>
                 <button
                     className='flex items-center justify-between gap-2 p-2 px-5 text-primaryText relative'

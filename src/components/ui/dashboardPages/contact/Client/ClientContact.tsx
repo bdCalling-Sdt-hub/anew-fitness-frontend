@@ -14,11 +14,11 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
     const [deleteClientContact] = useDeleteClientContactMutation()
     const [updateClientStatus] = useUpdateClientStatusMutation()
 
-    console.log(tabOption);
+    console.log(allClient);
 
     const data = allClient?.map((item: any) => ({
         key: item?._id,
-        client_name: item?.client_name,
+        client_name: item?.name,
         address: item?.address,
         phone: item?.phone,
         gender: item?.gender,
@@ -31,7 +31,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
         ?.filter((item: any) => item?.active)
         ?.map((item: any) => ({
             key: item?._id,
-            client_name: item?.client_name,
+            client_name: item?.name,
             address: item?.address,
             phone: item?.phone,
             gender: item?.gender,
@@ -44,7 +44,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
         ?.filter((item: any) => !item?.active)
         ?.map((item: any) => ({
             key: item?._id,
-            client_name: item?.client_name,
+            client_name: item?.name,
             address: item?.address,
             phone: item?.phone,
             gender: item?.gender,

@@ -4,22 +4,6 @@ import { useEffect } from "react";
 import { useAddLocationMutation, useEditLocationMutation } from "../../../../redux/features/location/locationApi";
 import Swal from "sweetalert2";
 
-// interface editDataType {
-//     firstName: string,
-//     lastName: string,
-//     hourRate: string,
-//     locationType: string,
-//     activeStatus: string,
-//     mobileNumber: string,
-//     workType: string,
-//     email: string,
-//     address: string,
-//     status: string,
-//     id: string, 
-//     name: string,
-//     region: string,
-// }
-
 const AddLocationModal = ({ open, setOpen, editData, setEditData, refetch }: { open: boolean, setOpen: (open: boolean) => void, editData: any, setEditData:any, refetch: () => void }) => { 
     const [form] = Form.useForm();   
     const [addLocation , { isLoading , isError , isSuccess , data , error}] =  useAddLocationMutation(); 
@@ -95,7 +79,6 @@ const AddLocationModal = ({ open, setOpen, editData, setEditData, refetch }: { o
     }, [editData, form]);
   
     const onFinish = async (values:{locationName:string , address:string , region:string , locationType:string , hourRate:string , firstName:string , lastName:string , email:string , mobileNumber:string , workType:string}) => {   
-        console.log(values);
 
         if(editData?.id) {  
             await editLocation({ id: editData?.id , data:values}).then((res)=>{
@@ -218,7 +201,7 @@ const AddLocationModal = ({ open, setOpen, editData, setEditData, refetch }: { o
 
                 <div className="flex  items-center justify-end gap-4 mt-4">
                     <Button onClick={() => setOpen(false)}>Close</Button>
-                    <button onClick={()=>form.submit()} className='px-5 py-[6px] text-white bg-primary rounded' type="submit">{editIsLoading||isLoading ? "Loading.." : 'Save'}</button>
+                    <button onClick={()=>form.submit()} className='px-5 py-[6px] text-white bg-primary rounded' type="button">{editIsLoading||isLoading ? "Loading.." : 'Save'}</button>
                 </div>
 
             </Form>

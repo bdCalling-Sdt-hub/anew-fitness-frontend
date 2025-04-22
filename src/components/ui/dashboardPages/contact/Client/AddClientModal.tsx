@@ -78,7 +78,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
     useEffect(() => {
         if (editLeadData) {
             form.setFieldsValue({
-                client_name: editLeadData?.lead_name,
+                name: editLeadData?.lead_name,
                 client_email: editLeadData?.lead_email,
                 gender: editLeadData?.gender,
                 address: editLeadData?.address,
@@ -93,7 +93,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
     }, [open, setOpenLeads]);
 
  
-    const OnFinish = (values:{ client_name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
+    const OnFinish = (values:{ name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
  
         console.log(editClientData?.id);
         if (editClientData?.id) {
@@ -109,7 +109,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
             <Form layout="vertical" className=" pt-4" form={form} onFinish={OnFinish}>
                 <div className="">
 
-                    <Form.Item name="client_name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                    <Form.Item name="name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
                         <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',

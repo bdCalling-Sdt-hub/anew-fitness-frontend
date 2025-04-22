@@ -38,16 +38,9 @@ const Sidebar = () => {
 
     const handleLogout = () => {     
 
-                if (role === "admin") { 
                     navigate("/auth/login")  
                     localStorage.removeItem("accessToken") 
 
-                 }
-                 else{ 
-
-                    navigate("/auth/staff-login") 
-                    localStorage.removeItem("accessToken") 
-                }
 
     }
 

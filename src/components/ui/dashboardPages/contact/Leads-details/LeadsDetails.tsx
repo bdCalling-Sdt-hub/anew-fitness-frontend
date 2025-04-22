@@ -58,10 +58,10 @@ const LeadsDetails = () => {
                     <div className=" mx-auto bg-white  p-6">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-16 h-16 bg-red-700 rounded-full flex items-center justify-center">
-                                <span className="text-white text-xl font-bold">{leadInfo?.lead_name?.slice(0, 2)}</span>
+                                <span className="text-white text-xl font-bold">{leadInfo?.name?.slice(0, 2)}</span>
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold">{leadInfo?.lead_name}</h1>
+                                <h1 className="text-xl font-bold">{leadInfo?.name}</h1>
                                 <p className="text-gray-600 text-sm">{leadInfo?.lead_email}</p>
 
                             </div>

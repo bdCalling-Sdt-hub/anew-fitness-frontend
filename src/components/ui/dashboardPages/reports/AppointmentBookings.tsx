@@ -13,7 +13,7 @@ interface DataType {
   date: string;
   staff: {name: string};
   contact: {client_name:string};
-  lead: {lead_name: string};
+  lead: {name: string};
   service: string;
   status: string;
   } 
@@ -50,7 +50,7 @@ const data = allAppointments?.appointments?.map((item: DataType) => ({
   reservedAt: item?.date,
   staff: item?.staff?.name,
   contactName: item?.contact?.client_name,
-  leadName: item?.lead?.lead_name,
+  leadName: item?.lead?.name,
   serviceName: item?.service,
   status: item?.status,
 })) 

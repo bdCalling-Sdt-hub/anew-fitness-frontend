@@ -13,7 +13,7 @@ const [deleteAppointmentContact] = useDeleteAppointmentContactMutation()
 console.log(getAllAppointment); 
 
 const data = getAllAppointment?.map((item: any) => ({
-    contactName: item?.contact?.client_name,
+    contactName: item?.contact?.name,
     service: item?.service,
     staff: item?.staff?.name, 
     staffId: item?.staff?._id, 

@@ -72,7 +72,7 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
     useEffect(() => {
         if (editLeadData) {
             form.setFieldsValue({
-                lead_name: editLeadData?.lead_name,
+                name: editLeadData?.lead_name,
                 lead_email: editLeadData?.lead_email,
                 gender: editLeadData?.gender,
                 address: editLeadData?.address,
@@ -102,7 +102,7 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
             <Form layout="vertical" className=" pt-4" form={form} onFinish={OnFinish}>
                 <div className="">
 
-                    <Form.Item name="lead_name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                    <Form.Item name="name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
                         <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',

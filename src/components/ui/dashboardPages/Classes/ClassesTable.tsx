@@ -27,8 +27,7 @@ const ClassesTable = () => {
     const [isStatusOpen, setIsStatusOpen] = useState(false)
     const navigate = useNavigate();
     const [deleteClasses] = useDeleteClassesMutation();   
-    
-    console.log(getAllClass);
+
 
     const data = getAllClass?.map((item: DataType) => ({
         key: item?._id,
@@ -36,7 +35,7 @@ const ClassesTable = () => {
         scheduled: moment(item?.scheduled).format('YYYY-MM-DD'),
         status: item?.status,
         staffName: item?.staff?.name,
-        leadName: item?.lead?.lead_name,
+        leadName: item?.lead?.name,
         id: item?._id
     }))
 

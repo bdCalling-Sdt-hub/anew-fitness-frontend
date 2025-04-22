@@ -111,9 +111,9 @@ useEffect(() => {
   }));
 
 
-  const leadOption = allLead?.map((lead: { lead_name: string; _id: string }) => ({
+  const leadOption = allLead?.map((lead: { name: string; _id: string }) => ({
     value: lead?._id,
-    label: lead?.lead_name
+    label: lead?.name
   }));
 
 

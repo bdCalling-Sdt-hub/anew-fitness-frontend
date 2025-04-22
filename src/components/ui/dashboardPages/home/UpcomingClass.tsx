@@ -34,7 +34,7 @@ const UpcomingClass = () => {
         totalCapacity: item?.totalCapacity, 
         frequency: item?.frequency,
         staffName: item?.staff?.name,
-        leadName: item?.lead?.lead_name
+        leadName: item?.lead?.name
     }))
 
 
@@ -123,7 +123,6 @@ const UpcomingClass = () => {
                         <h2 className="text-[30px] font-bold">Upcoming Class</h2>
                         <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data?.length}</p>
                     </div>
-                    <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
                 </div>
                 <button
                     className='flex items-center justify-between gap-2 p-2 px-5 text-primaryText relative'
@@ -150,7 +149,7 @@ const UpcomingClass = () => {
                                     You don't have any classes yet
                                 </p>
                                 <p className="text-primary font-semibold text-[22px] underline underline-offset-4 cursor-pointer" onClick={() => navigate('/calender')}>
-                                    Schedule an Event
+                                    Schedule a Class
                                 </p>
                             </div>
                         }

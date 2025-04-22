@@ -57,7 +57,7 @@ const UpcomingAppointment = () => {
 
     const data = upComingAppointmentData?.map((item: any) => ({
         key: item?._id,
-        leadName: item?.lead?.lead_name,
+        leadName: item?.lead?.name,
         contact: item?.contact?.client_name,
         service: item?.service,
         staff: item?.staff?.name,
@@ -109,8 +109,7 @@ const UpcomingAppointment = () => {
                     <div className='flex items-center gap-1'>
                         <h2 className="text-[30px] font-bold">Upcoming 1-1 Appointment</h2>
                         <p className="text-primaryText bg-[#FFC1C0] w-[30px] h-[30px] flex items-center justify-center rounded-full font-medium">{data?.length}</p>
-                    </div>
-                    <p className="text-[22px] text-primaryText">Showing <span className='font-semibold'> All Locations Of Today </span></p>
+                    </div>        
                 </div>
                 <button
                     className='flex items-center justify-between gap-2 p-2 px-5 text-primaryText relative'
