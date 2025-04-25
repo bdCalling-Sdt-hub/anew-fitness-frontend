@@ -11,8 +11,7 @@ const NewEventModal: React.FC<NewEventModalProps> = ({ isLocationModalOpen, setI
   const [form] = Form.useForm();
 
   const handleCreateLocation = () => {
-    form.validateFields().then((values) => {
-      console.log("Location Data:", values);
+    form.validateFields().then(() => {
       setIsLocationModalOpen(false);
       form.resetFields();
     });

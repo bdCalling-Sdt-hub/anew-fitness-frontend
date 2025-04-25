@@ -3,11 +3,15 @@ import { useEffect } from "react";
 import { useCreateSingleInvoiceMutation } from "../../../../redux/features/invoice/invoiceApi";
 import Swal from "sweetalert2";
 import moment from "moment";
+import { useGetAllClientContactQuery } from "../../../../redux/features/contact/clientContactApi";
 
 const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean, setOpen: (open: boolean) => void, setOpenInvoice: (openInvoice: boolean) => void }) => {
 
     const [form] = Form.useForm();
     const [createSingleInvoice, { isLoading, isError, isSuccess, error, data }] = useCreateSingleInvoiceMutation()
+    const { data: allClient } = useGetAllClientContactQuery(undefined)
+
+    const clientNameOptions = allClient?.map((client: any) => ({ value: client?._id, label: client?.name }));
 
     useEffect(() => {
         if (isSuccess) {
@@ -38,21 +42,21 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean,
         }
     }, [open, setOpenInvoice]);
 
-    const onFinish = async(values: any) => {
-        const { invoiceDate, invoiceDueDate, invoiceTotal, ...otherValues } = values
+    const onFinish = async (values: any) => {
+        const { invoiceDate, invoiceDueDate, invoiceTotal, ...otherValues } = values 
+
 
         const formattedDate = moment(invoiceDate).format("YYYY-MM-DD")
-        const formattedDueDate = moment(invoiceDueDate).format("YYYY-MM-DD") 
+        const formattedDueDate = moment(invoiceDueDate).format("YYYY-MM-DD")
         const formattedTotal = Number(invoiceTotal)
 
         const data = {
             ...otherValues,
             invoiceDate: formattedDate,
-            invoiceDueDate: formattedDueDate , 
+            invoiceDueDate: formattedDueDate,
             invoiceTotal: formattedTotal
-        } 
- 
-await createSingleInvoice(data).then((res) => { console.log(res); })
+        }
+        await createSingleInvoice(data)
 
     }
 
@@ -60,22 +64,24 @@ await createSingleInvoice(data).then((res) => { console.log(res); })
     return (
         <Modal open={open} onCancel={() => setOpen(false)} footer={null} width={650} title={<p className=" text-primary text-[24px] font-bold"> Invoice Information </p>} centered>
             <Form layout="vertical" className=" pt-4" form={form} onFinish={onFinish}>
-                <Form.Item name="invoiceId" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Id </p>}>
+                {/* <Form.Item name="invoiceId" label={<p className=" text-primaryText text-[18px] font-semibold"> Invoice Id </p>}>
                     <Input type="text" placeholder="Enter Invoice Id" className=" rounded-lg " style={{
                         height: '45px',
                         width: '100%',
 
                     }} />
-                </Form.Item>
+                </Form.Item> */}
 
                 <div className=" grid grid-cols-2 gap-x-4">
 
-                    <Form.Item name="clientName" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
-                        <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
-                            height: '45px',
-                            width: '100%',
-
-                        }} />
+                    <Form.Item name="clientId" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                    <Select
+                            className=""
+                            placeholder="Select  Client Name"
+                            style={{ height: '45px', width: '100%' }}
+                            options={clientNameOptions}
+                        />
+                     
                     </Form.Item>
 
                     <Form.Item name="className" label={<p className=" text-primaryText text-[18px] font-semibold"> Class Name </p>}>

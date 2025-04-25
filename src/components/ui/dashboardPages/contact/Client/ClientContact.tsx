@@ -14,7 +14,6 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
     const [deleteClientContact] = useDeleteClientContactMutation()
     const [updateClientStatus] = useUpdateClientStatusMutation()
 
-    console.log(allClient);
 
     const data = allClient?.map((item: any) => ({
         key: item?._id,
@@ -66,7 +65,6 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
 
             if (result.isConfirmed) {
                 await deleteClientContact(id).then((res) => {
-                    console.log(res);
                     if (res?.data) {
                         Swal.fire({
                             text: res?.data?.message,
@@ -170,7 +168,6 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
     ];
 
     const handleStatusChange = async (value: any, id: string) => {
-        console.log("status value ", value);
         const data = {
             active: value,
             id

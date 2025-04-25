@@ -59,9 +59,7 @@ const AddMultipleInvoice = ({ open, setOpen, setOpenInvoice }: { open: boolean, 
         if (file) {
             formData.append("documents", file);
         }
-        await createMultipleInvoice(formData).then((res) => {
-            console.log(res);
-        })
+        await createMultipleInvoice(formData)
 
     }
     return (

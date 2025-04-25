@@ -28,7 +28,6 @@ const UpcomingEvent = () => {
     const { data: allData } = useGetHomeDataQuery({ location: filters?.location, dateRange: filters?.dateRange });
 
     const upComingEventsData = allData?.upcomingEvents
-    console.log(upComingEventsData); 
 
     const data = upComingEventsData?.map((item: ClassSchedule) => ({
         key: item?._id,

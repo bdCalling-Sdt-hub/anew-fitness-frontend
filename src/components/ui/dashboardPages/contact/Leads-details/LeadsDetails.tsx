@@ -15,15 +15,12 @@ const LeadsDetails = () => {
     const [sort, setSort] = useState("past")
     const { data: leadDetails } = useGetLeadByIdQuery(id)
     const leadInfo = leadDetails?.lead
-    console.log("lead Details", leadDetails);
 
     const pastClasses = leadDetails?.pastClasses
     const upcomingClasses = leadDetails?.upcomingClasses
 
     const upcomingAppointments = leadDetails?.upcomingAppointments
     const pastAppointments = leadDetails?.pastAppointments
-
-    console.log(pastClasses, "sdfgsd");
 
     const items = [
         {

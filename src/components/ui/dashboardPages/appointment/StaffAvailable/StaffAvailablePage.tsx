@@ -16,7 +16,7 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
   const [userId , setUserId] = useState("")
   const { data: allStaff, refetch } = useGetAllStaffQuery(undefined)
   const [deleteStaff] = useDeleteStaffMutation();  
-  console.log(allStaff);
+
 
   const data = allStaff?.map((item: { name: string, role: string, status: string, createdAt: string, documents: string, expiryDate: string, _id: string, availability: any }, index: number) => ({
     key: index + 1,
@@ -43,7 +43,6 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
 
       if (result.isConfirmed) {
         await deleteStaff(id).then((res) => {
-          console.log(res);
           if (res?.data) {
             Swal.fire({
               text: res?.data?.message,

@@ -113,8 +113,6 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
       expiryDate: formattedDate,
     }  
 
-    console.log(data);
-
     if(editStaff?.id) { 
     await editStaffInfo(data)
     } else {

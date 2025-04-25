@@ -10,7 +10,6 @@ const ServicesPage = ({setOpenService , setEditAppointmentData }:{setOpenService
 const navigate = useNavigate();  
 const {data :getAllAppointment , refetch} = useGetAllAppointmentContactQuery(undefined)  
 const [deleteAppointmentContact] = useDeleteAppointmentContactMutation()
-console.log(getAllAppointment); 
 
 const data = getAllAppointment?.map((item: any) => ({
     contactName: item?.contact?.name,
@@ -37,7 +36,7 @@ const handleDelete = async (id: string) => {
 
         if (result.isConfirmed) {
             await deleteAppointmentContact(id).then((res) => {
-                console.log(res);
+             
                 if (res?.data) {
                     Swal.fire({
                         text: res?.data?.message,

@@ -27,8 +27,6 @@ const ClassesTable = () => {
     const [isStatusOpen, setIsStatusOpen] = useState(false)
     const navigate = useNavigate();
     const [deleteClasses] = useDeleteClassesMutation();   
-
-
     const data = getAllClass?.map((item: DataType) => ({
         key: item?._id,
         name: item?.name,
@@ -94,7 +92,6 @@ const ClassesTable = () => {
                    
                     if (result.isConfirmed) {
                       await deleteClasses(id).then((res) => { 
-                        console.log(res);
                         if (res?.data) {
                           Swal.fire({
                             text: res?.data?.message,
@@ -169,7 +166,7 @@ const ClassesTable = () => {
                 status: status,
             };
             await updateClassStatus(data).then((res) => {
-                console.log(res);
+  
                 if (res?.data) {
                     Swal.fire({
                         text: res?.data?.message,

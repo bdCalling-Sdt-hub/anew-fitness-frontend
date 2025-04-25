@@ -1,8 +1,8 @@
 import { baseApi } from "../../base/baseApi";
 
 const payrollReporting = baseApi.injectEndpoints({
-    endpoints: (build) => ({    
- 
+    endpoints: (build) => ({      
+
         getAllPayrollReporting: build.query({
             query: (status) => {
                 const params = new URLSearchParams();  
@@ -10,7 +10,7 @@ const payrollReporting = baseApi.injectEndpoints({
                     params.append("year", status);  
                 }
                 return{
-                    url: `/report/getoverview?${params.toString()}`,
+                    url: `/report/payroll-home?${params.toString()}`,
                 }    
             },
             transformResponse: (response: any) => response,
@@ -26,7 +26,7 @@ const payrollReporting = baseApi.injectEndpoints({
                     params.append("instrtuctorName", staffData);  
                 }
                 return{
-                    url: `/report/getOverviewReport?${params.toString()}`,
+                    url: `/report/getoverview?${params.toString()}`,
                 }    
             },
             transformResponse: (response: any) => response,

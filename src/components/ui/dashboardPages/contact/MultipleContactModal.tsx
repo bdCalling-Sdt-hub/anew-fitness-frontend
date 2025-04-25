@@ -58,10 +58,7 @@ const MultipleContactModal = ({ open, setOpen, setOpenLeads }: { open: boolean, 
         if (file) {
             formData.append("documents", file);
         }
-        await addMultipleLeadContact(formData).then((res) => {
-            console.log(res);
-        })
-
+        await addMultipleLeadContact(formData)
     }
     return (
         <div>

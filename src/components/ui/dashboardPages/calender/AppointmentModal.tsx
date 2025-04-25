@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData, editAppointmentData }: { open: boolean, setModalOpen?: (modalOpen: boolean) => void, setOpen: (open: boolean) => void, editAppointmentData?: any, setEditAppointmentData?: (editAppointmentData: any) => void }) => {
 
     const [form] = Form.useForm();
-
     const [addAppointmentContact, { isError, isLoading, isSuccess, data, error }] = useAddAppointmentContactMutation();
     const [updateAppointmentContact, { isError: isUpdateError, isLoading: isUpdateLoading, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateAppointmentContactMutation();
 
@@ -105,12 +104,11 @@ const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData,
             time: dayjs(time).format("HH:mm"),
           }; 
 
-          console.log(data);  
 
         if (editAppointmentData?.id) {
-            updateAppointmentContact({ id: editAppointmentData?.id, data: data }).then((res) => { console.log(res); });
+            updateAppointmentContact({ id: editAppointmentData?.id, data: data })
         } else {
-            addAppointmentContact(data).then((res) => { console.log(res); });
+            addAppointmentContact(data)
         }
     }
 

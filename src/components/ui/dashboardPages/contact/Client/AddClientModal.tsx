@@ -7,8 +7,6 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
 
     const [form] = Form.useForm(); 
 
-    console.log(editLeadData); 
-
     const [addClientContact, { isError, isLoading, isSuccess, data, error }] = useAddClientContactMutation();
 
     const [updateClientContact, { isError: isUpdateError, isLoading: isUpdateLoading, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateClientContactMutation(); 
@@ -69,7 +67,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
               //for client contact 
     useEffect(() => {
         if (editClientData) {
-            form.setFieldsValue(editClientData);
+            form.setFieldsValue({name:editClientData?.client_name , client_email:editClientData?.client_email , gender:editClientData?.gender , address:editClientData?.address , phone:editClientData?.phone});
         }
     }, [editClientData])
 
@@ -95,12 +93,11 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
  
     const OnFinish = (values:{ name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
  
-        console.log(editClientData?.id);
         if (editClientData?.id) {
-            updateClientContact({ id: editClientData?.id, data: values }).then((res) => { console.log(res);});
+            updateClientContact({ id: editClientData?.id, data: values })
         } else {
 
-            addClientContact(values).then((res) => { console.log(res);});
+            addClientContact(values)
         }
     }
 

@@ -17,7 +17,6 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
     const { data: allLeads, refetch } = useGetAllLeadContactQuery(undefined);
     const [updateLeadStatus] = useUpdateLeadStatusMutation();
     const [deleteLeadContact] = useDeleteLeadContactMutation();
-    console.log(allLeads);
 
     const data = allLeads?.map((lead: any) => ({
         key: lead._id,
@@ -120,7 +119,6 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
 
             if (result.isConfirmed) {
                 await deleteLeadContact(id).then((res) => {
-                    console.log(res);
                     if (res?.data) {
                         Swal.fire({
                             text: res?.data?.message,
@@ -178,7 +176,6 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
 
 
     const handleStatusChange = async (value: any, id: string) => {
-        console.log("status value ", value);
         const data = {
             active: value,
             id

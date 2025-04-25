@@ -105,7 +105,7 @@ const CreateEvent = () => {
                                 onChange={(e) => setMode(e.target.value)}
                                 className="flex gap-2"
                             >
-                                <Radio.Button value="in-person">In Person</Radio.Button>
+                                <Radio.Button value="offline">In Person</Radio.Button>
                                 <Radio.Button value="online">Online</Radio.Button>
                             </Radio.Group>
                         </div>

@@ -9,8 +9,7 @@ const LeadsClasses = ({sort, pastClasses , upcomingClasses}: {sort:string, pastC
     schedule:moment(item?.schedule?.date).format("YYYY-MM-DD  , HH:mm a"),
     staffName: item?._id 
 }))
- 
-console.log(upcomingClasses);
+
 
     const columns = [
         { title: 'Class Name', dataIndex: 'className', key: 'className' },

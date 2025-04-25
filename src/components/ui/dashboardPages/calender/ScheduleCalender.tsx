@@ -33,7 +33,6 @@ export default function ScheduleCalender() {
   const [open, setOpen] = useState(false);
 
   const { data: getCalenderData } = useGetCalenderDataQuery(undefined); 
-  console.log(getCalenderData);
 
   useEffect(() => {
     if (!getCalenderData?.classesData) return;
@@ -47,7 +46,7 @@ export default function ScheduleCalender() {
         ]);
 
         if (!baseDate.isValid()) {
-          console.warn("Invalid baseDate:", sched.date);
+        
           return [];
         }
 

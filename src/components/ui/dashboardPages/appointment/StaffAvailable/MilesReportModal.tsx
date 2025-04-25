@@ -12,7 +12,6 @@ const MilesReportModal = ({open , setOpen , id , refetch}:{open: boolean, setOpe
     useEffect(() => {
       if (isSuccess) {
         if (data) { 
-          console.log(data);
           Swal.fire({
             text: data?.message,
             icon: "success",

@@ -79,9 +79,6 @@ useEffect(() => {
 
 
 
-
-  console.log(classDetails);
-
   useEffect(() => {
     if (id) {
       setFrequency(classDetails?.frequency)
@@ -144,12 +141,11 @@ useEffect(() => {
       staffId: values.staff,
     };
 
-    console.log(formattedData); 
 
     if(id) {
-      editClasses({ id, data: formattedData }).then((res) => { console.log(res); });
+      editClasses({ id, data: formattedData })
      }else{ 
-addClasses(formattedData).then((res) => { console.log(res); });
+addClasses(formattedData)
     }
   }
 

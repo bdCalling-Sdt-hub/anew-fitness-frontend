@@ -4,10 +4,18 @@ const invoiceApi = baseApi.injectEndpoints({
     endpoints: (build) => ({   
         
         getAllInvoice: build.query({
-            query: () => ({
-                url: "/invoice/?status=true",
-                method: "GET",
-            }),
+            query: (status) => { 
+
+                const params = new URLSearchParams();  
+                if(status) { 
+                    params.append("status", status);  
+                } 
+
+                return{
+                    url: `/invoice?${params.toString()}`,
+                    method: "GET",
+                }
+            },
             transformResponse: (response: any) => response?.data,
         }), 
 

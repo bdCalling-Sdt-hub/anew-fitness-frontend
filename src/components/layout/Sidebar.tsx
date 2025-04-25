@@ -34,8 +34,6 @@ const Sidebar = () => {
         }
     }, [role, staffProfile]);
 
-    console.log(staffProfile);
-
     const handleLogout = () => {     
 
                     navigate("/auth/login")  

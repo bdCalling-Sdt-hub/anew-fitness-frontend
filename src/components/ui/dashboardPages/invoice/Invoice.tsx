@@ -13,9 +13,10 @@ import { exportToCSV } from "../../../shared/ExportToCSV";
 const Invoice = () => {
     const [addClient, setAddClient] = useState(false)
     const [openInvoice, setOpenInvoice] = useState(false)
-    const [multipleInvoice, setMultipleInvoice] = useState(false)
-    const { data: allInvoice } = useGetAllInvoiceQuery(undefined) 
-    console.log(allInvoice);
+    const [multipleInvoice, setMultipleInvoice] = useState(false) 
+    const [status , setStatus]= useState(true)
+    const { data: allInvoice } = useGetAllInvoiceQuery(status) 
+    console.log(status);
 
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,
@@ -94,12 +95,12 @@ const Invoice = () => {
 
                     <Select
                         className="filter-select"
-                        defaultValue={'Active'}
+                     onChange={(value) => setStatus(value)}
                         placeholder="Classes"
                         style={{ height: '40px', width: '100px' }}
                         options={[
-                            { value: 'Active', label: 'Active' },
-                            { value: 'Inactive', label: 'Inactive' },
+                            { value: "true", label: 'Active' },
+                            { value: "false", label: 'Inactive' },
                         ]}
                     />
 

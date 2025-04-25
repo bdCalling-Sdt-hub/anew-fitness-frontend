@@ -7,8 +7,6 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
 
     const [form] = Form.useForm(); 
 
-    console.log(editLeadData); 
-
     const [addLeadContact, { isError, isLoading, isSuccess, data, error }] = useAddLeadContactMutation();
 
     const [updateLeadContact, { isError: isUpdateError, isLoading: isUpdateLoading, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateLeadContactMutation(); 
@@ -89,11 +87,10 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
  
     const OnFinish = (values:{ client_name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
  
-        console.log(editLeadData?.id);
         if (editLeadData?.id) {
-            updateLeadContact({ id: editLeadData?.id, data: values }).then((res) => { console.log(res);});
+            updateLeadContact({ id: editLeadData?.id, data: values })
         } else {
-            addLeadContact(values).then((res) => { console.log(res);});
+            addLeadContact(values)
         }
     }
 
