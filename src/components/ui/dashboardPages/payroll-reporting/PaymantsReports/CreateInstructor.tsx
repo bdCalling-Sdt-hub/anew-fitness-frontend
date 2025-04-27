@@ -36,7 +36,6 @@ const CreateInstructor = () => {
 
         try {
             await createNewInstructor(payload).then((res) => { 
-                console.log(res);
                 if(res?.data) {
                     navigate(`/payment-reports?id=${res?.data?._id}`)
                     window.location.reload();

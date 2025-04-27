@@ -42,9 +42,7 @@ const UserLogin = () => {
 
     const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => {
 
-        await staffLogin(values).then((res) => {
-            console.log(res);
-        })
+        await staffLogin(values)
     };
 
     return (

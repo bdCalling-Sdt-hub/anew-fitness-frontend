@@ -26,8 +26,6 @@ const GeneralManagement = () => {
     const {data:adminProfile} = useGetAdminProfileQuery(undefined) 
     const {data:staffProfile} = useGetStaffProfileQuery(undefined)    
 
-    console.log(profile);
-
     // update profile   
     const [updateAdminProfile , {isError , isSuccess , error , data}] = useUpdateAdminProfileMutation(); 
     const [updateStaffProfile , {isError: staffIsError , isSuccess: staffIsSuccess , error: staffError , data: staffData}] = useUpdateStaffProfileMutation(); 
@@ -87,8 +85,6 @@ const GeneralManagement = () => {
         }
       }, [role, adminProfile, staffProfile]);   
 
-      console.log(profile); 
-
       useEffect(() => {
         if (profile) {
             form.setFieldsValue({
@@ -110,7 +106,6 @@ const GeneralManagement = () => {
     }; 
 
     const onFinish = async (values: any) => {  
-        console.log("sdgdfsg" ,values);
         const formData = new FormData(); 
         formData.append("businessName", values.businessName); 
         formData.append("name", values.name); 
@@ -121,11 +116,9 @@ const GeneralManagement = () => {
         } 
 
         if (role === "admin") {  
-            await updateAdminProfile(formData).then((res) => {
-             console.log(res);})
+            await updateAdminProfile(formData)
         } else {  
-            await updateStaffProfile(formData).then((res) => {
-             console.log(res);} )
+            await updateStaffProfile(formData)
         }  
     }; 
 

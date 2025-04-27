@@ -81,14 +81,10 @@ const AddLocationModal = ({ open, setOpen, editData, setEditData, refetch }: { o
     const onFinish = async (values:{locationName:string , address:string , region:string , locationType:string , hourRate:string , firstName:string , lastName:string , email:string , mobileNumber:string , workType:string}) => {   
 
         if(editData?.id) {  
-            await editLocation({ id: editData?.id , data:values}).then((res)=>{
-                console.log(res);
-            })
+            await editLocation({ id: editData?.id , data:values})
         } else {
             
-            await addLocation(values).then((res)=>{
-                console.log(res);
-            })
+            await addLocation(values)
         }
 
      }

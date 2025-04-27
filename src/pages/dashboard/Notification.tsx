@@ -4,7 +4,7 @@ import { useNotificationQuery } from '../../redux/features/notification/notifica
 
 const Notification = () => { 
  const {data:notifications} = useNotificationQuery(undefined) 
- console.log(notifications);
+
     return (
         <div className="">
             <div className="bg-white p-5 rounded-xl">

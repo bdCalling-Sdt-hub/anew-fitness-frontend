@@ -35,9 +35,7 @@ const RoleManagement = () => {
 
 
     const onFinish = async (values: any) => {
-     await assignStaff(values).then((res) => {
-        console.log(res);
-    })
+     await assignStaff(values)
     }
     return (
         <div className="px-[30px] pt-[30px]">

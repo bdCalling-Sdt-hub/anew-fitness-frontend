@@ -29,7 +29,6 @@ const chartConfigs = [
 const PayrollReporting = () => { 
   const [status, setStatus] = useState("")
   const {data:allPayroll} = useGetAllPayrollReportingQuery(status);   
-  console.log(allPayroll);
 
 
   const monthNames = [

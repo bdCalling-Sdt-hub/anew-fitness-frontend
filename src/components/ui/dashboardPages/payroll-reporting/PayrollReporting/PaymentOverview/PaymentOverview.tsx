@@ -30,7 +30,6 @@ const PaymentOverview = () => {
     const [staffData , setStaffData] = useState("")
 
     const {data:useAllPayroll} = useGetPayrollOverviewQuery({filterType ,staffData }) 
-    console.log(useAllPayroll); 
 
     const data = useAllPayroll?.overviewData?.map((item:DataType)=>({
         key: item?._id,

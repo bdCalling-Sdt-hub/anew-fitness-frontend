@@ -40,10 +40,7 @@ const ForgetPassword = () => {
     const onFinish = async (values:{email:string}) => {
  
         setEmail(values.email) 
-        await forgetPassword(values).then((res) => {
-            console.log(res);
-        })
-
+        await forgetPassword(values)
     };
 
     return (

@@ -27,7 +27,6 @@ const {data:instructorDetails , refetch} = useGetAllReportQuery(id)
 const firstWeekData = instructorDetails?.weeklyData?.[0]; 
 const secondWeekData = instructorDetails?.weeklyData?.[1]; 
 const biweeklyDatas = instructorDetails?.biweeklyData?.workDetails
-console.log(secondWeekData); 
 const week1StartDate = moment(firstWeekData?.weekStart).format(' MMM DD , YY'); 
 const week1EndDate = moment(firstWeekData?.weekEnd).format(' MMM DD,  YY'); 
 
@@ -53,7 +52,6 @@ const week2Data = secondWeekData?.workDetails?.map((item:any) => ({
   totalAmount:item?.totalAmount
 }))  
 
-console.log(biweeklyDatas);
 const biweeklyData = biweeklyDatas?.map((item:any) => ({
   workDescription: item?.workDetails?.workDescription,
   totalHours: item?.workDetails?.hours,

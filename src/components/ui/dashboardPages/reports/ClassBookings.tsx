@@ -32,7 +32,6 @@ const ClassBookings = () => {
   const [status, setStatus] = useState("")
   const [search, setSearch] = useState("")
   const { data: classReport } = useGetClassReportQuery({ status, search })
-  console.log(classReport);
 
   const classesData = [
     {

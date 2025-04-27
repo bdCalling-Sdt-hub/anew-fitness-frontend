@@ -11,7 +11,6 @@ const ReportDetailsModal = ({ open, setOpen, id, refetch }: { open: boolean, set
   useEffect(() => {
     if (isSuccess) {
       if (data) { 
-        console.log(data);
         Swal.fire({
           text: data?.message,
           icon: "success",

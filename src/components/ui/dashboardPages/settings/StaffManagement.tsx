@@ -20,7 +20,6 @@ const StaffManagement = () => {
     const [editStaff , setEditStaff] = useState({})
     const [deleteStaff] = useDeleteStaffMutation();
 
-    console.log(getAllStaff); 
 
     const data = getAllStaff?.map((item:any , index:number) => ({ 
         key: index+1 ,
@@ -46,7 +45,7 @@ const StaffManagement = () => {
            
             if (result.isConfirmed) {
               await deleteStaff(id).then((res) => { 
-                console.log(res);
+             
                 if (res?.data) {
                   Swal.fire({
                     text: res?.data?.message,

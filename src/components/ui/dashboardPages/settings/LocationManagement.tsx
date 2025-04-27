@@ -98,7 +98,6 @@ const LocationManagement = () => {
                
                 if (result.isConfirmed) {
                   await deleteLocation(id).then((res) => { 
-                    console.log(res);
                     if (res?.data) {
                       Swal.fire({
                         text: res?.data?.message,
@@ -175,16 +174,13 @@ const LocationManagement = () => {
 
     const StatusModal = ({ isStatusOpen, setIsStatusOpen , editData , refetch }: { isStatusOpen: boolean; setIsStatusOpen: (open: boolean) => void , editData : any , refetch : () => void }) => { 
         const [updateStatus] = useUpdateStatusMutation();    
-        console.log(editData);
 
         const handleStatusChange = async (status: string) => { 
             const data = {
                 locationId: editData?.id,
                 status: status,
             };
-            console.log(data);
             await updateStatus(data).then((res) => { 
-                console.log(res);
                 if (res?.data) {
                     Swal.fire({
                         text: res?.data?.message,
@@ -223,8 +219,6 @@ const LocationManagement = () => {
             </Modal>
         );
     }; 
-
-    console.log(activeData);
 
     const getCurrentData = () => {
         if (tabOption === "Active") return activeData;

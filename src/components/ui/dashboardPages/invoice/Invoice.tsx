@@ -16,7 +16,6 @@ const Invoice = () => {
     const [multipleInvoice, setMultipleInvoice] = useState(false) 
     const [status , setStatus]= useState(true)
     const { data: allInvoice } = useGetAllInvoiceQuery(status) 
-    console.log(status);
 
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,

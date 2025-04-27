@@ -11,7 +11,6 @@ const Login = () => {
     const [loginUser, { isError, isLoading, error, data, isSuccess }] = useLoginUserMutation() 
     const [staffLogin, { isError:staffIsError, isLoading:staffIsLoading, error:staffError, data:staffData, isSuccess:staffIsSuccess }] = useStaffLoginMutation()
     const [role, setRole] = useState("")
-    console.log(role); 
 
     useEffect(() => {
         if (isSuccess) {
@@ -74,13 +73,9 @@ const Login = () => {
     const onFinish: FormProps<FieldNamesType>['onFinish'] = async (values) => {
  
         if(role === "admin"){
-        await loginUser(values).then((res) => {
-            console.log(res);
-        }) 
+        await loginUser(values)
     } else {
-        await staffLogin(values).then((res) => {
-            console.log(res);
-        })
+        await staffLogin(values)
     }
     };
 
