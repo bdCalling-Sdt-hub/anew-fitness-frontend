@@ -24,7 +24,8 @@ const GeneralManagement = () => {
     const [form] = Form.useForm();
      
     const {data:adminProfile} = useGetAdminProfileQuery(undefined) 
-    const {data:staffProfile} = useGetStaffProfileQuery(undefined)    
+    const {data:staffProfile} = useGetStaffProfileQuery(undefined)     
+
 
     // update profile   
     const [updateAdminProfile , {isError , isSuccess , error , data}] = useUpdateAdminProfileMutation(); 

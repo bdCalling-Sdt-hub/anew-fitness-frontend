@@ -30,12 +30,13 @@ import InvoicePage from '../pages/dashboard/Invoice/InvoicePage';
 import SetPassword from '../pages/authentication/SetPassword';
 import UserLogin from '../pages/authentication/UserLogin';
 import CreateInstructor from '../components/ui/dashboardPages/payroll-reporting/PaymantsReports/CreateInstructor';
+import PrivateRoute from './PrivateRoute';
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <PrivateRoute>  <App /> </PrivateRoute>,
         errorElement: <ErrorPage />,
         children: [
             { path: '/', element: <HomePage /> },      
