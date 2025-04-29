@@ -3,7 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
+import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid"; 
 import { Select, Segmented, ConfigProvider, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 import { EventInput } from "@fullcalendar/core";
