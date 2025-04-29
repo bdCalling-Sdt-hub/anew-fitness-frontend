@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAddClientContactMutation, useGetAllClientContactQuery, useUpdateClientContactMutation } from "../../../../../redux/features/contact/clientContactApi";
 import Swal from "sweetalert2";
 
-const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditClientData , editLeadData , setEditLeadData}: { open: boolean, editClientData: any, setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void , setEditClientData: (editClientData: any)=> void  , setEditLeadData: (editLeadData: any)=> void , editLeadData: any}) => {
+const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditClientData , editLeadData  }: { open: boolean, editClientData: any, setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void , setEditClientData: (editClientData: any)=> void  , setEditLeadData: (editLeadData: any)=> void , editLeadData: any}) => {
 
     const [form] = Form.useForm(); 
 

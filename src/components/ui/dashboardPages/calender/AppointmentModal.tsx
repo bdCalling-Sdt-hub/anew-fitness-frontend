@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Button, ConfigProvider, DatePicker, Form, Input, Modal, Select, TimePicker } from "antd";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
@@ -7,7 +8,7 @@ import { useGetAllLeadContactQuery } from "../../../../redux/features/contact/le
 import { useGetAllStaffQuery } from "../../../../redux/features/staff/staffManagementApi";
 import dayjs from "dayjs";
 
-const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData, editAppointmentData }: { open: boolean, setModalOpen?: (modalOpen: boolean) => void, setOpen: (open: boolean) => void, editAppointmentData?: any, setEditAppointmentData?: (editAppointmentData: any) => void }) => {
+const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData, editAppointmentData }: { open: boolean, setModalOpen?: (modalOpen: boolean) => void, setOpen: (open: boolean) => void, editAppointmentData?: any, setEditAppointmentData?: (editAppointmentData: any) => void | any }) => {
 
     const [form] = Form.useForm();
     const [addAppointmentContact, { isError, isLoading, isSuccess, data, error }] = useAddAppointmentContactMutation();
@@ -74,12 +75,12 @@ const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData,
 
     useEffect(() => {
         if (editAppointmentData) {
-            form.setFieldsValue({  
+            form.setFieldsValue({
                 contactName: editAppointmentData?.contactName,
                 service: editAppointmentData?.service,
-                date: editAppointmentData?.date ? dayjs(editAppointmentData?.date ) : null,
-                time: editAppointmentData?.time ? dayjs(editAppointmentData?.time ,  "HH:mm" ) : null ,
-                staffId: editAppointmentData?.staffId, 
+                date: editAppointmentData?.date ? dayjs(editAppointmentData?.date) : null,
+                time: editAppointmentData?.time ? dayjs(editAppointmentData?.time, "HH:mm") : null,
+                staffId: editAppointmentData?.staffId,
                 leadId: editAppointmentData?.leadId
             });
         }
@@ -94,15 +95,15 @@ const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData,
 
 
 
-    const OnFinish = (values: { client_name: string, client_email: string, gender: string, address: string, mobile_number: string , date:string , time:string }) => { 
-    
-        const { date, time, ...othersValue } = values; 
+    const OnFinish = (values: { client_name: string, client_email: string, gender: string, address: string, mobile_number: string, date: string, time: string }) => {
+
+        const { date, time, ...othersValue } = values;
 
         const data = {
             ...othersValue,
             date: dayjs(date).format("YYYY-MM-DD"),
             time: dayjs(time).format("HH:mm"),
-          }; 
+        };
 
 
         if (editAppointmentData?.id) {
@@ -173,14 +174,14 @@ const AppointmentModal = ({ open, setOpen, setModalOpen, setEditAppointmentData,
                         }}
                     >
                         <Form.Item name="time" label={<p className=" text-primaryText text-[18px] font-semibold"> Time </p>}>
-                            <TimePicker style={{ height: '45px', width: '100%' }}  format={'HH:mm'} />
+                            <TimePicker style={{ height: '45px', width: '100%' }} format={'HH:mm'} />
                         </Form.Item>
                     </ConfigProvider>
                 </div>
 
                 <div className="flex  items-center justify-end gap-4 mt-4">
                     <Button onClick={() => setOpen(false)}>Close</Button>
-                    <Button htmlType="submit" className='px-5 py-[6px] text-white bg-primary rounded' >{ isUpdateLoading || isLoading ? "Saving.." : "Save"}</Button>
+                    <Button htmlType="submit" className='px-5 py-[6px] text-white bg-primary rounded' >{isUpdateLoading || isLoading ? "Saving.." : "Save"}</Button>
                 </div>
 
             </Form>

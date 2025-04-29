@@ -2,7 +2,7 @@
 import booking from "../../../../../assets/booking.png"
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { useGetAllPayrollReportingQuery } from "../../../../../redux/features/payrollReporting/payrollReportingApi";
-import { DatePicker, Select } from "antd";
+import { DatePicker } from "antd";
 import { useState } from "react";
 import dayjs from "dayjs";
 

@@ -7,42 +7,6 @@ import noData from "../../../../assets/noData.png";
 import { useNavigate } from 'react-router-dom';
 import { useGetHomeDataQuery } from '../../../../redux/features/home/homeApi';
 
-
-const data = [
-    {
-        key: '1',
-        appointmentName: "Consultation",
-        contact: "John Doe",
-        service: "General Checkup",
-        staff: "Dr. Smith",
-        date: "2025-02-20",
-    },
-    {
-        key: '2',
-        appointmentName: "Dental Cleaning",
-        contact: "Jane Doe",
-        service: "Teeth Cleaning",
-        staff: "Dr. Brown",
-        date: "2025-02-22",
-    },
-    {
-        key: '3',
-        appointmentName: "Eye Checkup",
-        contact: "Alice Johnson",
-        service: "Vision Test",
-        staff: "Dr. Green",
-        date: "2025-02-25",
-    },
-    {
-        key: '4',
-        appointmentName: "Eye Checkup",
-        contact: "Alice Johnson",
-        service: "Vision Test",
-        staff: "Dr. Green",
-        date: "2025-02-25",
-    },
-];
-
 const UpcomingAppointment = () => {
     const navigate = useNavigate();
     const [isFilterOpen, setIsFilterOpen] = useState(false);

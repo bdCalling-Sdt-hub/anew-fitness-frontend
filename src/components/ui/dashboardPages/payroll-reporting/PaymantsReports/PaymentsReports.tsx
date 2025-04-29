@@ -8,16 +8,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetAllReportQuery } from '../../../../../redux/features/payrollReporting/paymentReportApi';
 import moment from 'moment';
 
-
-interface WeeklyData {
-  date: string;
-  workDescription: string;
-  workType: string;
-  workingHour: number;
-  hourRate: number;
-  totalAmount: number;
-}
-
 const PaymentsReports = () => {
   const [reportDetails, setReportDetails] = useState(false);
   const [milesReport, setMilesReport] = useState(false);  
