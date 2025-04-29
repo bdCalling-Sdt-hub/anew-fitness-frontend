@@ -34,8 +34,7 @@ export default function ScheduleCalender() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
-
-  const { data: getCalenderData } = useGetCalenderDataQuery(undefined); 
+  const { data: getCalenderData } = useGetCalenderDataQuery(undefined);  
 
   useEffect(() => {
     if (!getCalenderData?.classesData) return;

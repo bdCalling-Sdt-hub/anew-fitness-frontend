@@ -13,7 +13,7 @@ interface DataType {
     _id: string;
     name: string;
     serviceCategory: any;
-    scheduled: any;
+    schedule: any;
     status: string;
     staff: any;
     lead: any;
@@ -22,7 +22,8 @@ interface DataType {
 
 const ClassesTable = () => {
     const [tabOption, setTabOption] = useState("all")
-    const { data: getAllClass, refetch } = useGetAllClassesQuery(undefined)
+    const { data: getAllClass, refetch } = useGetAllClassesQuery(undefined) 
+    console.log("getAllClass", getAllClass);
     const [editClassData, setEditClassData] = useState({})
     const [isStatusOpen, setIsStatusOpen] = useState(false)
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const ClassesTable = () => {
     const data = getAllClass?.map((item: DataType) => ({
         key: item?._id,
         name: item?.name,
-        scheduled: moment(item?.scheduled).format('YYYY-MM-DD'),
+        scheduled: moment(item?.schedule?.[0]?.date).format('YYYY-MM-DD'),
         status: item?.status,
         staffName: item?.staff?.name,
         leadName: item?.lead?.name,
