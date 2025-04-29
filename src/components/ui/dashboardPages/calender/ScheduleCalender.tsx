@@ -18,7 +18,8 @@ interface Resource {
   title: string;
 }
 
-interface CalendarEvent extends EventInput {
+interface CalendarEvent extends EventInput { 
+  id?: string;
   resourceId?: string;
   category?: string;
 }
@@ -189,7 +190,7 @@ export default function ScheduleCalender() {
         resources={resources}
         dateClick={handleDateClick}
         displayEventTime
-        eventDrop={(info) => {
+        eventDrop={(info:any) => {
           const updatedEvents = events.map((event) =>
             event.id === info.event.id ? { ...event, start: info.event.start?.toISOString() } : event
           );
