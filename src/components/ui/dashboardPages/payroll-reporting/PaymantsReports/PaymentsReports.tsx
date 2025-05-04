@@ -7,20 +7,21 @@ import MilesReportModal from '../../appointment/StaffAvailable/MilesReportModal'
 import { useSearchParams } from 'react-router-dom';
 import { useGetAllReportQuery } from '../../../../../redux/features/payrollReporting/paymentReportApi';
 import moment from 'moment';
+import ReportDetailsSecondWeekModal from './ReportDetailsSecondWeekModal';
 
 const PaymentsReports = () => {
-  const [reportDetails, setReportDetails] = useState(false);
+  const [reportDetails, setReportDetails] = useState(false); 
+  const [secondReportDetails, setSecondReportDetails] = useState(false);
   const [milesReport, setMilesReport] = useState(false);  
  const [searchParams] = useSearchParams()  
  const id = searchParams.get('id')    
 const {data:instructorDetails , refetch} = useGetAllReportQuery(id)  
 const firstWeekData = instructorDetails?.weeklyData?.[0]; 
 const secondWeekData = instructorDetails?.weeklyData?.[1]; 
-const biweeklyDatas = instructorDetails?.biweeklyData?.workDetails
+const biweeklyDatas = instructorDetails?.biweeklyData?.workDetails 
+
 const week1StartDate = moment(firstWeekData?.weekStart).format(' MMM DD , YY'); 
-const week1EndDate = moment(firstWeekData?.weekEnd).format(' MMM DD,  YY'); 
-
-
+const week1EndDate = moment(firstWeekData?.weekEnd).format(' MMM DD,  YY');  
 const week2StartDate = moment(secondWeekData?.weekStart).format(' MMM DD , YY'); 
 const week2EndDate = moment(secondWeekData?.weekEnd).format(' MMM DD,  YY');
  
@@ -201,14 +202,16 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
     date: week1StartDate + ' - ' + week2EndDate,
     totalHours: instructorDetails?.biweeklyData?.summary?.totalWorkingHours,
     totalAmount: instructorDetails?.biweeklyData?.summary?.totalWorkAmount,
-  }];
+  }]; 
+
+  console.log(instructorDetails);
 
   const biweeklyMilesData = [{
     date: week1StartDate + ' - ' + week2EndDate,
     totalHours: instructorDetails?.overallTotals?.totalWorkingHours,
     workingAmount: instructorDetails?.overallTotals?.totalWorkAmount,
-    totalMiles: '10mi',
-    mileageRate: 30,
+    totalMiles: instructorDetails?.overallTotals?.totalMiles,
+    mileageRate: instructorDetails?.overallTotals?.totalMilesAmount,
     totalAmount: instructorDetails?.overallTotals?.grandTotalAmount,
   }];
 
@@ -283,7 +286,7 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
           <div className=' flex justify-end items-center '>
             <button
               className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
-              onClick={() => setReportDetails(true)} 
+              onClick={() => setSecondReportDetails(true)} 
               disabled={week2Data?.length === 7}
             >
               <span> Add  Report Details </span>  <span><FiPlus size={22} /></span>
@@ -359,6 +362,7 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
 
       </div> 
       <ReportDetailsModal open={reportDetails} setOpen={setReportDetails} id={id} refetch={refetch} /> 
+      <ReportDetailsSecondWeekModal open={secondReportDetails} setOpen={setSecondReportDetails} id={id} refetch={refetch} /> 
       <MilesReportModal open={milesReport} setOpen={setMilesReport} id={id} refetch={refetch} />
     </div>
   );

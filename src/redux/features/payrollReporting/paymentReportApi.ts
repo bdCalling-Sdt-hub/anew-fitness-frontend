@@ -18,9 +18,17 @@ const paymentReportApi = baseApi.injectEndpoints({
             }),
           }),
 
-          createReportDetails: build.mutation({
+          createReportFirstDetails: build.mutation({
             query: (data) => ({
-              url: `/report/workdetails`,
+              url: `/report/workdetails1`,
+              method: "POST",
+              body: data,
+            }),
+          }),  
+
+          createReportSecondDetails: build.mutation({
+            query: (data) => ({
+              url: `/report/workdetails2`,
               method: "POST",
               body: data,
             }),
@@ -36,4 +44,4 @@ const paymentReportApi = baseApi.injectEndpoints({
      }) 
 }) 
 
-export const {useCreateNewInstructorMutation , useGetAllReportQuery , useCreateReportDetailsMutation , useCreateMilesMutation} =  paymentReportApi
+export const {useCreateNewInstructorMutation , useGetAllReportQuery , useCreateReportFirstDetailsMutation , useCreateReportSecondDetailsMutation , useCreateMilesMutation} =  paymentReportApi

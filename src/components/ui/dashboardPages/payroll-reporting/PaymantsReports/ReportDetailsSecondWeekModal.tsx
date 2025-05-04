@@ -1,12 +1,12 @@
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
-import {  useCreateReportFirstDetailsMutation } from "../../../../../redux/features/payrollReporting/paymentReportApi";
+import { useCreateReportSecondDetailsMutation } from "../../../../../redux/features/payrollReporting/paymentReportApi";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 
-const ReportDetailsModal = ({ open, setOpen, id, refetch }: { open: boolean, setOpen: (open: boolean) => void, id: string | null, refetch: () => void }) => {
+const ReportDetailsSecondWeekModal  = ({ open, setOpen, id, refetch }: { open: boolean, setOpen: (open: boolean) => void, id: string | null, refetch: () => void }) => {
 
   const [form] = Form.useForm();
-  const [createReportSecondDetails, { isLoading, isError, isSuccess, data, error }] = useCreateReportFirstDetailsMutation();
+  const [createReportSecondDetails, { isLoading, isError, isSuccess, data, error }] = useCreateReportSecondDetailsMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -125,4 +125,4 @@ const ReportDetailsModal = ({ open, setOpen, id, refetch }: { open: boolean, set
   );
 };
 
-export default ReportDetailsModal;
+export default ReportDetailsSecondWeekModal ;

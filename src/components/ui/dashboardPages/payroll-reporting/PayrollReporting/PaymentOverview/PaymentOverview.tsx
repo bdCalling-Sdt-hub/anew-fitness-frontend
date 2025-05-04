@@ -20,7 +20,6 @@ interface DataType {
     _id: string  
     periodEnding: string 
     periodBeginning: string
-
   }
 
 
@@ -40,7 +39,9 @@ const PaymentOverview = () => {
         totalMiles: item?.totalMiles,
         mileageRate: item?.mileageRate,
         totalAmount: item?.totalAmount
-    }))
+    })) 
+
+    console.log(useAllPayroll?.overviewData , "all payroll data");
 
     const columns: ColumnsType<DataType> = [
         {
