@@ -11,7 +11,8 @@ const navigate = useNavigate();
 const {data :getAllAppointment , refetch} = useGetAllAppointmentContactQuery(undefined)  
 const [deleteAppointmentContact] = useDeleteAppointmentContactMutation()
 
-const data = getAllAppointment?.map((item: any) => ({
+const data = getAllAppointment?.map((item: any , index:number) => ({ 
+    key: index+1 ,
     contactName: item?.contact?.name,
     service: item?.service,
     staff: item?.staff?.name, 
@@ -102,7 +103,7 @@ const handleDelete = async (id: string) => {
                     </ConfigProvider> : <div className="py-8 flex justify-center items-center">
                         <Empty
                             image={noData}
-                            imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                            styles={{ image: { width: 150, height: 150, marginLeft: 65 } }}
                             description={
                                 <div className="flex flex-col items-center gap-1 text-center">
                                     <p className="text-primaryText font-semibold text-[22px]">

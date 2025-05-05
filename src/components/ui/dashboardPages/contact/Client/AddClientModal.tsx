@@ -35,7 +35,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
                           icon: "error",
                       });
                   }
-              }, [isSuccess, isError, error, data]);    
+              }, [isSuccess, isError, error, data, form]);    
         
         
               useEffect(() => {
@@ -61,7 +61,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
                           icon: "error",
                       });
                   }
-              }, [isUpdateSuccess, isUpdateError, updateError, updateData]);     
+              }, [isUpdateSuccess, isUpdateError, updateError, updateData ,form]);     
  
 
               //for client contact 
@@ -69,7 +69,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
         if (editClientData) {
             form.setFieldsValue({name:editClientData?.client_name , client_email:editClientData?.client_email , gender:editClientData?.gender , address:editClientData?.address , phone:editClientData?.phone});
         }
-    }, [editClientData])
+    }, [editClientData ,form])
 
  
     //for lead contact 
@@ -82,7 +82,7 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
                 address: editLeadData?.address,
                 phone: editLeadData?.phone,});
         }
-    }, [editLeadData])
+    }, [editLeadData,form])
 
     useEffect(() => {
         if (open && setOpenLeads) {
@@ -96,7 +96,6 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
         if (editClientData?.id) {
             updateClientContact({ id: editClientData?.id, data: values })
         } else {
-
             addClientContact(values)
         }
     }

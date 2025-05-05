@@ -87,10 +87,11 @@ useEffect(() => {
 
       form.setFieldsValue({
         name: classDetails?.name,
-        location: classDetails?.location,
+        location: classDetails?.location? classDetails?.location : classDetails?.location?._id,
         schedule_date: dayjs(classDetails?.schedule[0].date),
         capacity: classDetails?.totalCapacity,
-        frequency: classDetails?.frequency,
+        frequency: classDetails?.frequency, 
+        mode: classDetails?.workType,
         timeSlots: classDetails?.schedule[0].sessions.map((session: any) => ({
           id: Date.now(),
           startTime: moment(session.startTime, 'hh:mm A'),
@@ -105,7 +106,7 @@ useEffect(() => {
   const locationOption = locations?.map((location: { locationName: string; _id: string }) => ({
     value: location?._id,
     label: location?.locationName
-  }));
+  })); 
 
 
   const leadOption = allLead?.map((lead: { name: string; _id: string }) => ({
@@ -151,7 +152,7 @@ addClasses(formattedData)
 
 
   return (
-    <Form layout="vertical" onFinish={handleSubmit} form={form}>
+    <Form layout="vertical" onFinish={handleSubmit} form={form} initialValues={{mode:{mode}}}>
 
       {/* Top Section */}
       <div className="bg-gray-50 border border-[#D8D8D8] py-[35px] px-[50px] rounded-xl shadow-sm mb-6">
@@ -184,7 +185,7 @@ addClasses(formattedData)
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-[30px] font-bold">Scheduling</h2>
           <Form.Item name="mode" className="mb-0">
-            <Radio.Group onChange={(e) => setMode(e.target.value)} defaultValue={mode} className="flex gap-2">
+            <Radio.Group onChange={(e) => setMode(e.target.value)}  className="flex gap-2">
               <Radio.Button value="offline">In Person</Radio.Button>
               <Radio.Button value="online">Online</Radio.Button>
             </Radio.Group>

@@ -235,7 +235,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
                         </ConfigProvider> : <div className="py-8 flex justify-center items-center">
                             <Empty
                                 image={noData}
-                                imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                                styles={{ image: { width: 150, height: 150, marginLeft: 65 } }}
                                 description={
                                     <div className="flex flex-col items-center gap-1 text-center">
                                         <p className="text-primaryText font-semibold text-[22px]">

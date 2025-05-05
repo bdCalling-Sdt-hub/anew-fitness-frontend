@@ -47,7 +47,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
                   icon: "error",
               });
           }
-      }, [isSuccess, isError, error, data]);    
+      }, [isSuccess, isError, error, data,form]);    
 
 
       useEffect(() => {
@@ -73,7 +73,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
                   icon: "error",
               });
           }
-      }, [editIsSuccess, editIsError, editError, editData]);   
+      }, [editIsSuccess, editIsError, editError, editData,form]);   
 
     useEffect(() => {
       if (editStaff?.id && editStaff?.document) {
@@ -94,7 +94,7 @@ const AddStaffModal: React.FC<AddStaffModalProps> = ({ openStaff, setOpenStaff ,
           ? moment(editStaff.documentationExpiredDate, "YYYY-MM-DD")
           : null,
       });
-    }, [editStaff]); 
+    }, [editStaff,form]); 
 
   const handleCreateStaff = async(values:any) => {   
 

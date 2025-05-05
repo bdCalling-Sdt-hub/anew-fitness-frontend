@@ -8,8 +8,15 @@ const calenderApi = baseApi.injectEndpoints({
                 url: `/class/getstates`,
             }), 
             transformResponse: (response: any) =>response?.data,
+        }), 
+
+        getAllCalenderData: build.query({
+            query: () => ({
+                url: `/calendar/get`,
+            }), 
+            transformResponse: (response: any) =>response?.data,
         }),
-      }) 
+      })  
 })  
 
-export const {useGetCalenderDataQuery } = calenderApi
+export const {useGetCalenderDataQuery , useGetAllCalenderDataQuery } = calenderApi

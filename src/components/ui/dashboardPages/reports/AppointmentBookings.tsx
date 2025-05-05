@@ -104,8 +104,8 @@ const AppointmentBookings = () => {
       <div>
         <div className=" grid grid-cols-4 gap-10 w-full  my-6 " >
           {
-            classesData.map((item) => (
-              <div className="px-[29px] py-[35px] border border-primary rounded-lg  flex items-center gap-4">
+            classesData.map((item , index) => (
+              <div key={index} className="px-[29px] py-[35px] border border-primary rounded-lg  flex items-center gap-4">
                 <div className=" flex items-center justify-center h-[85px] w-[85px] rounded-full bg-[#ffc1c0] border border-primary">
                   <img src={booking} alt="" className=" h-[45px] w-[50px] " />
                 </div>
@@ -153,7 +153,7 @@ const AppointmentBookings = () => {
             </ConfigProvider> : <div className="py-8 flex justify-center items-center">
               <Empty
                 image={noData}
-                imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                styles={{ image: { width: 150, height: 150, marginLeft: 65 } }}
                 description={
                   <div className="flex flex-col items-center gap-1 text-center">
                     <p className="text-primaryText font-semibold text-[22px]">

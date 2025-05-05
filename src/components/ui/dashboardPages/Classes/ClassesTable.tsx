@@ -23,7 +23,6 @@ interface DataType {
 const ClassesTable = () => {
     const [tabOption, setTabOption] = useState("all")
     const { data: getAllClass, refetch } = useGetAllClassesQuery(undefined) 
-    console.log("getAllClass", getAllClass);
     const [editClassData, setEditClassData] = useState({})
     const [isStatusOpen, setIsStatusOpen] = useState(false)
     const navigate = useNavigate();
@@ -31,12 +30,13 @@ const ClassesTable = () => {
     const data = getAllClass?.map((item: DataType) => ({
         key: item?._id,
         name: item?.name,
-        scheduled: moment(item?.schedule?.[0]?.date).format('YYYY-MM-DD'),
+        scheduled:  moment(item?.schedule?.[0]?.date, 'YYYY-MM-DD, hh:mm A').format('YYYY-MM-DD'),
         status: item?.status,
         staffName: item?.staff?.name,
         leadName: item?.lead?.name,
         id: item?._id
-    }))
+    })) 
+
 
     const activeData = data?.filter((item: DataType) => item.status === 'active') || [];
     const inactiveData = data?.filter((item: DataType) => item.status === 'inactive') || [];
@@ -263,7 +263,7 @@ const ClassesTable = () => {
                     </ConfigProvider> : <div className="py-8 flex justify-center items-center">
                         <Empty
                             image={noData}
-                            imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                            styles={{ image: { width: 150, height: 150, marginLeft: 65 } }}
                             description={
                                 <div className="flex flex-col items-center gap-1 text-center">
                                     <p className="text-primaryText font-semibold text-[22px]">

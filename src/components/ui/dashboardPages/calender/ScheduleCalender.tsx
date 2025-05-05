@@ -1,26 +1,28 @@
-//@ts-nocheck
+
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid"; 
-import { Select, Segmented, ConfigProvider, DatePicker } from "antd";
-import { useEffect, useState } from "react";
+import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
+import {Segmented, ConfigProvider, DatePicker } from "antd";
+import { useEffect, useRef, useState } from "react";
 import { EventInput } from "@fullcalendar/core";
-import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-import { IoIosArrowDown } from "react-icons/io";
+// import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
+// import { IoIosArrowDown } from "react-icons/io";
 import AddNewModal from "./AddNewModal";
 import AppointmentModal from "./AppointmentModal";
-import { useGetCalenderDataQuery } from "../../../../redux/features/calender/calenderApi";
+import { useGetAllCalenderDataQuery, useGetCalenderDataQuery } from "../../../../redux/features/calender/calenderApi";
 import moment from "moment";
- 
+import { useGetAllEventsQuery } from "../../../../redux/features/event/eventApi";
+import { useGetAllAppointmentContactQuery } from "../../../../redux/features/contact/appointmentClientApi";
+
 
 interface Resource {
   id: string;
   title: string;
 }
 
-interface CalendarEvent extends EventInput { 
+interface CalendarEvent extends EventInput {
   id?: string;
   resourceId?: string;
   category?: string;
@@ -32,9 +34,13 @@ export default function ScheduleCalender() {
   const [selectedFilter, setSelectedFilter] = useState<string>("Full Calendar");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const { data: getCalenderData } = useGetCalenderDataQuery(undefined);  
+  const { data: getCalenderData } = useGetCalenderDataQuery(undefined);
+  const { data: allCalenderData } = useGetAllCalenderDataQuery(undefined);
+  const { data: getAllEventsData } = useGetAllEventsQuery(undefined);
+  const { data: getAllAppointmentData } = useGetAllAppointmentContactQuery(undefined);
+  const calendarRef = useRef<FullCalendar | null>(null);
 
   useEffect(() => {
     if (!getCalenderData?.classesData) return;
@@ -47,10 +53,7 @@ export default function ScheduleCalender() {
           "YYYY-MM-DD , hh:mm A",
         ]);
 
-        if (!baseDate.isValid()) {
-        
-          return [];
-        }
+        if (!baseDate.isValid()) return [];
 
         if (sched.sessions?.length > 0) {
           return sched.sessions.map((session: any) => {
@@ -64,12 +67,11 @@ export default function ScheduleCalender() {
               title: item.name,
               start: sessionStart.toISOString(),
               resourceId: item.resourceId || "room1",
-              category: "Full Calendar",
+              category: "Classes",
             };
           });
         }
 
-        // If no sessions, use fallback startTime
         const singleStartTime = moment(sched.startTime, ["hh:mm A", "HH:mm"]);
         const fallbackStart = moment(baseDate).set({
           hour: singleStartTime.hour(),
@@ -77,7 +79,7 @@ export default function ScheduleCalender() {
         });
 
         return {
-          id: `${item.name}-${baseDate.valueOf()}`, // fallback id
+          id: `${item.name}-${baseDate.valueOf()}`,
           title: item.name,
           start: fallbackStart.toISOString(),
           resourceId: item.resourceId || "room1",
@@ -87,13 +89,71 @@ export default function ScheduleCalender() {
       }) || []
     );
 
-    setEvents(newEvents);
+
+    const additionalEvents: CalendarEvent[] = allCalenderData?.map((event: any) => {
+      const start = moment(event.eventDate);
+      const startTime = moment(event.startTime, ["hh:mm A", "h:mm A"]);
+
+      const startWithTime = moment(start).set({
+        hour: startTime.hour(),
+        minute: startTime.minute(),
+      });
+
+      return {
+        id: event._id,
+        title: event.name,
+        start: startWithTime.toISOString(),
+        resourceId: "room2",
+        category: "Full Calendar",
+      };
+    }) || [];
+
+
+    const allEvents: CalendarEvent[] = getAllEventsData?.data?.map((event: any) => {
+      const start = moment(event.eventDate);
+      const startTime = moment(event.startTime, ["hh:mm A", "h:mm A"]);
+
+      const startWithTime = moment(start).set({
+        hour: startTime.hour(),
+        minute: startTime.minute(),
+      });
+
+      return {
+        id: event._id,
+        title: event.name,
+        start: startWithTime.toISOString(),
+        resourceId: "room2",
+        category: "Events",
+      };
+    }) || [];
+
+
+    const appointmentEvents: CalendarEvent[] = getAllAppointmentData?.map((appt: any) => {
+      const startDate = moment(appt.date);
+      const startTime = moment(appt.time, ["HH:mm", "hh:mm A", "h:mm A"]);
+
+      const startWithTime = moment(startDate).set({
+        hour: startTime.hour(),
+        minute: startTime.minute(),
+      });
+
+      return {
+        id: appt._id,
+        title: `${appt.contact.name} - ${appt.service}`,
+        start: startWithTime.toISOString(),
+        resourceId: "room3",
+        category: "1-1 Appointments",
+      };
+    }) || [];
+
+
+    setEvents([...newEvents, ...additionalEvents, ...allEvents, ...appointmentEvents]);
     setResources([
       { id: "room1", title: "Yoga Room" },
       { id: "room2", title: "HIIT Studio" },
-      { id: "room3", title: "Strength Training Room" },
+      { id: "room3", title: "Appointments Room" },
     ]);
-  }, [getCalenderData]);
+  }, [getCalenderData, allCalenderData, getAllEventsData]);
 
   const handleDateClick = (info: { date: Date }) => {
     setSelectedDate(info.date);
@@ -104,31 +164,25 @@ export default function ScheduleCalender() {
     ? events
     : events.filter((event) => event.category === selectedFilter);
 
-  const FilterCard = () => (
-    <div className="flex items-center justify-center gap-4 py-5" hidden={!isFilterOpen}>
-      {["Staff", "Location", "Classes", "Services"].map((label) => (
-        <Select
-          key={label}
-          className="filter-select"
-          placeholder={label}
-          style={{ height: '40px', width: '190px' }}
-          options={[
-            { value: 'All Location', label: 'All Location' },
-            { value: 'Location 1', label: 'Location 1' },
-            { value: 'Location 2', label: 'Location 2' },
-          ]}
-        />
-      ))}
+  // const FilterCard = () => (
+  //   <div className="flex items-center justify-center gap-4 py-5" hidden={!isFilterOpen}>
+  //     {["Staff", "Location", "Classes", "Services"].map((label) => (
+  //       <Select
+  //         key={label}
+  //         className="filter-select"
+  //         placeholder={label}
+  //         style={{ height: '40px', width: '190px' }}
+  //         options={[
+  //           { value: 'All Location', label: 'All Location' },
+  //           { value: 'Location 1', label: 'Location 1' },
+  //           { value: 'Location 2', label: 'Location 2' },
+  //         ]}
+  //       />
+  //     ))}
 
-      <DatePicker
-        className="filter-select"
-        style={{ height: '40px', width: '190px' }}
-        value={selectedDate ? moment(selectedDate) : undefined}
-        placeholder="Select Date"
-        allowClear
-      />
-    </div>
-  );
+   
+  //   </div>
+  // );
 
   return (
     <div className="p-4">
@@ -159,7 +213,7 @@ export default function ScheduleCalender() {
         </div>
 
         <div className="flex items-center gap-x-3">
-          <button
+          {/* <button
             className="flex items-center gap-2 p-2 px-4 text-primaryText relative"
             style={{ borderRadius: '8px', border: '1px solid #1f1f1f', background: 'white', fontWeight: 400, fontSize: '20px', height: '45px' }}
             onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -169,7 +223,22 @@ export default function ScheduleCalender() {
             <span className={`transition-transform duration-300 ${isFilterOpen ? "rotate-180" : "rotate-0"}`}>
               <IoIosArrowDown />
             </span>
-          </button>
+          </button> */} 
+
+<DatePicker
+        className="filter-select"
+        style={{ height: '44px', width: '130px' }}
+        value={selectedDate ? moment(selectedDate) : undefined}
+        placeholder="Select Date"
+        allowClear
+        onChange={(date) => {
+          setSelectedDate(date ? date.toDate() : null);
+          if (calendarRef.current && date) {
+            const calendarApi = calendarRef.current.getApi();
+            calendarApi.gotoDate(date.toDate());
+          }
+        }}
+      />
 
           <button
             className="flex items-center gap-2 p-2 px-5 text-white bg-primary h-[45px] rounded-lg"
@@ -180,9 +249,10 @@ export default function ScheduleCalender() {
         </div>
       </div>
 
-      {isFilterOpen && <FilterCard />}
+      {/* {isFilterOpen && <FilterCard />} */}
 
       <FullCalendar
+        ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, resourceTimeGridPlugin]}
         initialView="timeGridWeek"
         editable
@@ -191,7 +261,7 @@ export default function ScheduleCalender() {
         resources={resources}
         dateClick={handleDateClick}
         displayEventTime
-        eventDrop={(info:any) => {
+        eventDrop={(info: any) => {
           const updatedEvents = events.map((event) =>
             event.id === info.event.id ? { ...event, start: info.event.start?.toISOString() } : event
           );

@@ -33,66 +33,52 @@ import CreateInstructor from '../components/ui/dashboardPages/payroll-reporting/
 import PrivateRoute from './PrivateRoute';
 
 
-const router = createBrowserRouter([
-    {
+const router = createBrowserRouter(
+    [
+      {
         path: '/',
-        element: <PrivateRoute>  <App /> </PrivateRoute>,
+        element: <PrivateRoute><App /></PrivateRoute>,
         errorElement: <ErrorPage />,
         children: [
-            { path: '/', element: <HomePage /> },      
-            { path: '/calender', element: <CalenderPage /> },      
-            { path: '/create-class', element: <CreateClass /> },      
-            { path: '/create-event', element: <CreateEvent /> },      
-            { path: '/classes', element: <ClassesPage /> },      
-            { path: '/appointment', element: <AppointmentPage /> },      
-            { path: '/appointment/add-availability', element: <AddAvailability /> },      
-            { path: '/invoice', element: <InvoicePage /> },      
-            { path: '/contact', element: <ContactPage /> },      
-            { path: '/contact/email-contact', element: <EmailContact /> },      
-            { path: '/contact/leads-details', element: <LeadsDetails /> },    
-            {path: "/class-booking", element: <ClassBookings />}  ,
-            {path: "/appointment-booking", element: <AppointmentBookings />}  ,
-            { path: '/payroll-reporting', element: <PayrollReportingPage /> },
-            { path: '/payment-overview', element: <PaymentOverviewPage /> }, 
-            { path: '/create-payment-reports', element: <CreateInstructor /> },
-            { path: '/payment-reports', element: <PaymentReportsPage /> },
-            { path: '/general-settings', element: <GeneralSettings /> },
-            { path: '/staff-management', element: <StaffManagementPage /> },
-            { path: '/location-management', element: <LocationManagementPage /> },
-            { path: '/role-management', element: <RoleManagement /> },
-            { path: '/notification', element: <Notification /> },   
+          { path: '/', element: <HomePage /> },
+          { path: '/calender', element: <CalenderPage /> },
+          { path: '/create-class', element: <CreateClass /> },
+          { path: '/create-event', element: <CreateEvent /> },
+          { path: '/classes', element: <ClassesPage /> },
+          { path: '/appointment', element: <AppointmentPage /> },
+          { path: '/appointment/add-availability', element: <AddAvailability /> },
+          { path: '/invoice', element: <InvoicePage /> },
+          { path: '/contact', element: <ContactPage /> },
+          { path: '/contact/email-contact', element: <EmailContact /> },
+          { path: '/contact/leads-details', element: <LeadsDetails /> },
+          { path: '/class-booking', element: <ClassBookings /> },
+          { path: '/appointment-booking', element: <AppointmentBookings /> },
+          { path: '/payroll-reporting', element: <PayrollReportingPage /> },
+          { path: '/payment-overview', element: <PaymentOverviewPage /> },
+          { path: '/create-payment-reports', element: <CreateInstructor /> },
+          { path: '/payment-reports', element: <PaymentReportsPage /> },
+          { path: '/general-settings', element: <GeneralSettings /> },
+          { path: '/staff-management', element: <StaffManagementPage /> },
+          { path: '/location-management', element: <LocationManagementPage /> },
+          { path: '/role-management', element: <RoleManagement /> },
+          { path: '/notification', element: <Notification /> },
         ],
-    }, 
-    {
+      },
+      {
         path: "/auth",
         element: <Auth />,
         children: [
-            {
-                path: "login",
-                element: <Login />,
-            },
-            {
-                path: "forget-password",
-                element: <ForgetPassword />,
-            },
-            {
-                path: "verify-otp",
-                element: <VerifyOtp />,
-            },
-            {
-                path: "new-password",
-                element: <NewPassword />,
-            } ,  
-            {
-                path: "set-password",
-                element: <SetPassword />,
-            }, 
-            {
-                path: "staff-login",
-                element: <UserLogin />,
-            }
+          { path: "login", element: <Login /> },
+          { path: "forget-password", element: <ForgetPassword /> },
+          { path: "verify-otp", element: <VerifyOtp /> },
+          { path: "new-password", element: <NewPassword /> },
+          { path: "set-password", element: <SetPassword /> },
+          { path: "staff-login", element: <UserLogin /> }
         ]
-    },
-]);
+      }
+    ],
+   
+  );
+  
 
 export default router;

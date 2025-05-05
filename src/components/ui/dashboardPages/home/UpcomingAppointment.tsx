@@ -17,12 +17,13 @@ const UpcomingAppointment = () => {
 
     const { data: allData } = useGetHomeDataQuery({ location: filters?.location, dateRange: filters?.dateRange });
 
-    const upComingAppointmentData = allData?.upcomingAppointments
+    const upComingAppointmentData = allData?.upcomingAppointments 
+
 
     const data = upComingAppointmentData?.map((item: any) => ({
         key: item?._id,
         leadName: item?.lead?.name,
-        contact: item?.contact?.client_name,
+        contact: item?.contact?.name,
         service: item?.service,
         staff: item?.staff?.name,
         date: item?.date,
@@ -93,7 +94,7 @@ const UpcomingAppointment = () => {
                 {data?.length > 0 ? <Table columns={columns} dataSource={data} pagination={false} className="border rounded-lg" /> : <div className="py-8 flex justify-center items-center">
                     <Empty
                         image={noData}
-                        imageStyle={{ width: 150, height: 150, marginLeft: 65 }}
+                        styles={{ image: { width: 150, height: 150, marginLeft: 65 } }}
                         description={
                             <div className="flex flex-col items-center gap-1 text-center">
                                 <p className="text-primaryText font-semibold text-[22px]">

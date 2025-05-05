@@ -25,7 +25,7 @@ const Sidebar = () => {
     const [selectedKey, setSelectedKey] = useState("");
     const [openKeys, setOpenKeys] = useState([]);
     const role = GetLocalStorage("role");
-    const { data: staffProfile } = useGetStaffProfileQuery(undefined); // ✅ always declared
+    const { data: staffProfile } = useGetStaffProfileQuery(undefined); 
     const [control, setControl] = useState();
 
     useEffect(() => {
@@ -234,8 +234,9 @@ const Sidebar = () => {
                     mode="inline"
                     selectedKeys={[selectedKey]}
                     openKeys={openKeys}
-                    onOpenChange={handleOpenChange}
-                    style={{ borderRightColor: "transparent", background: "transparent", color: "white" }}
+                    onOpenChange={handleOpenChange} 
+                    onSelect={({ key }) => setSelectedKey(key)}
+                    style={{ borderRightColor: "transparent", }}
                     items={filteredMenuItems}
                 />
             </ConfigProvider>

@@ -14,8 +14,9 @@ const PaymentsReports = () => {
   const [secondReportDetails, setSecondReportDetails] = useState(false);
   const [milesReport, setMilesReport] = useState(false);  
  const [searchParams] = useSearchParams()  
- const id = searchParams.get('id')    
-const {data:instructorDetails , refetch} = useGetAllReportQuery(id)  
+ const id = searchParams.get('id')     
+ const instructorId = searchParams.get('instructorId')  
+const {data:instructorDetails , refetch} = useGetAllReportQuery(instructorId || id)  
 const firstWeekData = instructorDetails?.weeklyData?.[0]; 
 const secondWeekData = instructorDetails?.weeklyData?.[1]; 
 const biweeklyDatas = instructorDetails?.biweeklyData?.workDetails 
@@ -204,7 +205,6 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
     totalAmount: instructorDetails?.biweeklyData?.summary?.totalWorkAmount,
   }]; 
 
-  console.log(instructorDetails);
 
   const biweeklyMilesData = [{
     date: week1StartDate + ' - ' + week2EndDate,
@@ -229,14 +229,17 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
           <div className='flex justify-between items-center pb-4'> 
           <p className="text-primary flex items-center gap-3  "> <span className='font-bold text-[30px]'>Week-1 </span>  <span className='font-medium text-[16px]'> ({` ${week1StartDate} - ${week1EndDate}`}) </span> </p>
 
-          <div className='flex items-end'>
-            <button
+          <div className='flex items-end'> 
+            {
+              id &&  <button
               className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={() => setReportDetails(true)} 
               disabled={week1Data?.length === 7}
             >
               <span> Add Report Details </span>  <span><FiPlus size={22} /></span>
             </button>
+            }
+        
           </div> 
 
           </div>
@@ -260,14 +263,18 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
 
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <p className="text-primary font-bold text-[30px] ">Week-1 Totals</p>
-            <button
+            <p className="text-primary font-bold text-[30px] ">Week-1 Totals</p> 
+
+            {
+              id &&   <button
               className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={() => setMilesReport(true)} 
               disabled={firstWeekData?.milesDetails?.length === 1}
             >
               <span> Add Miles Report </span>  <span><FiPlus size={22} /></span>
             </button>
+            }
+ 
           </div>
           <Table
             columns={milesColumns}
@@ -283,14 +290,17 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
           
           <div className='flex justify-between items-center mb-4 '> 
           <p className="text-primary flex items-center gap-3  "> <span className='font-bold text-[30px]'>Week-2 </span>  <span className='font-medium text-[16px]'> ({` ${week2StartDate} - ${week2EndDate}`}) </span> </p>
-          <div className=' flex justify-end items-center '>
-            <button
+          <div className=' flex justify-end items-center '> 
+            {
+              id &&  <button
               className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={() => setSecondReportDetails(true)} 
               disabled={week2Data?.length === 7}
             >
               <span> Add  Report Details </span>  <span><FiPlus size={22} /></span>
             </button>
+            }
+           
           </div> 
           </div>
           <Table
@@ -312,14 +322,17 @@ const biweeklyData = biweeklyDatas?.map((item:any) => ({
 
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            <p className="text-primary font-bold text-[30px] ">Week-2 Totals</p>
-            <button
+            <p className="text-primary font-bold text-[30px] ">Week-2 Totals</p> 
+            {
+              id &&   <button
               className="bg-primary text-white font-semibold py-2 px-4 flex items-center gap-2 rounded h-[50px] disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={() => setMilesReport(true)} 
               disabled={secondWeekData?.milesDetails?.length === 1}
             >
               <span> Add Miles Report </span>  <span><FiPlus size={22} /></span>
             </button>
+            }
+     
           </div>
           <Table
             columns={milesColumns}
