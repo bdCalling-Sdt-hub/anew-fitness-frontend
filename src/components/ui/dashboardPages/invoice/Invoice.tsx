@@ -6,16 +6,61 @@ import AddInvoiceModal from "./AddInvoiceModal";
 import AddOnceInvoiceModal from "./AddOnceInvoiceModal";
 import AddMultipleInvoice from "./AddMultipleInvoice";
 import { PiExport } from "react-icons/pi";
-import { useGetAllInvoiceQuery } from "../../../../redux/features/invoice/invoiceApi";
+import { useDeleteInvoiceMutation, useGetAllInvoiceQuery } from "../../../../redux/features/invoice/invoiceApi";
 import moment from "moment";
 import { exportToCSV } from "../../../shared/ExportToCSV";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBinLine } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const Invoice = () => {
     const [addClient, setAddClient] = useState(false)
     const [openInvoice, setOpenInvoice] = useState(false)
     const [multipleInvoice, setMultipleInvoice] = useState(false) 
-    const [status , setStatus]= useState(true)
-    const { data: allInvoice } = useGetAllInvoiceQuery(status) 
+    const [editData , setEditData] = useState({})
+    const [status, setStatus] = useState(true)
+    const { data: allInvoice  , refetch } = useGetAllInvoiceQuery(status)  
+    const [deleteInvoice] = useDeleteInvoiceMutation()
+
+    const handleDelete = async (id: string) => {
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+        }).then(async (result) => {
+    
+            if (result.isConfirmed) {
+                await deleteInvoice(id).then((res) => {
+                 
+                    if (res?.data) {
+                        Swal.fire({
+                            text: res?.data?.message,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            refetch();
+                        });
+                    } else {
+                        Swal.fire({
+                            //@ts-ignore
+                            text: res?.error?.data?.message,
+                            icon: "error",
+                            timer: 1500,
+                            showConfirmButton: false,
+                        });
+                    }
+                })
+            }
+        });
+    
+    }   
+
+    console.log(allInvoice);
 
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,
@@ -32,21 +77,21 @@ const Invoice = () => {
     }))
 
     const columns = [
-        { title: 'Invoice ID', dataIndex: 'invoiceID', key: 'invoiceID' },
         { title: 'Client', dataIndex: 'client', key: 'client' },
         { title: 'Class Name', dataIndex: 'className', key: 'className' },
         { title: 'Contact Name', dataIndex: 'contactName', key: 'contactName' },
         { title: 'Services', dataIndex: 'services', key: 'services' },
         { title: 'Invoice Total $', dataIndex: 'invoiceTotal', key: 'invoiceTotal' },
         { title: 'Invoice #', dataIndex: 'invoiceNumber', key: 'invoiceNumber' },
-        { title: 'Invoice Date', dataIndex: 'invoiceDate', key: 'invoiceDate' , render: (invoiceDate: any) => <span>{moment(invoiceDate).format('MM/DD/YYYY')}</span>},
-        { title: 'Invoice Due Date', dataIndex: 'invoiceDueDate', key: 'invoiceDueDate' , render: (invoiceDueDate: any) => <span>{moment(invoiceDueDate).format('MM/DD/YYYY')}</span> },
+        { title: 'Invoice Date', dataIndex: 'invoiceDate', key: 'invoiceDate', render: (invoiceDate: any) => <span>{moment(invoiceDate).format('MM/DD/YYYY')}</span> },
+        { title: 'Invoice Due Date', dataIndex: 'invoiceDueDate', key: 'invoiceDueDate', render: (invoiceDueDate: any) => <span>{moment(invoiceDueDate).format('MM/DD/YYYY')}</span> },
         {
             title: 'Action',
             dataIndex: 'Action',
             key: 'Action',
-            render: (_:any, record:any) => (
-                <div    onClick={() => {
+            render: (_: any, record: any) => ( 
+                <div className="flex items-center gap-3"> 
+                <div onClick={() => {
                     if (record) {
                         exportToCSV([record], {
                             filename: "invoice-list",
@@ -75,7 +120,12 @@ const Invoice = () => {
                         });
                     }
                 }} >
-                    <PiExport size={20} color="#ab0906"  />
+                    <PiExport size={20} color="#ab0906" />
+                </div> 
+
+                <p className="cursor-pointer "  onClick={() =>{ setEditData(record) , setOpenInvoice(true)}}> <TbEdit size={22} color="#575555" /> </p> 
+                <p> <RiDeleteBinLine size={22} color="#AB0906"  className="cursor-pointer" onClick={() => handleDelete(record?.id)}/> </p> 
+
                 </div>
             )
         },
@@ -94,7 +144,7 @@ const Invoice = () => {
 
                     <Select
                         className="filter-select"
-                     onChange={(value) => setStatus(value)}
+                        onChange={(value) => setStatus(value)}
                         placeholder="Classes"
                         style={{ height: '40px', width: '100px' }}
                         options={[
@@ -179,7 +229,7 @@ const Invoice = () => {
                 )}
             </div>
             <AddInvoiceModal open={openInvoice} setOpen={setOpenInvoice} setAddClient={setAddClient} setMultipleInvoice={setMultipleInvoice} />
-            <AddOnceInvoiceModal open={addClient} setOpen={setAddClient} setOpenInvoice={setOpenInvoice} />
+            <AddOnceInvoiceModal open={addClient} setOpen={setAddClient} setOpenInvoice={setOpenInvoice} editData={editData} setEditData={setEditData} refetch={refetch} />
             <AddMultipleInvoice open={multipleInvoice} setOpen={setMultipleInvoice} setOpenInvoice={setOpenInvoice} />
         </div>
     );

@@ -7,8 +7,6 @@ import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
 import {Segmented, ConfigProvider, DatePicker } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { EventInput } from "@fullcalendar/core";
-// import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
-// import { IoIosArrowDown } from "react-icons/io";
 import AddNewModal from "./AddNewModal";
 import AppointmentModal from "./AppointmentModal";
 import { useGetAllCalenderDataQuery, useGetCalenderDataQuery } from "../../../../redux/features/calender/calenderApi";
@@ -40,7 +38,9 @@ export default function ScheduleCalender() {
   const { data: allCalenderData } = useGetAllCalenderDataQuery(undefined);
   const { data: getAllEventsData } = useGetAllEventsQuery(undefined);
   const { data: getAllAppointmentData } = useGetAllAppointmentContactQuery(undefined);
-  const calendarRef = useRef<FullCalendar | null>(null);
+  const calendarRef = useRef<FullCalendar | null>(null); 
+
+  console.log("all calender data", allCalenderData);
 
   useEffect(() => {
     if (!getCalenderData?.classesData) return;
@@ -89,24 +89,62 @@ export default function ScheduleCalender() {
       }) || []
     );
 
-
-    const additionalEvents: CalendarEvent[] = allCalenderData?.map((event: any) => {
-      const start = moment(event.eventDate);
-      const startTime = moment(event.startTime, ["hh:mm A", "h:mm A"]);
-
-      const startWithTime = moment(start).set({
-        hour: startTime.hour(),
-        minute: startTime.minute(),
-      });
-
-      return {
-        id: event._id,
-        title: event.name,
-        start: startWithTime.toISOString(),
-        resourceId: "room2",
-        category: "Full Calendar",
-      };
+    const additionalEvents: CalendarEvent[] = allCalenderData?.flatMap((event: any) => {
+      const events: CalendarEvent[] = [];
+    
+      // Fallback to old format (eventDate + startTime)
+      if (event.eventDate && event.startTime) {
+        const start = moment(event.eventDate);
+        const startTime = moment(event.startTime, ["hh:mm A", "h:mm A"]);
+    
+        const startWithTime = moment(start).set({
+          hour: startTime.hour(),
+          minute: startTime.minute(),
+        });
+    
+        events.push({
+          id: event._id,
+          title: event.name,
+          start: startWithTime.toISOString(),
+          resourceId: "room2",
+          category: "Full Calendar",
+        });
+      }
+    
+      
+      if (Array.isArray(event.schedule)) {
+        const sessionEvents = event.schedule.flatMap((sched: any) => {
+          const baseDate = moment(sched.date, [
+            moment.ISO_8601,
+            "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ (z)",
+            "YYYY-MM-DD , hh:mm A",
+          ]);
+    
+          if (!baseDate.isValid()) return [];
+    
+          return sched.sessions?.map((session: any) => {
+            const time = moment(session.startTime, ["hh:mm A", "h:mm A"]);
+            const sessionStart = moment(baseDate).set({
+              hour: time.hour(),
+              minute: time.minute(),
+            });
+    
+            return {
+              id: session._id || `${event._id}-${session.startTime}`,
+              title: event.name,
+              start: sessionStart.toISOString(),
+              resourceId: "room2",
+              category: "Full Calendar",
+            };
+          }) || [];
+        });
+    
+        events.push(...sessionEvents);
+      }
+    
+      return events;
     }) || [];
+    
 
 
     const allEvents: CalendarEvent[] = getAllEventsData?.data?.map((event: any) => {
@@ -263,7 +301,9 @@ export default function ScheduleCalender() {
         displayEventTime
         eventDrop={(info: any) => {
           const updatedEvents = events.map((event) =>
-            event.id === info.event.id ? { ...event, start: info.event.start?.toISOString() } : event
+            event.id === info.event.id
+              ? { ...event, start: info.event.start?.toISOString() }
+              : event
           );
           setEvents(updatedEvents);
         }}

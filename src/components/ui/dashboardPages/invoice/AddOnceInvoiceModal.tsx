@@ -1,17 +1,43 @@
 import { Button, DatePicker, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
-import { useCreateSingleInvoiceMutation } from "../../../../redux/features/invoice/invoiceApi";
+import { useCreateSingleInvoiceMutation, useUpdateSingleInvoiceMutation } from "../../../../redux/features/invoice/invoiceApi";
 import Swal from "sweetalert2";
 import moment from "moment";
 import { useGetAllClientContactQuery } from "../../../../redux/features/contact/clientContactApi";
 
-const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean, setOpen: (open: boolean) => void, setOpenInvoice: (openInvoice: boolean) => void }) => {
+const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEditData , refetch }: { open: boolean, setOpen: (open: boolean) => void, setOpenInvoice: (openInvoice: boolean) => void , refetch: () => void  , editData: any , setEditData: any}) => {
 
     const [form] = Form.useForm();
-    const [createSingleInvoice, { isLoading, isError, isSuccess, error, data }] = useCreateSingleInvoiceMutation()
+    const [createSingleInvoice, { isLoading, isError, isSuccess, error, data }] = useCreateSingleInvoiceMutation() 
+    const [updateSingleInvoice , { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, error: updateError, data: updateData }] = useUpdateSingleInvoiceMutation() 
     const { data: allClient } = useGetAllClientContactQuery(undefined)
 
-    const clientNameOptions = allClient?.map((client: any) => ({ value: client?._id, label: client?.name }));
+    const clientNameOptions = allClient?.map((client: any) => ({ value: client?._id, label: client?.name })); 
+
+          useEffect(() => {
+              if (isUpdateSuccess) {
+                  if (updateData) {
+                      Swal.fire({
+                          text: updateData?.message,
+                          icon: "success",
+                          timer: 1500,
+                          showConfirmButton: false
+                      }).then(() => {
+                        setOpenInvoice(false);  
+                          setEditData({})
+                          refetch();  
+                          form.resetFields(); 
+                      })
+                  }
+              }
+              if (isUpdateError) {
+                  Swal.fire({
+                      //@ts-ignore
+                      text: updateError?.updateData?.message,
+                      icon: "error",
+                  });
+              }
+          }, [isUpdateSuccess, isUpdateError, updateError, updateData,form]);    
 
     useEffect(() => {
         if (isSuccess) {
@@ -22,7 +48,8 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean,
                     timer: 1500,
                     showConfirmButton: false
                 }).then(() => {
-                    setOpen(false);
+                    setOpen(false); 
+                    refetch();
                 });
             }
 
@@ -40,11 +67,18 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean,
         if (open && setOpenInvoice) {
             setOpenInvoice(false);
         }
-    }, [open, setOpenInvoice]);
+    }, [open, setOpenInvoice]);  
+
+    console.log(editData);
+
+    useEffect(() => {
+        if (editData) {
+            form.setFieldsValue({clientId: editData?.clientId , classId: editData?.classId ,className: editData?.className , contactName: editData?.contactName ,invoiceNumber: editData?.invoiceNumber , services: editData?.services ,  invoiceDate: moment(editData?.invoiceDate) , invoiceDueDate: moment(editData?.invoiceDueDate) , invoiceTotal: editData?.invoiceTotal});
+        }
+    },[editData , form])
 
     const onFinish = async (values: any) => {
         const { invoiceDate, invoiceDueDate, invoiceTotal, ...otherValues } = values 
-
 
         const formattedDate = moment(invoiceDate).format("YYYY-MM-DD")
         const formattedDueDate = moment(invoiceDueDate).format("YYYY-MM-DD")
@@ -55,8 +89,17 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice }: { open: boolean,
             invoiceDate: formattedDate,
             invoiceDueDate: formattedDueDate,
             invoiceTotal: formattedTotal
+        } 
+ 
+        if(editData?.id) { 
+
+            await updateSingleInvoice({id: editData?.id , data}) 
+
+        }else{ 
+
+            await createSingleInvoice(data) 
+                                                                                                                                                                                                    
         }
-        await createSingleInvoice(data)
 
     }
 

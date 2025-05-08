@@ -33,9 +33,24 @@ const invoiceApi = baseApi.injectEndpoints({
                 method: "POST",
                 body: data,
             }), 
-        }) , 
+        }) ,   
+        
+        updateSingleInvoice: build.mutation({
+            query: ({id ,data}) => ({
+                url: `/invoice/update/${id}`,
+                method: "PUT",
+                body: data,
+            }),
+        }) ,
+
+        deleteInvoice: build.mutation({
+            query: (id) => ({
+                url: `/invoice/delete/${id}`,
+                method: "DELETE",
+            }), 
+        }) ,
 
     }) 
 })  
 
-export const {useGetAllInvoiceQuery, useCreateSingleInvoiceMutation, useCreateMultipleInvoiceMutation } = invoiceApi
+export const {useGetAllInvoiceQuery, useCreateSingleInvoiceMutation, useCreateMultipleInvoiceMutation , useUpdateSingleInvoiceMutation , useDeleteInvoiceMutation} = invoiceApi
