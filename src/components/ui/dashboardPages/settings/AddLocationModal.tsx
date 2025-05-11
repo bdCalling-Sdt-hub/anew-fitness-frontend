@@ -185,7 +185,7 @@ const AddLocationModal = ({ open, setOpen, editData, setEditData, refetch }: { o
                                 placeholder="Select Work Type"
                                 style={{ height: '45px', width: '100%' }}
                                 options={[
-                                    { value: 'offline', label: 'Offline' },
+                                    { value: 'offline', label: 'Onsite' },
                                     { value: 'online', label: 'Online' },
                                 ]}
                             />

@@ -106,7 +106,7 @@ const ReportDetailsSecondWeekModal  = ({ open, setOpen, id, refetch }: { open: b
               placeholder="Select Work Type"
               style={{ height: '45px', width: '100%' }}
               options={[
-                { value: 'offline', label: 'Offline' },
+                { value: 'offline', label: 'Onsite' },
                 { value: 'online', label: 'Online' },
               ]}
             />

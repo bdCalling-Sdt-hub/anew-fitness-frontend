@@ -70,7 +70,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
             key: "services",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">All Clients</p>
+                    <p className="text-[18px] font-semibold">All Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {allLeads?.length || 0}
                     </p>
@@ -81,7 +81,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
             key: "active",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">Active Clients</p>
+                    <p className="text-[18px] font-semibold">Active Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {activeClients?.length || 0}
                     </p>
@@ -92,7 +92,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
             key: "inactive",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">Inactive Clients</p>
+                    <p className="text-[18px] font-semibold">Inactive Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {inactiveClients?.length || 0}
                     </p>

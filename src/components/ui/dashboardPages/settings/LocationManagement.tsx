@@ -240,7 +240,7 @@ const LocationManagement = () => {
                         options={[
                             { value: '', label: 'All Location' },
                             { value: 'online', label: 'Online Location' },
-                            { value: 'offline', label: 'Offline Location' },
+                            { value: 'offline', label: 'Onsite Location' },
                         ]}
                     />
                     <button

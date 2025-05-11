@@ -41,7 +41,7 @@ const LeadsAppointment = ({sort , upcomingAppointments , pastAppointments}: {sor
                                 description={
                                     <div className="flex flex-col items-center gap-1 text-center">
                                         <p className="text-primaryText font-semibold text-[22px]">
-                                            You don't have any client contact yet
+                                            You don't have any Partner contact yet
                                         </p>
                                   
                                     </div>

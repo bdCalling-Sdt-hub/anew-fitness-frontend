@@ -149,7 +149,7 @@ const StaffAvailablePage = ({ setOpenStaff, setEditStaff }: { setOpenStaff: (isO
                 <div>
                   <h4 className="text-[18px] font-medium text-primaryText mb-[2px]">Availability</h4>
                   <p className="text-[18px] font-medium text-primaryText">
-                    Client can't book appointments with this staff unless you add some available times.
+                    Partner can't book appointments with this staff unless you add some available times.
                   </p>
                   <button
                     className="mt-4 flex items-center gap-2 text-primary"

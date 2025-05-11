@@ -12,7 +12,7 @@ import EditLeadModal from "./Leads/EditLeadModal";
 
 
 const MainContactPage = () => {
-    const [selectedItem, setSelectedItem] = useState("Clients")
+    const [selectedItem, setSelectedItem] = useState("Partners")
     const [addClient, setAddClient] = useState(false)  
     const [addNewLeads, setAddNewLeads] = useState(false)
     const [editClientData, setEditClientData] = useState<any>({})
@@ -29,7 +29,7 @@ const MainContactPage = () => {
             <div className=" flex items-center justify-between">
 
                 <div className=" flex items-center gap-4">
-                    {["Clients", "Leads", "1-1 Appointment"].map((item, index) => (
+                    {["Partners", "Leads", "1-1 Appointment"].map((item, index) => (
 
                         <button key={index} className={`  text-[18px] font-semibold px-6 h-[45px] rounded-lg ${selectedItem === item ? "bg-primary text-white" : " border border-primary text-primaryText"} `} onClick={() => setSelectedItem(item)}> {item} </button>
                     )
@@ -40,13 +40,13 @@ const MainContactPage = () => {
 
                     <button className=" border border-primary text-primaryText text-[18px] font-semibold px-6 h-[45px] rounded-lg" onClick={() => navigate("/contact/email-contact")}> Email Contacts </button>
                     {
-                        selectedItem === "Clients" ?
+                        selectedItem === "Partners" ?
 
                             <button className=" flex items-center justify-center gap-2 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
                                 onClick={() => setAddClient(true)}
                             >
                                 <span> <LuPlus size={22} />  </span>
-                                <span className=""> Add New Client </span>
+                                <span className=""> Add New Partner </span>
                             </button> :
                             selectedItem === "Leads" ?
                                 <button className=" flex items-center justify-center gap-4 bg-primary text-white w-auto h-[45px] p-2 px-5 rounded-lg"
@@ -68,7 +68,7 @@ const MainContactPage = () => {
 
             <div className=" w-full pt-[60px] ">
                 {
-                    selectedItem === "Clients" ? <ClientContact setAddClient={setAddClient} setEditClientData={setEditClientData} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddNewLeads} setEditLeadData={setEditLeadData} /> : <ServicesPage setOpenService={setOpenService} setEditAppointmentData={setEditAppointmentData} />
+                    selectedItem === "Partners" ? <ClientContact setAddClient={setAddClient} setEditClientData={setEditClientData} /> : selectedItem === "Leads" ? <LeadsContact setAddClient={setAddNewLeads} setEditLeadData={setEditLeadData} /> : <ServicesPage setOpenService={setOpenService} setEditAppointmentData={setEditAppointmentData} />
                 }
             </div>    
 

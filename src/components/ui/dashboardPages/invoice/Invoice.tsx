@@ -65,7 +65,8 @@ const Invoice = () => {
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,
         invoiceID: item?.invoiceId,
-        client: item?.client,
+        client: item?.client?.name, 
+        clientId: item?.client?._id ,
         className: item?.className,
         contactName: item?.contactName,
         services: item?.services,

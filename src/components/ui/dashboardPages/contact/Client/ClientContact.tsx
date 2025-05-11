@@ -101,7 +101,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
             key: "services",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">All Clients</p>
+                    <p className="text-[18px] font-semibold">All Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {allClient?.length || 0}
                     </p>
@@ -112,7 +112,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
             key: "active",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">Active Clients</p>
+                    <p className="text-[18px] font-semibold">Active Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {activeClients?.length || 0}
                     </p>
@@ -123,7 +123,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
             key: "inactive",
             label: (
                 <div className="flex items-center gap-1">
-                    <p className="text-[18px] font-semibold">Inactive Clients</p>
+                    <p className="text-[18px] font-semibold">Inactive Partners</p>
                     <p className="text-primaryText bg-[#FFC1C0] w-[25px] h-[25px] flex items-center justify-center rounded-full font-medium">
                         {inactiveClients?.length || 0}
                     </p>
@@ -138,7 +138,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
 
 
     const columns = [
-        { title: 'Client Name', dataIndex: 'client_name', key: 'client_name' },
+        { title: 'Partner Name', dataIndex: 'client_name', key: 'client_name' },
         { title: 'Email', dataIndex: 'client_email', key: 'client_email' },
         { title: 'Address', dataIndex: 'address', key: 'address' },
         { title: 'Phone', dataIndex: 'phone', key: 'phone' },
@@ -239,7 +239,7 @@ const ClientContact = ({ setAddClient, setEditClientData }: { setAddClient: (add
                                 description={
                                     <div className="flex flex-col items-center gap-1 text-center">
                                         <p className="text-primaryText font-semibold text-[22px]">
-                                            You don't have any client contact yet
+                                            You don't have any Partner contact yet
                                         </p>
 
                                     </div>

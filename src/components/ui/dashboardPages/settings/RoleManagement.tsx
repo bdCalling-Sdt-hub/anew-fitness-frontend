@@ -51,7 +51,7 @@ const RoleManagement = () => {
                         <Form.Item
                             label={<div className=" flex flex-col gap-y-2">
                                 <p className="text-[18px] font-bold text-primaryText"> Display name </p>
-                                <p className="text-[16px] text-primaryText font-medium pb-4"> The name that shows up to clients. </p>
+                                <p className="text-[16px] text-primaryText font-medium pb-4"> The name that shows up to Partners. </p>
                             </div>}
                             name="name"
 

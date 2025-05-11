@@ -93,11 +93,13 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEdit
  
         if(editData?.id) { 
 
-            await updateSingleInvoice({id: editData?.id , data}) 
+        await updateSingleInvoice({id: editData?.id , data}).then((res) => {
+            console.log(res);
+        })
 
         }else{ 
 
-            await createSingleInvoice(data) 
+            await createSingleInvoice(data)
                                                                                                                                                                                                     
         }
 
@@ -117,10 +119,10 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEdit
 
                 <div className=" grid grid-cols-2 gap-x-4">
 
-                    <Form.Item name="clientId" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
+                    <Form.Item name="clientId" label={<p className=" text-primaryText text-[18px] font-semibold"> Partner Name </p>}>
                     <Select
                             className=""
-                            placeholder="Select  Client Name"
+                            placeholder="Select  Partner Name"
                             style={{ height: '45px', width: '100%' }}
                             options={clientNameOptions}
                         />

@@ -59,12 +59,13 @@ const AddAvailability = () => {
       }
   }, [isSuccess, isError, error, data]);     
 
-  const timeOptions = Array.from({ length: 48 }, (_, i) => {
-    const hour = Math.floor(i / 2);
-    const minute = i % 2 === 0 ? '00' : '30';
-    const time = `${hour.toString().padStart(2, '0')}:${minute}`;
-    return { value: time, label: time };
-  });
+const timeOptions = Array.from({ length: 48 }, (_, i) => {
+  const hour = Math.floor(i / 2);
+  const minute = i % 2 === 0 ? '00' : '30';
+  const time24 = `${hour.toString().padStart(2, '0')}:${minute}`;
+  const time12 = moment(time24, 'HH:mm').format('hh:mm A');
+  return { value: time24, label: time12 };
+});
 
   const addTimeSlot = (day: string) => {
     setAvailability((prev) => ({

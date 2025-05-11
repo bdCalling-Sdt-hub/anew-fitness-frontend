@@ -105,16 +105,16 @@ const AddClientModal = ({ open, setOpen, setOpenLeads, editClientData , setEditC
             <Form layout="vertical" className=" pt-4" form={form} onFinish={OnFinish}>
                 <div className="">
 
-                    <Form.Item name="name" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Name </p>}>
-                        <Input type="text" placeholder="Enter Client Name" className=" rounded-lg " style={{
+                    <Form.Item name="name" label={<p className=" text-primaryText text-[18px] font-semibold"> Partner Name </p>}>
+                        <Input type="text" placeholder="Enter Partner Name" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',
 
                         }} />
                     </Form.Item>
 
-                    <Form.Item name="client_email" label={<p className=" text-primaryText text-[18px] font-semibold"> Client Email </p>}>
-                        <Input type="text" placeholder="Enter Client email" className=" rounded-lg " style={{
+                    <Form.Item name="client_email" label={<p className=" text-primaryText text-[18px] font-semibold"> Partner Email </p>}>
+                        <Input type="text" placeholder="Enter Partner email" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',
 
