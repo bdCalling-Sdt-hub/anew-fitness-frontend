@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 const ServicesPage = ({setOpenService , setEditAppointmentData }:{setOpenService: (openService: boolean) => void , setEditAppointmentData: (editAppointmentData: any) => void}) => { 
 const navigate = useNavigate();  
 const {data :getAllAppointment , refetch} = useGetAllAppointmentContactQuery(undefined)  
-const [deleteAppointmentContact] = useDeleteAppointmentContactMutation()
+const [deleteAppointmentContact] = useDeleteAppointmentContactMutation() 
+
 
 const data = getAllAppointment?.map((item: any , index:number) => ({ 
     key: index+1 ,
@@ -20,7 +21,8 @@ const data = getAllAppointment?.map((item: any , index:number) => ({
     leadId: item?.lead?._id,
     date: item?.date,
     time: item?.time ,
-    id:item._id
+    id:item._id , 
+    status: item?.status
 })) 
 
 
@@ -68,6 +70,7 @@ const handleDelete = async (id: string) => {
         { title: 'Staff', dataIndex: 'staff', key: 'staff' },
         { title: 'Date', dataIndex: 'date', key: 'date' },
         { title: 'Time', dataIndex: 'time', key: 'time' },
+        { title: 'Status', dataIndex: 'status', key: 'status' , render: (status: string) => <p className={`${status === "Completed" ? " text-green-800" : " text-orange-600"} font-medium`} >{status}</p>},
         {
             title: 'Actions',
             key: 'actions',

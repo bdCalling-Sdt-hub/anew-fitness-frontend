@@ -40,8 +40,6 @@ export default function ScheduleCalender() {
   const { data: getAllAppointmentData } = useGetAllAppointmentContactQuery(undefined);
   const calendarRef = useRef<FullCalendar | null>(null); 
 
-  console.log("all calender data", allCalenderData);
-
   useEffect(() => {
     if (!getCalenderData?.classesData) return;
 

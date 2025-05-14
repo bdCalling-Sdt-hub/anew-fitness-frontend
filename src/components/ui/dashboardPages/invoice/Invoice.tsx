@@ -60,8 +60,6 @@ const Invoice = () => {
     
     }   
 
-    console.log(allInvoice);
-
     const data = allInvoice?.map((item: any) => ({
         key: item?._id,
         invoiceID: item?.invoiceId,

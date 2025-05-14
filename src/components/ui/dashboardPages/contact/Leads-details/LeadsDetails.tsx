@@ -20,7 +20,8 @@ const LeadsDetails = () => {
     const upcomingClasses = leadDetails?.upcomingClasses
 
     const upcomingAppointments = leadDetails?.upcomingAppointments
-    const pastAppointments = leadDetails?.pastAppointments
+    const pastAppointments = leadDetails?.pastAppointments 
+
 
     const items = [
         {
@@ -74,6 +75,11 @@ const LeadsDetails = () => {
                             <div className=" flex items-center gap-1">
                                 <div className="text-[18px] font-medium">Mobile:</div>
                                 <div className="text-[18px] font-medium">{leadInfo?.phone}</div>
+                            </div> 
+
+                            <div className=" flex items-center gap-1">
+                                <div className="text-[18px] font-medium">Company Name:</div>
+                                <div className="text-[18px] font-medium">{leadInfo?.companyName}</div>
                             </div>
 
                             <div className=" flex items-center gap-1">
@@ -127,7 +133,9 @@ const LeadsDetails = () => {
 
                 </div>
 
-            </div>
+            </div> 
+
+            <p className="mt-7"> <span className="text-[18px] font-semibold text-red-700">Note </span> : <span className="text-[16px] font-medium text-red-500"> {leadInfo?.note} </span></p>
 
             <div className="flex  items-center justify-end gap-4 mt-10">
                 <Button onClick={() => navigate(-1)} style={{ height: "40px" }}>Close</Button>

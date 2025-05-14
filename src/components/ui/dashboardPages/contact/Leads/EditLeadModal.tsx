@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal, Select } from "antd";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { useAddLeadContactMutation, useGetAllLeadContactQuery, useUpdateLeadContactMutation } from "../../../../../redux/features/contact/leadContactApi";
+import TextArea from "antd/es/input/TextArea";
 
 const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLeadData}: { open: boolean,  setOpen: (open: boolean) => void, setOpenLeads: (openLeads: boolean) => void , setEditLeadData: (editLeadData: any)=> void , editLeadData: any}) => {
 
@@ -63,8 +64,6 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
                   }
               }, [isUpdateSuccess, isUpdateError, updateError, updateData]);     
  
-
-
  
     //for lead contact 
     useEffect(() => {
@@ -74,7 +73,10 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
                 lead_email: editLeadData?.lead_email,
                 gender: editLeadData?.gender,
                 address: editLeadData?.address,
-                phone: editLeadData?.phone,});
+                phone: editLeadData?.phone, 
+                note: editLeadData?.note,
+                companyName: editLeadData?.companyName,
+            });
         }
     }, [editLeadData])
 
@@ -85,7 +87,7 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
     }, [open, setOpenLeads]);
 
  
-    const OnFinish = (values:{ client_name:string , client_email:string , gender:string , address:string , mobile_number:string}) => {
+    const OnFinish = (values:{ client_name:string , client_email:string , gender:string , address:string , mobile_number:string , note:string , companyName:string }) => {
  
         if (editLeadData?.id) {
             updateLeadContact({ id: editLeadData?.id, data: values })
@@ -113,7 +115,17 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
                             width: '100%',
 
                         }} />
-                    </Form.Item>
+                    </Form.Item>  
+
+                    <Form.Item name="companyName" label={<p className=" text-primaryText text-[18px] font-semibold"> Company Name </p>}>
+                        <Input type="text" placeholder="Enter company name" className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item> 
+
+
                     <Form.Item name="address" label={<p className=" text-primaryText text-[18px] font-semibold"> Address </p>}>
                         <Input type="text" placeholder="Enter Address" className=" rounded-lg " style={{
                             height: '45px',
@@ -137,6 +149,14 @@ const EditLeadModal = ({ open, setOpen, setOpenLeads, editLeadData , setEditLead
 
                     <Form.Item name="phone" label={<p className=" text-primaryText text-[18px] font-semibold"> Phone </p>}>
                         <Input type="text" placeholder="Enter phone Number" className=" rounded-lg " style={{
+                            height: '45px',
+                            width: '100%',
+
+                        }} />
+                    </Form.Item>
+
+                    <Form.Item name="note" label={<p className=" text-primaryText text-[18px] font-semibold"> Note </p>}>
+                        <TextArea rows={4} placeholder="Enter Note" className=" rounded-lg " style={{
                             height: '45px',
                             width: '100%',
 

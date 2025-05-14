@@ -11,7 +11,7 @@ import { Trash2 } from "lucide-react";
 
 
 
-const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open: boolean) => void , setEditLeadData: any}) => {
+const LeadsContact = ({ setAddClient, setEditLeadData }: { setAddClient: (open: boolean) => void, setEditLeadData: any }) => {
     const [tabOption, setTabOption] = useState("services")
     const navigate = useNavigate();
     const { data: allLeads, refetch } = useGetAllLeadContactQuery(undefined);
@@ -26,6 +26,8 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
         gender: lead?.gender,
         lead_email: lead?.lead_email,
         createdAt: moment(lead?.createdAt).fromNow(),
+        note: lead?.note,
+        companyName: lead?.companyName,
         status: lead?.active,
         id: lead?._id
     }));
@@ -35,11 +37,13 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
         ?.filter((item: any) => item?.active)
         ?.map((lead: any) => ({
             key: lead._id,
-            lead_name: lead?.name            ,
+            lead_name: lead?.name,
             address: lead?.address,
             phone: lead?.phone,
             gender: lead?.gender,
             lead_email: lead?.lead_email,
+            note: lead?.note,
+            companyName: lead?.companyName,
             createdAt: moment(lead?.createdAt).fromNow(),
             status: lead?.active,
             id: lead?._id
@@ -54,6 +58,8 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
             phone: lead?.phone,
             gender: lead?.gender,
             lead_email: lead?.lead_email,
+            note: lead?.note,
+            companyName: lead?.companyName,
             createdAt: moment(lead?.createdAt).fromNow(),
             status: lead?.active,
             id: lead?._id
@@ -148,6 +154,7 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
         { title: 'Email', dataIndex: 'lead_email', key: 'lead_email' },
         { title: 'Address', dataIndex: 'address', key: 'address' },
         { title: 'Phone', dataIndex: 'phone', key: 'phone' },
+        { title: 'Company Name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'Created At', dataIndex: 'createdAt', key: 'createdAt' },
         {
             title: 'Actions',
@@ -164,8 +171,8 @@ const LeadsContact = ({ setAddClient , setEditLeadData }: { setAddClient: (open:
                         <Switch defaultValue={record?.status} onChange={(value) => handleStatusChange(value, record?.id)} />
                     </ConfigProvider>
 
-                    <FaRegEye size={22} color="#575555" onClick={() =>navigate(`/contact/leads-details?id=${record?.id}`) } className=" cursor-pointer" />
-                    <TbEdit size={22} color="#575555" className=" cursor-pointer" onClick={() =>{ setAddClient(true) , setEditLeadData(record)}} />
+                    <FaRegEye size={22} color="#575555" onClick={() => navigate(`/contact/leads-details?id=${record?.id}`)} className=" cursor-pointer" />
+                    <TbEdit size={22} color="#575555" className=" cursor-pointer" onClick={() => { setAddClient(true), setEditLeadData(record) }} />
                     <button className="" onClick={() => handleDelete(record?.id)} >
                         <Trash2 className="h-5 w-5 text-[#FE3838]" />
                     </button>

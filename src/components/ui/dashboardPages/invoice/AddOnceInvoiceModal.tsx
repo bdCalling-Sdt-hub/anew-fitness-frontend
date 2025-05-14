@@ -69,7 +69,6 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEdit
         }
     }, [open, setOpenInvoice]);  
 
-    console.log(editData);
 
     useEffect(() => {
         if (editData) {
@@ -93,10 +92,8 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEdit
  
         if(editData?.id) { 
 
-        await updateSingleInvoice({id: editData?.id , data}).then((res) => {
-            console.log(res);
-        })
-
+        await updateSingleInvoice({id: editData?.id , data})
+        
         }else{ 
 
             await createSingleInvoice(data)
@@ -192,7 +189,7 @@ const AddOnceInvoiceModal = ({ open, setOpen, setOpenInvoice ,editData , setEdit
 
                 <div className="flex  items-center justify-end gap-4 mt-4">
                     <Button onClick={() => setOpen(false)}>Close</Button>
-                    <Button htmlType="submit" className=' px-6 py-[6px] text-white bg-primary rounded '> {isLoading ? "Saving..." : "Save"} </Button>
+                    <Button htmlType="submit" className=' px-6 py-[6px] text-white bg-primary rounded '> {isLoading ||isUpdateLoading ? "Saving..." : "Save"} </Button>
                 </div>
 
             </Form>

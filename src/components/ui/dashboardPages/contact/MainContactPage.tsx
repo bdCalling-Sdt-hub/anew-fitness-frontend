@@ -29,7 +29,7 @@ const MainContactPage = () => {
             <div className=" flex items-center justify-between">
 
                 <div className=" flex items-center gap-4">
-                    {["Partners", "Leads", "1-1 Appointment"].map((item, index) => (
+                    {["1-1 Appointment", "Leads", "Partners"].map((item, index) => (
 
                         <button key={index} className={`  text-[18px] font-semibold px-6 h-[45px] rounded-lg ${selectedItem === item ? "bg-primary text-white" : " border border-primary text-primaryText"} `} onClick={() => setSelectedItem(item)}> {item} </button>
                     )
